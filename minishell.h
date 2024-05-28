@@ -17,6 +17,7 @@ typedef struct s_shell
 }	t_shell;
 
 void	set_termios(int mode);
-void	
+void	set_signal(int sig);
+void	sig_ctrl_c(int sig);
 
 #endif

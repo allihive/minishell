@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 10:06:11 by alli              #+#    #+#             */
-/*   Updated: 2024/05/28 13:07:05 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/28 13:54:52 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	sig_ctrl_c(int sig)
 	rl_redisplay();
 	return ;
 }
-
 
 void	set_signal(int sig)
 {
