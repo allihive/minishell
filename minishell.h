@@ -7,12 +7,13 @@
 #include <termios.h>
 #include <stdlib.h>
 #include <readline/readline.h>
-#include <termios.h>
+#include <unistd.h>
 
 
 typedef struct s_shell 
 {
-	char **env;
+	char **envp;
+	int envp_size;
 	int exit_code;
 }	t_shell;
 

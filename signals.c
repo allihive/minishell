@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 10:06:11 by alli              #+#    #+#             */
-/*   Updated: 2024/05/28 13:54:52 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/28 13:58:00 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	set_termios(int mode)
 }
 void	sig_ctrl_c(int sig)
 {
-	void(sig);
+	(void)sig;
 	write (1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
