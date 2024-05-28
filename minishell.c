@@ -6,15 +6,20 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:01:45 by alli              #+#    #+#             */
-/*   Updated: 2024/05/27 15:33:02 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/28 09:07:47 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//copy environment parameters function
+
 void	initialize_shell(t_shell *ms)
 {
-	
+	//create the size of the shell
+	//initialize the environment
+	//check shell level (increment if necessary)
+	//know the pwd somehow
 }
 
 int	main(int argc, char **argv)
