@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:23:39 by alli              #+#    #+#             */
-/*   Updated: 2024/05/29 09:13:54 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/20 16:37:56 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*ft_memset(void *b, int c, size_t len);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int f, int fd);
-int		ft_putstr_fd(char *s, int fd);
+void	ft_putstr_fd(char *s, int fd);
 void	ft_skipws(char *str);
 char	*ft_strchr(const char *str, int j);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));

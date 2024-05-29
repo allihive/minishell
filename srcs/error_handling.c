@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/27 13:52:16 by alli              #+#    #+#             */
-/*   Updated: 2024/05/27 14:01:25 by alli             ###   ########.fr       */
+/*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
+/*   Updated: 2024/05/29 09:49:38 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 void	error_handle(t_shell *ms)
 {
-	free(ms);
-	printf("Readline unable to read");
+	if (ms->envp)
+	{
+		ft_free_strs(ms->envp, 0, 0);
+		free(ms);
+		exit(ms->exit_code);
+	}
+	ft_printf("Readline unable to read");
 	exit(ms->exit_code);
 }

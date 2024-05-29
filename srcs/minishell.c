@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/27 14:01:45 by alli              #+#    #+#             */
-/*   Updated: 2024/05/28 15:00:27 by alli             ###   ########.fr       */
+/*   Created: 2024/05/29 09:50:24 by alli              #+#    #+#             */
+/*   Updated: 2024/05/29 10:01:06 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ void	init_envp(t_shell *ms, char **envp)
 	
 	while (envp[ms->envp_size])
 		ms->envp_size++;
-	ms->envp = ft_calloc(ms->envp_size);
+	ms->envp = ft_calloc(ms->envp_size, sizeof(ms->envp));
 	if (!ms->envp)
 		error_handle(ms);
 	i = 0;
 	while (i < ms->envp_size)
 	{
-		ms = 
+		ms->envp[i] = ft_strdup(envp[i]);
+		if (!ms->envp[i])
+			error_handle(ms);
 		i++;
 	}
 }
@@ -49,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		line = readline("lobster-shell 🦞: ");
 		if (!line)
-			error_handle(ms);
+			error_handle(&ms);
 		else
 		{
 			add_history(line);
