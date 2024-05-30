@@ -12,7 +12,8 @@ READLINE = -lreadline -L ~/.brew/opt/readline/lib
 
 SRCS = ${addprefix srcs/, error_handling.c \
 		minishell.c \
-		signals.c }
+		signals.c \
+		parse.c}
 
 OBJ = ${SRCS:.c=.o}
 

@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:24 by alli              #+#    #+#             */
-/*   Updated: 2024/05/30 13:14:24 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/05/30 19:14:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **envp)
 	// initialize_shell(&ms, envp);
 	while (true)
 	{
-		line = readline("lobster-shell 🦞: ");
+		ms.line = readline("lobster-shell 🦞: ");
 		if (!line)
 			error_handle(&ms);
 		else
@@ -58,7 +58,8 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 		}
 		//--------------
-		if (!init_mdule())
+		
+		if (!init_process_node(ms.line, &ms))
 			execute_shell(&ms);
 		//---------------
 	}

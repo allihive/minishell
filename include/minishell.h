@@ -16,11 +16,30 @@
 # define true  1
 # define false 0
 
+typedef struct s_process_node
+{
+	char **command;
+	char *redirect_in;//< input
+	char *redirect_out;//> output
+	char *heredoc;//<<
+	char *append;//>>
+	int fd_in;
+	int fd_out;
+	int pipe;
+	int sinquote;
+	int doublequote;
+
+	struct 	s_process_node *next;
+}	t_process_node;
+
+
 typedef struct s_shell 
 {
 	char **envp;
 	int envp_size;
 	int exit_code;
+	char	*line;// read from realine function
+
 }	t_shell;
 
 void	set_termios(int mode);
