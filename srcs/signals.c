@@ -6,18 +6,20 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:02 by alli              #+#    #+#             */
-/*   Updated: 2024/05/29 09:50:03 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/30 12:02:01 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_signal = 0; //global variable
 
 void	set_termios(int mode)
 {
 	struct termios	term;
 	
 	tcgetattr(STDIN_FILENO, &term);
-	if (mode == 2)
+	if (mode != 2)
 		term.c_lflag |= ECHOCTL;
 	else
 		term.c_lflag &= ~ECHOCTL;
@@ -25,24 +27,25 @@ void	set_termios(int mode)
 }
 void	sig_ctrl_c(int sig)
 {
-	(void)sig;
+	g_signal = sig;
 	write (1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	return ;
 }
 
-void	set_signal(int sig)
+void	set_signal(void)
 {
 	struct sigaction sa;
 	struct sigaction sb;
 	
 	ft_bzero(&sa, sizeof(sa));
-	set_termios(sig);
+	set_termios(2);
 	sa.sa_handler = sig_ctrl_c;
 	sigaction(SIGINT, &sa, NULL);
 	ft_bzero(&sb, sizeof(sb)); /*ctrl-\*/
-	sa.sa_handler = SIG_IGN;
+	sb.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sb, NULL); 
+
+	// have a different heredoc signal checker? 
 }

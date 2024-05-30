@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/05/29 09:49:38 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/30 12:03:59 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	error_handle(t_shell *ms)
 	if (ms->envp)
 	{
 		ft_free_strs(ms->envp, 0, 0);
-		free(ms);
+		// free(ms);
+		free(ms->line);
 		exit(ms->exit_code);
 	}
 	ft_printf("Readline unable to read");

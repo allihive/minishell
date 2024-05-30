@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:24 by alli              #+#    #+#             */
-/*   Updated: 2024/05/29 10:01:06 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/30 12:01:24 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,39 @@ void	init_envp(t_shell *ms, char **envp)
 		i++;
 	}
 }
-//copy environment parameters function
+// int check_shlvl(t_shell *ms)
+// {
+// 	int shlvl;
+	
+// 	getenv()
+// }
 
 void	initialize_shell(t_shell *ms, char **envp)
 {
 	ft_bzero(ms, sizeof(*ms));
 	init_envp(ms, envp);
-	//initialize the environment
+	//check_shlvl();
 	//check shell level (increment if necessary)
 	//know the pwd somehow
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char *line;
 	t_shell ms;
+	(void)argv;
+	(void)argc;
 
 	initialize_shell(&ms, envp);
 	while (true)
 	{
-		line = readline("lobster-shell 🦞: ");
-		if (!line)
+		set_signal();
+		ms.line = readline("lobster-shell 🦞: ");
+		if (!ms.line)
 			error_handle(&ms);
-		else
-		{
-			add_history(line);
-			free(line);
-		}
+		else if (ms.line[0] != '\0')
+			add_history(ms.line);
+		//split and execute shell here
 	}
 	return (0);
 }
+
