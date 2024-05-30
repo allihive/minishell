@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:24 by alli              #+#    #+#             */
-/*   Updated: 2024/05/30 12:01:24 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/30 12:59:35 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ int	main(int argc, char **argv, char **envp)
 		//split and execute shell here
 	}
 	return (0);
+	
 }
 
