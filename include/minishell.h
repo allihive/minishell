@@ -39,7 +39,7 @@ typedef struct s_shell
 	int envp_size;
 	int exit_code;
 	char	*line;// read from realine function
-
+	t_process_node node;
 }	t_shell;
 
 void	set_termios(int mode);

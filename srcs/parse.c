@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/05/30 19:14:12 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/05/30 19:17:30 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int init_process_node(char *line, t_shell *ms)
 {
 	if (!line || !*line || check_syntax(ms->line) || ifisspace(line))
 		return (false);
+	
 }
 
 
