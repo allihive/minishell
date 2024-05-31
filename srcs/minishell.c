@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:24 by alli              #+#    #+#             */
-/*   Updated: 2024/05/30 16:22:46 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/31 10:07:35 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,24 @@ void	init_envp(t_shell *ms, char **envp)
 		i++;
 	}
 }
-int check_shlvl(t_shell *ms)
+int check_shlvl(t_shell *ms)//create the export function
 {
 	int shlvl;
 	char *shlvl_str;
 	
-	shlvl_str = getenv(shlvl);
+	shlvl_str = getenv("SHLVL");
 	shlvl = ft_atoi(shlvl_str);
-	if (!shlvl_str || shlvl_str[i] = '\0')
+	if (!shlvl_str || shlvl_str[0] == '\0')
 		return (export(ms, ft_strdup("SHLVL=1")));
 	if (shlvl < 0)
 		return (export(ms, ft_strdup("SHLVL=0")));
 	shlvl_str = ft_itoa(shlvl + 1);
-	shlvl = export(ms, ft_strjoin("SHLVL=", shlvl_str));
-	if (!shlvl)
+	shlvl_str = ft_strjoin("SHLVL=", shlvl_str);
+	if (!shlvl_str)
+		error_handle(ms);
+	shlvl = export(ms, shlvl_str);
+	free(shlvl_str);
+	return (shlvl);
 }
 
 void	initialize_shell(t_shell *ms, char **envp)
