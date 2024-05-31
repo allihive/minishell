@@ -5,12 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/29 09:50:24 by alli              #+#    #+#             */
-/*   Updated: 2024/05/30 12:59:35 by alli             ###   ########.fr       */
+/*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
+/*   Updated: 2024/05/31 10:51:04 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "minishell.h"
 
 void	init_envp(t_shell *ms, char **envp)
 {
@@ -30,19 +28,31 @@ void	init_envp(t_shell *ms, char **envp)
 		i++;
 	}
 }
-// int check_shlvl(t_shell *ms)
-// {
-// 	int shlvl;
+int check_shlvl(t_shell *ms)//create the export function
+{
+	int shlvl;
+	char *shlvl_str;
 	
-// 	getenv()
-// }
+	shlvl_str = getenv("SHLVL");
+	shlvl = ft_atoi(shlvl_str);
+	if (!shlvl_str || shlvl_str[0] == '\0')
+		return (export(ms, ft_strdup("SHLVL=1")));
+	if (shlvl < 0)
+		return (export(ms, ft_strdup("SHLVL=0")));
+	shlvl_str = ft_itoa(shlvl + 1);
+	shlvl_str = ft_strjoin("SHLVL=", shlvl_str);
+	if (!shlvl_str)
+		error_handle(ms);
+	shlvl = export(ms, shlvl_str);
+	free(shlvl_str);
+	return (shlvl);
+}
 
 void	initialize_shell(t_shell *ms, char **envp)
 {
 	ft_bzero(ms, sizeof(*ms));
 	init_envp(ms, envp);
-	//check_shlvl();
-	//check shell level (increment if necessary)
+	check_shlvl(ms);
 	//know the pwd somehow
 }
 
