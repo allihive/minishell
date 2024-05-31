@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:24 by alli              #+#    #+#             */
-/*   Updated: 2024/05/30 14:50:44 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/30 16:22:46 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ int check_shlvl(t_shell *ms)
 	
 	shlvl_str = getenv(shlvl);
 	shlvl = ft_atoi(shlvl_str);
-	shlvl_str = ft_itoa(shlvl + 1);
 	if (!shlvl_str || shlvl_str[i] = '\0')
 		return (export(ms, ft_strdup("SHLVL=1")));
 	if (shlvl < 0)
 		return (export(ms, ft_strdup("SHLVL=0")));
+	shlvl_str = ft_itoa(shlvl + 1);
 	shlvl = export(ms, ft_strjoin("SHLVL=", shlvl_str));
 	if (!shlvl)
 }
@@ -51,7 +51,6 @@ void	initialize_shell(t_shell *ms, char **envp)
 	ft_bzero(ms, sizeof(*ms));
 	init_envp(ms, envp);
 	check_shlvl(ms);
-	//check shell level (increment if necessary)
 	//know the pwd somehow
 }
 
