@@ -29,7 +29,7 @@ typedef struct s_process_node
 	int pipe;
 	int sinquote;
 	int doublequote;
-
+	int fork_n;//fork number
 	struct 	s_process_node *next;
 }	t_process_node;
 

@@ -6,9 +6,11 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/05/31 14:37:34 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/05/31 15:48:19 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 void	init_envp(t_shell *ms, char **envp)
 {
@@ -65,23 +67,16 @@ int	main(int argc, char **argv, char **envp)
 	// initialize_shell(&ms, envp);
 	while (true)
 	{
-		// set_signal();
-		// ms.line = readline("lobster-shell 🦞: ");
-		// if (!ms.line)
-		// 	error_handle(&ms);
-		// else if (ms.line[0] != '\0')
-		// 	add_history(ms.line);
-		//split and execute shell here
+		set_signal();
 		ms.line = readline("lobster-shell 🦞: ");
-		if (!line)
+		if (!ms.line)
 			error_handle(&ms);
-		else
+		else if (ms.line[0] != '\0')
 		{
-			add_history(line);
-			free(line);
+			add_history(ms.line);
+			free(ms.line);
 		}
 		//--------------
-		
 		if (!init_process_node(ms.line, &ms))
 			execute_shell(&ms);
 		//---------------
