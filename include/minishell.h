@@ -17,6 +17,22 @@
 # define false 0
 
 int	g_signal;
+typedef struct s_process_node
+{
+	char **command;
+	char *redirect_in;//< input
+	char *redirect_out;//> output
+	char *heredoc;//<<
+	char *append;//>>
+	int fd_in;
+	int fd_out;
+	int pipe;
+	int sinquote;
+	int doublequote;
+
+	struct 	s_process_node *next;
+}	t_process_node;
+
 
 typedef struct s_shell 
 {
@@ -25,6 +41,8 @@ typedef struct s_shell
 	int envp_size;
 	int exit_code;
 	int shlvl;//? not sure if we need this
+	char	*line;// read from realine function
+	t_process_node node;
 }	t_shell;
 
 void	set_termios(int mode);

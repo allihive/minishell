@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/05/31 10:51:04 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/31 14:37:34 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,29 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)argc;
 
-	initialize_shell(&ms, envp);
+	// initialize_shell(&ms, envp);
 	while (true)
 	{
-		set_signal();
-		ms.line = readline("lobster-shell 🦞: ");
-		if (!ms.line)
-			error_handle(&ms);
-		else if (ms.line[0] != '\0')
-			add_history(ms.line);
+		// set_signal();
+		// ms.line = readline("lobster-shell 🦞: ");
+		// if (!ms.line)
+		// 	error_handle(&ms);
+		// else if (ms.line[0] != '\0')
+		// 	add_history(ms.line);
 		//split and execute shell here
+		ms.line = readline("lobster-shell 🦞: ");
+		if (!line)
+			error_handle(&ms);
+		else
+		{
+			add_history(line);
+			free(line);
+		}
+		//--------------
+		
+		if (!init_process_node(ms.line, &ms))
+			execute_shell(&ms);
+		//---------------
 	}
 	return (0);
 	
