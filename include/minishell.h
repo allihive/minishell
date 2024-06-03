@@ -19,6 +19,7 @@
 int	g_signal;
 typedef struct s_process_node
 {
+	char	*node_line;
 	char **command;
 	char *redirect_in;//< input
 	char *redirect_out;//> output
