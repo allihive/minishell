@@ -6,9 +6,11 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/05/31 10:51:04 by alli             ###   ########.fr       */
+/*   Updated: 2024/05/31 10:57:51 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 void	init_envp(t_shell *ms, char **envp)
 {
@@ -52,7 +54,7 @@ void	initialize_shell(t_shell *ms, char **envp)
 {
 	ft_bzero(ms, sizeof(*ms));
 	init_envp(ms, envp);
-	check_shlvl(ms);
+	// check_shlvl(ms);
 	//know the pwd somehow
 }
 
