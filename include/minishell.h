@@ -20,6 +20,7 @@ int	g_signal;
 typedef struct s_process_node
 {
 	char **command;
+	char *node_line;
 	char *redirect_in;//< input
 	char *redirect_out;//> output
 	char *heredoc;//<<
@@ -29,7 +30,8 @@ typedef struct s_process_node
 	int pipe;
 	int sinquote;
 	int doublequote;
-	int fork_n;//fork number
+	
+	
 	struct 	s_process_node *next;
 }	t_process_node;
 
@@ -42,7 +44,9 @@ typedef struct s_shell
 	int exit_code;
 	int shlvl;//? not sure if we need this
 	char	*line;// read from realine function
-	t_process_node node;
+	int fork_n;//fork number
+	//pids
+	t_process_node *list;//list
 }	t_shell;
 
 void	set_termios(int mode);
