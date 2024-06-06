@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:13:37 by alli              #+#    #+#             */
-/*   Updated: 2024/03/08 14:07:05 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/06 14:59:35 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 	}
 	new[i] = '\0';
-	free((void *)s1);
+	// free((void *)s1);
 	return (new);
 }

@@ -1,19 +1,20 @@
 NAME =	minishell
 
-CFLAGS = -Wall -Wextra -Werror -I./include -v
+CFLAGS = -Wall -Wextra -Werror -I./include -v -g -fsanitize=address
 
 LIBFT_DIR = ./libft
 LIBFT = ./libft/libft.a
 LIBFT_INCLUDE = -I ${LIBFT_DIR}
 
-INCLUDES = -I ~/.brew/opt/readline/include -I ./includes/ -I./libft/
+INCLUDES = -I ~/.brew/opt/readline/include -I ./include/ -I./libft/
 
 READLINE = -lreadline -L ~/.brew/opt/readline/lib
 
 SRCS = ${addprefix srcs/, error_handling.c \
 		minishell.c \
 		signals.c \
-		parse.c}
+		builtins_export.c \
+		parse.c }
 
 OBJ = ${SRCS:.c=.o}
 
