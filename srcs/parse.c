@@ -6,29 +6,27 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/07 12:39:34 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/07 17:02:43 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//syntax_error()
+// /* return 1 if char c is a spaces */
+// // int ifisspace(char c)
+// // {
+// // 		if (c == 32 || (c <= 9 && c >= 13))
+// // 			return (1);	
+// // 	return (0);
+// // }
 
-/* return 1 if char c is a spaces */
-// int ifisspace(char c)
+// int ifismeta (char c)
 // {
-// 		if (c == 32 || (c <= 9 && c >= 13))
-// 			return (1);	
-// 	return (0);
+// 	if (c == ';' || c == '$' || c == '\'' || c == '\'')
+// 		return (c);
+// 	else
+// 		return (0);
 // }
-
-int ifismeta (char c)
-{
-	if (c == ';' || c == '$' || c == '\'' || c == '\'')
-		return (c);
-	else
-		return (0);
-}
 char *point_end(char *line)
 {
     while (*line)
