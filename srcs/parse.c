@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/03 21:04:30 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/07 10:59:52 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 //syntax_error()
 
 /* return 1 if char c is a spaces */
-int ifisspace(char c)
-{
-		if (c == 32 || (c <= 9 && c >= 13))
-			return (1);	
-	return (0);
-}
+// int ifisspace(char c)
+// {
+// 		if (c == 32 || (c <= 9 && c >= 13))
+// 			return (1);	
+// 	return (0);
+// }
 
 int ifismeta (char c)
 {

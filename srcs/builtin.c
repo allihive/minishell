@@ -1,40 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 11:13:37 by alli              #+#    #+#             */
-/*   Updated: 2024/06/06 14:59:35 by alli             ###   ########.fr       */
+/*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
+/*   Updated: 2024/06/06 15:37:12 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	execute_builtin(t_shell *ms)
 {
-	char	*new;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	new = malloc(((ft_strlen(s1)) + (ft_strlen(s2)) + 1) * sizeof(char));
-	if (!new)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		new[i] = s1[i];
-		i++;
-	}
-	while (s2[j] != '\0')
-	{
-		new[i] = s2[j];
-		i++;
-		j++;
-	}
-	new[i] = '\0';
-	// free((void *)s1);
-	return (new);
+	if (ft_strncmp(ms->line, "export", 6) == 0)
+		export(ms, 0);
 }
