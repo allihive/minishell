@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/05/31 15:48:19 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/07 10:55:30 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	initialize_shell(t_shell *ms, char **envp)
 {
 	ft_bzero(ms, sizeof(*ms));
 	init_envp(ms, envp);
-	check_shlvl(ms);
+	// check_shlvl(ms);
 	//know the pwd somehow
 }
 
