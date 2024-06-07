@@ -11,6 +11,7 @@ INCLUDES = -I ~/.brew/opt/readline/include -I ./include/ -I./libft/
 READLINE = -lreadline -L ~/.brew/opt/readline/lib
 
 SRCS = ${addprefix srcs/, error_handling.c \
+		builtin.c \
 		minishell.c \
 		signals.c \
 		builtins_export.c \

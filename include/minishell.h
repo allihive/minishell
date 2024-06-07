@@ -51,7 +51,10 @@ void	init_envp(t_shell *ms, char **envp);
 void	initialize_shell(t_shell *ms, char **envp);
 int 	check_shlvl(t_shell *ms);
 
-/*Builtin Functions*/
+/*Builtin*/
+void	execute_builtin(t_shell *ms);
+
+/*Export Builtin Functions*/
 int	export_str_check(char *str);
 int	export(t_shell *ms, char *cmd);
 void envp_add(t_shell *ms, char *name);

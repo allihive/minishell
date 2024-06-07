@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/06 15:03:08 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/06 15:55:50 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,16 @@ int check_shlvl(t_shell *ms)//create the export function
 	if (shlvl_str == NULL || shlvl_str[0] == '\0')
 		return (export(ms, ft_strdup("SHLVL=1")));
 	shlvl = ft_atoi(shlvl_str);
-	// printf("shlvl: %d\n", shlvl);
 	if (shlvl < 0)
 		return (export(ms, ft_strdup("SHLVL=0")));
 	shlvl_str = ft_itoa(shlvl + 1);
-	// printf("shlvl_str: %s\n", shlvl_str);
 	if (!shlvl_str)
 		return (1);// should be an error here
 	shlvl_str = ft_strjoin("SHLVL=", shlvl_str);
 	if (!shlvl_str)
 		error_handle(ms);
 	shlvl = export(ms, shlvl_str);
+	shlvl = ms->shlvl; //not sure if this is necessary
 	free(shlvl_str);
 	return (shlvl);
 }
@@ -79,7 +78,10 @@ int	main(int argc, char **argv, char **envp)
 		if (!ms.line)
 			error_handle(&ms);
 		else if (ms.line[0] != '\0')
+		{
 			add_history(ms.line);
+			execute_builtin(&ms);
+		}
 		// split and execute shell here
 		// ms.line = readline("lobster-shell 🦞: ");
 		// if (!ms.line)
