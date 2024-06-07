@@ -6,11 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/06/07 12:18:35 by alli             ###   ########.fr       */
-=======
-/*   Updated: 2024/06/07 12:20:10 by alli             ###   ########.fr       */
->>>>>>> parse
+/*   Updated: 2024/06/07 12:36:49 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +82,6 @@ int	main(int argc, char **argv, char **envp)
 			add_history(ms.line);
 			execute_builtin(&ms);
 		}
-		//delete this comment.
-		//delete comment on parse
 		// split and execute shell here
 		// ms.line = readline("lobster-shell 🦞: ");
 		// if (!ms.line)
