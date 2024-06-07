@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/07 11:03:49 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/07 16:39:36 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int argc, char **argv, char **envp)
 	initialize_shell(&ms, envp);
 	while (true)
 	{
-		set_signal();
+		// set_signal();
 		ms.line = readline("lobster-shell 🦞: ");
 		if (!ms.line)
 			error_handle(&ms);
