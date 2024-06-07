@@ -20,6 +20,10 @@ int	g_signal;
 typedef struct s_process_node
 {
 	char **command; 
+	/*
+	echo
+	hello $USER
+	*/
 	char *node_line;// = input
 	char *redirect_in;//< input
 	char *redirect_out;//> output
@@ -28,10 +32,13 @@ typedef struct s_process_node
 	int fd_in;
 	int fd_out;
 	int pipe;
-	int sinquote;
+	int sinquote;//when ==1 dont exapmd unless expand == 1;
 	int doublequote;
-	int				meta;
-	int				process_mode;
+	int append;
+	int heredoc;
+	int		meta;
+	int		process_mode;
+	int expand;
 	
 	struct 	s_process_node *next;
 }	t_process_node;
