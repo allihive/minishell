@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/07 12:20:10 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/10 20:28:02 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,41 +64,50 @@ void	initialize_shell(t_shell *ms, char **envp)
 	//know the pwd somehow
 }
 
-int	main(int argc, char **argv, char **envp)
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_shell ms;
+// 	(void)argv;
+// 	(void)argc;
+
+// 	initialize_shell(&ms, envp);
+// 	while (true)
+// 	{
+// 		set_signal();
+// 		ms.line = readline("lobster-shell 🦞: ");
+// 		if (!ms.line)
+// 			error_handle(&ms);
+// 		else if (ms.line[0] != '\0')
+// 		{
+// 			add_history(ms.line);
+// 			execute_builtin(&ms);
+// 		}
+// 		//delete comment on parse
+// 		// split and execute shell here
+// 		// ms.line = readline("lobster-shell 🦞: ");
+// 		// if (!ms.line)
+// 		// 	error_handle(&ms);
+// 		// else
+// 		// {
+// 		// 	add_history(ms.line);
+// 		// 	free(ms.line);
+// 		// }
+// 		// //--------------
+		
+// 		// if (!init_process_node(ms.line, &ms))
+// 		// 	execute_shell(&ms);
+// 		// //---------------
+// 	}
+// 	return (0);
+	
+// }
+
+int main()
 {
 	t_shell ms;
-	(void)argv;
-	(void)argc;
-
-	initialize_shell(&ms, envp);
-	while (true)
-	{
-		set_signal();
-		ms.line = readline("lobster-shell 🦞: ");
-		if (!ms.line)
-			error_handle(&ms);
-		else if (ms.line[0] != '\0')
-		{
-			add_history(ms.line);
-			execute_builtin(&ms);
-		}
-		//delete comment on parse
-		// split and execute shell here
-		// ms.line = readline("lobster-shell 🦞: ");
-		// if (!ms.line)
-		// 	error_handle(&ms);
-		// else
-		// {
-		// 	add_history(ms.line);
-		// 	free(ms.line);
-		// }
-		// //--------------
-		
-		// if (!init_process_node(ms.line, &ms))
-		// 	execute_shell(&ms);
-		// //---------------
-	}
-	return (0);
 	
+	char s[43] = "echo 42 >> infile | ls -la | cat < outfile";
+	ms.line = s;
+	init_process_node(ms.line, &ms);
+	execute_shell(&ms);
 }
-

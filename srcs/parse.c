@@ -6,13 +6,144 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/07 19:36:01 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/10 20:27:35 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//syntax_error()
+
+static int	is_sep(char *str, int i, char *charset)
+{
+	int	j;
+	int	k;
+	int	flags;
+
+	j = -1;
+	while (charset[++j])
+	{
+		if (str[i] == charset[j])
+		{
+			k = -1;
+			flags = 0;
+			while (str[++k] && k <= i)
+			{
+				if (str[k] == '\\')
+					flags ^= (1 << 2);
+				if (str[k] == '"')
+					flags ^= (1 << 1);
+				if (str[k] == '\'')
+					flags ^= 1;
+			}
+			return (flags == 0);
+		}
+	}
+	return (str[i] == '\0');
+}
+
+static int	count_word(char *str, char *charset)
+{
+	int	word;
+	int	i;
+
+	word = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (!is_sep(str, i, charset)
+			&& is_sep(str, i + 1, charset))
+			word++;
+		i++;
+	}
+	return (word);
+}
+
+static char	*write_word(char *dest, char *str, char *charset)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		while (is_sep(str, i, charset))
+			i++;
+		while (!is_sep(str, i, charset))
+		{
+			if (str[i] == '\\')
+				i++;
+			dest[j++] = str[i++];
+		}
+		break ;
+	}
+	dest[j] = '\0';
+	return (dest);
+}
+
+static char	**write_arr(char **arr, char *str, char *charset)
+{
+	int	len;
+	int	i;
+	int	word;
+
+	len = 0;
+	i = 0;
+	word = 0;
+	while (str[i])
+	{
+		if (is_sep(str, i, charset))
+			i++;
+		else
+		{
+			while (!is_sep(str, i + len, charset))
+				len++;
+			arr[word] = malloc(sizeof(char) * (len + 1));
+			if (arr[word] == NULL)
+				return (NULL);
+			arr[word] = write_word(arr[word], str + i, charset);
+			i += len;
+			len = 0;
+			word++;
+		}
+	}
+	return (arr);
+}
+
+/* 
+	A customized ft_split() function, which splits the string with valid 
+	separators. A separator is deemed as valid if it's outside any pair 
+	of quotes.
+*/
+
+char	**ft_split_pipex(char *str, char *charset)
+{
+	char	**arr;
+	int		word;
+
+	word = count_word(str, charset);
+	arr = (char **)malloc((word + 1) * sizeof(char *));
+	if (arr == NULL)
+		return (NULL);
+	arr = write_arr(arr, str, charset);
+	arr[word] = NULL;
+	return (arr);
+}
+
+
+
+static int	syntax_error(char *token, t_shell *ms)//error_occured need to revise only for parsing test
+{
+	char	c;
+
+	c = *(token + 1);
+	if (c == '\'' || c == '\"')
+		ft_putstr_fd("unexpected EOF while looking for matching", 2);
+	else
+		ft_putstr_fd("syntax error near unexpected token", 2);
+	ms->excode = 258;
+	return (1);
+}
 
 
 int ifisredirect(char c)
@@ -43,14 +174,14 @@ char *point_end(char *line)
 {
     while (*line)
     {
-        while (*line && *line != '|' && *line != '\"' && *line != '\'')
+        while (*line && *line != PIPE && *line != DOUBLEQUOTE && *line != SINGLEQUOTE)
           line++;
-        if (*line == '\"' || *line == '\'')
+        if (*line == DOUBLEQUOTE || *line == SINGLEQUOTE)
         {
             line++;
-            while(*line && *line != '|' && *line != '\"' && *line != '\'')
-              line++;
-            
+            while(*line && *line != DOUBLEQUOTE && *line != SINGLEQUOTE)
+            	line++;
+            line++;
         }
         else
           return(line);
@@ -59,18 +190,18 @@ char *point_end(char *line)
     return(line);
 }
 
-char check_delimiter(line)
+char check_delimiter(char *line)
 {
 	char *single_quote;
 	char *double_quote;
 
 	single_quote = ft_strchr(line, '\'');
-	doublele_quote = ft_strchr(line, '\"');
-	if (!single_quote && != '\"')
+	double_quote = ft_strchr(line, '\"');
+	if (!single_quote && !double_quote)
 		return (0);
-	else if ((single_quote && '\"') && (single_quote > '\"'))
+	else if ((single_quote && double_quote) && (single_quote > double_quote))
 		return ('\"');
-	else if (single_quote && '\"')
+	else if (single_quote && double_quote)
 		return ('\'');
 	else if (double_quote)
 		return ('\"');
@@ -101,7 +232,7 @@ int invalid_redirect( char *line, char redirect)
 {
 	while(*line)
 	{
-		if (*line == '$' || (*line != redirect && *line != ifismeta(*line)))
+		if (*line == '$' || (*line != redirect && !ifismeta(*line)))
 			line++;
 		else if (ifismeta(*line))// ' '' : 
 		{
@@ -117,7 +248,7 @@ int invalid_redirect( char *line, char redirect)
 				line++;
 			if (ifisspace(*line))
 				line++;
-			if (!*line || *line == '<' ||*line == '>')
+			if (!*line || *line == '<' || *line == '>')
 				return (1);//fail
 		}
 	}
@@ -130,35 +261,36 @@ int check_syntax(char *line, t_shell *ms)// mutiple pipe ... back slash, : expor
 {
 	char quote;
 //檢查空輸入和管道符號
-	if (!line ||! *line || *line == '|' || *(line + ft_strlen(line) - 1) == '|')
-		return (syntax_error());
+	//if (!line || !*line || *line == '|' || *(line + ft_strlen(line) - 1) == '|')
+		//return (syntax_error("`|'", ms));//要改 error handling
 //檢查未關閉的引號
 	quote = unclosed_quote(line);
-	if (quote == '\'')
-		return (syntax_error());
-	else if (quote == '\"')
-		return (syntax_error());
+	if (quote == SINGLEQUOTE)
+		return (syntax_error("`\''", ms));
+	else if (quote == DOUBLEQUOTE)
+		return (syntax_error("`\"'", ms));
 //檢查無效的重定向
 	if (invalid_redirect(line, '>'))
-		return (syntax_error());
+		return (syntax_error("`\''", ms));
 	else if (invalid_redirect(line, '<'))
-		return (syntax_error());
+		return (syntax_error("`<'", ms));
 	return (0);
 }
 
-void append_process_node(t_process_node *list, t_process_node *new)
+void append_process_node(t_process_node **list, t_process_node *new)
 {
 	t_process_node *last_node;
-	if (new == NULL)
-		list = new;
+	
+	if (!*list)
+		*list = new;
 	else
 	{
-		last_node= new;
-		while(new->next)
+		last_node = *list;
+		while(last_node->next)
 			last_node = last_node->next;
 		last_node->next = new;
 	}
-	new->next = NULL;
+	
 }
 
 int count_cmd(t_process_node *list)
@@ -175,21 +307,30 @@ int count_cmd(t_process_node *list)
 	return (n);	
 }
 
+int empty_prompt(char *input)
+{
+	while (ifisspace(*input))
+		input++;
+	if (!*input)
+		return (1);//true
+	return (0);//false
+}
+
 int init_process_node(char *line, t_shell *ms)
 {
     t_process_node *new;
     char *temp;
 
-    if (!line || !*line || check_syntax(ms->line, ms) || ifisspace(line))
+    if (!line || !*line || check_syntax(ms->line, ms) || empty_prompt(line))
         return (false);
-    while (line)
+    while (*line)
     {
-
-        while (ifisspae(line))
+        while (ifisspace(*line))
             line++;
 
         //make temp point to the end of the
         temp = point_end(line); 
+		
         //calloc for new 
         new = ft_calloc(1, sizeof(t_process_node));
         // if (!new)
@@ -198,13 +339,28 @@ int init_process_node(char *line, t_shell *ms)
         new->fd_out = -1;
 		new->append = -1;
 		new->heredoc = -1;
-		new->exapnd = -1;
+		new->expand = -1;
+		new->redirectin = -1;
+		new->redirectout= -1;
+		/*
 		new->command = NULL;
-        if (new->node_line)
-            new->node_line = ft_substr(line, 0, (temp - line));
+		new->node_line= NULL;// = input
+		new->redirect_in= NULL;//< input
+		new->redirect_out= NULL;//> output
+		new->here_doc= NULL;//<<
+		new->append_s= NULL;//>>
+		*/
+		
+
+		dprintf(2, "line: %s\n", line);
+		dprintf(2, "temp: %s\n",temp );
+		
+		new->node_line = ft_substr(line, 0, (temp - line));
+		dprintf(2, "node_line in init: %s\n",new->node_line );
         if (!new->node_line )
             free(new->node_line );
-		append_process_node(ms->list, new);// save every command in a node and append them to a list
+		append_process_node(&ms->list, new);// save every command in a node and append them to a list
+		
 		check_syntax(new->node_line, ms);
 	// malloc pids
 		line = temp;
@@ -217,36 +373,41 @@ int init_process_node(char *line, t_shell *ms)
 }
 
 //檢查整句 input <>
-void check_redirect(char *input, char *redirect, t_process_node *mod)
+char	*check_redirect( char *redirect, t_process_node *mod)
 {
 //redierect = > infile.txt
 		if (*(redirect + 1) == '>')//>
 		{
 			mod->append = 1;
-			redirect += 2;
-			mod->append = redirect;
+			redirect = redirect + 2;
+			mod->append_s = redirect;
+			
 		}	
 		else if (*(redirect + 1) == '<')//<
 		{
 			mod->heredoc = 1;
-			redirect += 2;
-			mod->heredoc = redirect;
+			redirect+= 2;
+			mod->here_doc = redirect;
 		}
 		else if (*redirect == '>')
 		{
-			mod->redirect_in = 1;
-			redirect ++;
-			mod->redirect_in= redirect;
+			mod->redirectin = 1;
+			redirect++;
+			//dprintf(2, "redirect:%s\n", redirect);
+			mod->redirect_in = redirect;
+			//dprintf(2, "mod->redirect_in:%s\n", mod->redirect_in);
 		}	
 		else if (*redirect == '<')
 		{
-			mod->redirect_out = 1;
-			redirect ++;
-			mod->redirect_in= redirect;
+			mod->redirectout = 1;
+			redirect++;
+			mod->redirect_out= redirect;
 		}
+		return (redirect);
 }
 
-char	*no_quote(char *cmd, t_process_node *mod)
+//char	*no_quote(char *cmd, t_process_node *mod)
+char	*no_quote(char *cmd)//for test
 {
 	char	*result;
 	int		new_len;
@@ -255,7 +416,7 @@ char	*no_quote(char *cmd, t_process_node *mod)
 	new_len = ft_strlen(cmd) - 1;
 	result = malloc(sizeof(char) * new_len);
 	if (result == NULL)
-		print_error("maloc error", mod, EXIT_FAILURE);
+		ft_putstr_fd("malloc error", 2);// need change to print_error
 	i = 0;
 	while (i < new_len - 1)
 	{
@@ -283,26 +444,32 @@ char	**get_cmd_arr(char *command, t_process_node *mod)
 		{
 			if ((cmd_arr[i][0] == '"' && cmd_arr[i][ft_strlen(cmd_arr[i]) - 1] == '"'))
 			{
-				mod->process_mode = "\"";
-				cmd_arr[i] = no_quote(cmd_arr[i], mod);
+				mod->process_mode = DOUBLEQUOTE;
+				//cmd_arr[i] = no_quote(cmd_arr[i], mod);
+				cmd_arr[i] = no_quote(cmd_arr[i]);//for test
 			}
 			else if ((cmd_arr[i][0] == '\'' && cmd_arr[i][ft_strlen(cmd_arr[i]) - 1] == '\''))
 			{
-				mod->process_mode = "\'";
-				cmd_arr[i] = no_quote(cmd_arr[i], mod);;
+				mod->process_mode = SINGLEQUOTE;
+				//cmd_arr[i] = no_quote(cmd_arr[i], mod);
+				cmd_arr[i] = no_quote(cmd_arr[i]);//for test
 			}
 		}
 		if (ft_strlen(cmd_arr[i]) > 1)
 		{
 			if ((cmd_arr[i][0] == '"' && cmd_arr[i][ft_strlen(cmd_arr[i]) - 1] == '"'))
 			{//echo "hello "$USER""
-				mod->process_mode != "\'";
-				cmd_arr[i] = no_quote(cmd_arr[i], mod);
+				
+				//mod->process_mode != SINGLEQUOTE;
+				
+				//cmd_arr[i] = no_quote(cmd_arr[i], mod);
+				cmd_arr[i] = no_quote(cmd_arr[i]);//for test
 			}
 			else if ((cmd_arr[i][0] == '\'' && cmd_arr[i][ft_strlen(cmd_arr[i]) - 1] == '\''))
 			{//echo 'hello '$USER''
-				mod->process_mode = "\'";
-				cmd_arr[i] = no_quote(cmd_arr[i], mod);
+				mod->process_mode = SINGLEQUOTE;
+				//cmd_arr[i] = no_quote(cmd_arr[i], mod);
+				cmd_arr[i] = no_quote(cmd_arr[i]);//for test
 				mod->expand = 1;
 			}	
 			
@@ -312,7 +479,14 @@ char	**get_cmd_arr(char *command, t_process_node *mod)
 	return (cmd_arr);
 }
 
-void check_dollor(char **command, t_process_node *mod, t_shell *ms)
+char *expand(char *s)
+{
+	printf("this line: %s need to be exand", s);
+	return (s);
+}
+
+//void check_dollor(char **command, t_process_node *mod, t_shell *ms)
+void check_dollor(char **command, t_process_node *mod)//for parse test
 {
 	int i, j;
 	i = 0;
@@ -321,9 +495,9 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 		j = 0;
 		while(command[i][j])
 		{
-			if (command[i][j] == '$'  && mod->doublequote == 1 || mod->expand == 1)
+			if (command[i][j] == '$'  && (mod->doublequote == 1 || mod->expand == 1))
 			{
-				command[i] = exapnd(command[i]);// find the invironmental veriables and return it back , s 
+				command[i] = expand(command[i]);// find the invironmental veriables and return it back , s 
 			}									//command[i] may be $PATH ot '$USER' if there is ' ' outside of the $PATH after exapnt need to add sigle quote back 
 			j++;
 		}
@@ -331,58 +505,107 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 	}
 }
 
-
-void parse_mod(char *input, t_process_node *mod, t_shell *ms)
+char *go_check_redirect(char *input, t_process_node *mod)
 {
-	//echo "hello $USER" > infile.txt
+	char *redirect;
+	
+	redirect = input;
+	while (*redirect)
+	{
+		if (!*redirect)
+			break;
+		while ( *redirect && !ifisredirect(*redirect))
+			redirect++;
+		if (*redirect)
+			redirect = check_redirect(redirect, mod);//檢查redirect  input 0 redirect 19 
+		else
+			break;
+	
+	//dprintf(2, "mod->redirect_in:%s\n", mod->redirect_in);
+		redirect++;
+	}
+	return (redirect);
+}
+
+//void parse_mod(char *input, t_process_node *mod, t_shell *ms)
+void parse_mod(char *input, t_process_node *mod)// for parse test
+{
+	//echo "hello $USER" > infile.txt 
+	//ls -la
 	char *redirect;
 	char *command;//input without redirection
 	
-			while(ifisspace(*input))
-				input++;
-			//if (!*input)
-				//break;
-			redirect = input;
-			while (!ifisredirect(*redirect))
-				redirect++;
-			check_redirect(input, redirect, mod);//檢查redirect  input 0 redirect 19 
-			
-			//input  變成 echo "hello $USER"
-			command = ft_substr( input, 0 , (redirect - input)); // may need free 
-			free(input); //??
-			//get rid of ' '' save back to the string ; change mode
-			mod->command = get_cmd_arr(command, mod); 
-			/*
-			echo
-			hello $USER
-			*/
-			//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
-			check_dollor(mod->command,mod , ms);
+	
+	while (ifisspace(*input) )
+		input++;
+	
+	redirect = go_check_redirect(input, mod);
+	
+	
+	//input  變成 echo "hello $USER"
+		command = ft_substr( input, 0 , (redirect - input)); // may need free 
+	dprintf(2, "command in parse mod: %s\n",command);
+
+	//get rid of ' '' save back to the string ; change mode
+		mod->command = get_cmd_arr(command, mod); 
+	
+	/*
+	echo
+	hello $USER
+	*/
+	//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
+	//check_dollor(mod->command,mod , ms);
+	
+	
+		check_dollor(mod->command,mod);//for parse test
+		
 	
 	
 }
 
 //dive line by '|' and save them in linked list
-void parse_process_node(t_process_node *list, t_shell *ms)
+//void parse_process_node(t_process_node *list, t_shell *ms)
+void parse_process_node(t_process_node **list)//for parse test
 {
 	t_process_node *mod;//command node
 	char *input;
 
+	mod = *list;
+
+	//dprintf(2, "mod->node_line: %s\n", mod->node_line);
+	
 	while (mod)
 	{
+		dprintf(2, "test0 parse_process_node\n");
 		input = mod->node_line;
-		parse_mod(input, mod, ms);
-
+		dprintf(2, "test1 parse_process_node\n");
+		//parse_mod(input, mod, ms);
+		parse_mod(input, mod);//for parse test
+		dprintf(2, "test2 parse_process_node\n");
 		//if (mod->command != NULL)
 			//parse_expands(mod, ms);??
 
+		dprintf(2, "node_line: %s\n", mod->node_line);
+		dprintf(2, "redirect_in: %d, %s\n",mod->redirectin,mod->redirect_in);
+	
+		dprintf(2, "redirect_out: %d, %s\n",mod->redirectout, mod->redirect_out);
+		dprintf(2, "heredoc: %d, %s\n",mod->heredoc, mod->here_doc);
+		dprintf(2, "append: %d, %s\n", mod->append,mod->append_s);
 		mod = mod->next;
+		dprintf(2, "test1 parse_process_node\n");
 	}
+
 }
 
-static void execute_shell(t_shell *ms)
+void execute_shell(t_shell *ms)
 {
-	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
+	
+	//parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
+	parse_process_node(&ms->list);//for parse test
+
+	
+	
 	//execute_children(ms);
 	//wait_children(ms);
 }
+
