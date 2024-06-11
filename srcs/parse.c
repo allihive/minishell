@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/07 17:02:43 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/11 09:25:18 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int init_process_node(char *line, t_shell *ms)
     while (line)
     {
 
-        while (ifisspae(line))
+        while (ifisspace(line))
             line++;
 
         //make temp point to the end of the
