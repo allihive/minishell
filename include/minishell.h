@@ -31,13 +31,9 @@ int	g_signal;
 typedef struct s_process_node
 {
 	char **command; 
-	/*
-	echo
-	hello $USER
-	*/
 	char *node_line;// = input
-	char *redirect_in;//< input
-	char *redirect_out;//> output
+	char **redirect_in;//< input
+	char **redirect_out;//> output
 	char *here_doc;//<<
 	char *append_s;//>>
 	int fd_in;

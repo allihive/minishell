@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/10 20:28:02 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/11 17:35:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	initialize_shell(t_shell *ms, char **envp)
 // 		}
 // 		//delete comment on parse
 // 		// split and execute shell here
-// 		// ms.line = readline("lobster-shell 🦞: ");
+// 		// ms.line = readline("lobster-shell <0001f973>: ");
 // 		// if (!ms.line)
 // 		// 	error_handle(&ms);
 // 		// else
@@ -106,7 +106,9 @@ int main()
 {
 	t_shell ms;
 	
-	char s[43] = "echo 42 >> infile | ls -la | cat < outfile";
+	char s[30] = "echo hello $USER ";
+	//char s[500] = "echo 'hello $USER' >> infile | cat < outfile.txt < outfile";
+	//char s[34] = "cat 42 < outfile.txt < outfile ";
 	ms.line = s;
 	init_process_node(ms.line, &ms);
 	execute_shell(&ms);
