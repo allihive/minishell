@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/07 16:56:37 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/11 09:33:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char *env_exists(char *name, t_shell *ms)
 	i = 0;
 	tmp = ft_strjoin(name, "=");
 	if (!tmp)
-		// error_handle(ms);
+		error_handle(ms);
 	len = ft_strlen(tmp);
 	while (ms->envp[i] && !ft_strnstr(ms->envp[i], tmp, len))//make sure the string is not there.
 		i++;
