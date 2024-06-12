@@ -60,15 +60,11 @@ typedef struct s_shell
 	int 	exit_code;
 	int 	shlvl;//? not sure if we need this
 	char	*line;// read from realine function
-<<<<<<< HEAD
 	int		fork_n;//fork number
 	char	*cwd;
-	pid_t	*pids;
-=======
-	int fork_n;//fork number
+	// int fork_n;//fork number
 	int	excode;
 	pid_t *pids;
->>>>>>> bc0a6dd0b7cded12bc430d2f7ff99e82d8e099ae
 	t_process_node *list;//list
 }	t_shell;
 
