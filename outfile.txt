@@ -1,6 +1,1 @@
-Makefile
-include
-infile.txt
-libft
-outfile.txt
-srcs
+outfile

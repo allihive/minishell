@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:23:39 by alli              #+#    #+#             */
-/*   Updated: 2024/05/29 09:13:54 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/07 18:07:52 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int		ft_whitespace(char c);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
+char	**ft_split_pipex(char *str, char *charset);
 char	*ft_strdup(const char *src);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));

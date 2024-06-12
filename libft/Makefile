@@ -3,10 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alli <alli@student.hive.fi>                +#+  +:+       +#+         #
+#    By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/19 12:48:50 by alli              #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2024/06/12 11:15:03 by alli             ###   ########.fr        #
+=======
+#    Updated: 2024/06/07 18:08:27 by yhsu             ###   ########.fr        #
+>>>>>>> bc0a6dd0b7cded12bc430d2f7ff99e82d8e099ae
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +41,7 @@ SOURCES = ft_atoi.c\
 			ft_printf.c\
 			ft_skipws.c\
 			ft_split.c\
+			ft_split_pipex.c\
 			ft_strchr.c\
 			ft_strdup.c\
 			ft_striteri.c\
