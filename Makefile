@@ -15,7 +15,8 @@ SRCS = ${addprefix srcs/, error_handling.c \
 		minishell.c \
 		signals.c \
 		builtins_export.c \
-		parse.c }
+		parse.c \
+		}
 
 OBJ = ${SRCS:.c=.o}
 

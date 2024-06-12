@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/12 13:07:49 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/12 13:25:56 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -489,7 +489,7 @@ char	**get_cmd_arr(char *command)
 	if (cmd_arr == NULL)
 		perror("maloc error");
 	i = 0;
-	//dont delete quote
+	//dont delete quote here
 	// while (cmd_arr[i] != NULL)  
 	// {
 	// 	if (ft_strlen(cmd_arr[i]) > 1)

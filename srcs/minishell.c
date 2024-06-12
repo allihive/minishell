@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/12 12:56:08 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/12 13:23:49 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		//delete comment on parse
 		// split and execute shell here
-		// ms.line = readline("lobster-shell <0001f973>: ");
+		// ms.line = readline("lobster-shell 🦞: ");
 		// if (!ms.line)
 		// 	error_handle(&ms);
 		// else
@@ -105,7 +105,7 @@ int	main(int argc, char **argv, char **envp)
 	
 }
 
-// int main()
+// int main()// for parse test
 // {
 // 	t_shell ms;
 	
