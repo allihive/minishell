@@ -16,22 +16,38 @@
 # define true  1
 # define false 0
 
+typedef enum e_syntax
+{
+	PIPE = 124,
+	//DOLLAR = 36,
+	//INDIRECT = 60,
+	//OUTDIRECT = 62,
+	SINGLEQUOTE = 39,
+	DOUBLEQUOTE = 34,
+	//QUESTIONMARK = 63,
+}	t_syntax;
+
 int	g_signal;
 typedef struct s_process_node
 {
 	char **command; 
 	char *node_line;// = input
-	char *redirect_in;//< input
-	char *redirect_out;//> output
-	char *heredoc;//<<
-	char *append;//>>
+	char **redirect_in;//< input
+	char **redirect_out;//> output
+	char *here_doc;//<<
+	char *append_s;//>>
 	int fd_in;
 	int fd_out;
 	int pipe;
-	int sinquote;
+	int sinquote;//when ==1 dont exapmd unless expand == 1;
 	int doublequote;
-	int				meta;
-	int				process_mode;
+	int append;//append
+	int heredoc;
+	int redirectin;
+	int redirectout;
+	int		meta;
+	int		process_mode;
+	int expand;
 	
 	struct 	s_process_node *next;
 }	t_process_node;
@@ -45,6 +61,7 @@ typedef struct s_shell
 	int shlvl;//? not sure if we need this
 	char	*line;// read from realine function
 	int fork_n;//fork number
+	int	excode;
 	pid_t *pids;
 	t_process_node *list;//list
 }	t_shell;
@@ -70,7 +87,8 @@ char 	*name_exists(t_shell *ms, char *name);
 
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);
-
+void execute_shell(t_shell *ms);
+//char *expand_the_shit(char *cmd, t_process_node *mod, t_shell *ms);
 /*error handling*/
 void	error_handle(t_shell *ms);
 

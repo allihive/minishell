@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/07 17:00:06 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/12 13:18:37 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 			execute_builtin(&ms);
 		}
 		// split and execute shell here
-		// ms.line = readline("lobster-shell 🦞: ");
+		// ms.line = readline("lobster-shell <0001f973>: ");
 		// if (!ms.line)
 		// 	error_handle(&ms);
 		// else
@@ -96,8 +96,22 @@ int	main(int argc, char **argv, char **envp)
 		// if (!init_process_node(ms.line, &ms))
 		// 	execute_shell(&ms);
 		// //---------------
+
+		init_process_node(ms.line, &ms);//for parsing test
+		execute_shell(&ms);//for parsing test test
 	}
 	return (0);
 	
 }
 
+// int main()
+// {
+// 	t_shell ms;
+	
+// 	char s[30] = "echo hello $USER ";
+// 	//char s[500] = "echo 'hello $USER' >> infile | cat < outfile.txt < outfile";
+// 	//char s[34] = "cat 42 < outfile.txt < outfile ";
+// 	ms.line = s;
+// 	init_process_node(ms.line, &ms);
+// 	execute_shell(&ms);
+// }
