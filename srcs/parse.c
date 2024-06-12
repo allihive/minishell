@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/12 14:41:52 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/12 14:57:25 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,13 +210,13 @@ char check_delimiter(char *line)
 }
 	
 
-// int unclosed_quote(char *line)
-// {
-// 	char delim;
+int unclosed_quote(char *line)
+{
+	char delim;
 
-// 	while(line)
-// 	{
-// 		delim = check_delimiter(line);//確認有沒有delimiter
+	while(line)
+	{
+		delim = check_delimiter(line);//確認有沒有delimiter
 		
 		if (!delim)
 			return (0);
@@ -297,9 +297,9 @@ int count_cmd(t_process_node *list)
 {
 	int n;
 	
-// 	n = 0;
-// 	while (list)
-// 	{
+	n = 0;
+	while (list)
+	{
 		
 		list = list->next;
 		n++;
