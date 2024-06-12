@@ -1,5 +1,5 @@
 NAME =	minishell
-#-fsanitize=address
+
 CFLAGS = -Wall -Wextra -Werror -I./include -v -g -fsanitize=address
 
 LIBFT_DIR = ./libft
@@ -18,7 +18,7 @@ OBJ = ${SRCS:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${LIBFT} ${OBJ}
-	@cc ${CFLAGS} ${OBJ} ${READLINE} -L${LIBFT_DIR} ${INCLUDES} -lft -o ${NAME}
+	@cc ${CFLAGS} ${OBJ} ${READLINE} -L ${LIBFT_DIR} ${INCLUDES} -lft -o ${NAME}
 
 %.o: %.c
 	@cc ${CFLAGS} ${INCLUDES} -c $< -o $@
