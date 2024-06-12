@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/11 18:44:32 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/12 13:07:49 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -505,11 +505,16 @@ char	**get_cmd_arr(char *command)
 	return (cmd_arr);
 }
 
+//char *expand_the_shit(char *cmd, t_process_node *mod, t_shell *ms)
+char *expand_the_shit(char *cmd)
+{
+	dprintf(2 ,"this line: %s need to be expand\n", cmd);
+	return (cmd);
+}
 
 
-
-void check_dollor(char **command, t_process_node *mod, t_shell *ms)
-//void check_dollor(char **command)//for parse test
+//void check_dollor(char **command, t_process_node *mod, t_shell *ms)
+void check_dollor(char **command)//for parse test
 {
 	int i, j;
 	i = 0;
@@ -521,7 +526,7 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 		{
 			if (command[i][j] == '$')
 			{
-				command[i] = expand_the_shit(command[i], mod, ms);
+				command[i] = expand_the_shit(command[i]);
 				
 				// find the invironmental veriables and return it back , s 
 			}									//command[i] may be $PATH ot '$USER' if there is ' ' outside of the $PATH after exapnt need to add sigle quote back 
@@ -556,8 +561,8 @@ void go_check_redirect(char *input, t_process_node *mod)
 	//return (redirect);
 }
 
-//void parse_mod(char *input, t_process_node *mod, t_shell *ms)
-void parse_mod(char *input, t_process_node *mod)// for parse test
+void parse_mod(char *input, t_process_node *mod)
+//void parse_mod(char *input, t_process_node *mod)// for parse test
 {
 	//echo "hello $USER" > infile.txt 
 	//ls -la
@@ -594,7 +599,7 @@ void parse_mod(char *input, t_process_node *mod)// for parse test
 }
 
 //dive line by '|' and save them in linked list
-//void parse_process_node(t_process_node *list, t_shell *ms)
+//void parse_process_node(t_process_node **list, t_shell *ms)
 void parse_process_node(t_process_node **list)//for parse test
 {
 	t_process_node *mod;//command node
