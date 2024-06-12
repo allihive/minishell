@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/06 15:55:19 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/11 09:33:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char *env_exists(char *name, t_shell *ms)
 	i = 0;
 	tmp = ft_strjoin(name, "=");
 	if (!tmp)
-		// error_handle(ms);
+		error_handle(ms);
 	len = ft_strlen(tmp);
 	while (ms->envp[i] && !ft_strnstr(ms->envp[i], tmp, len))//make sure the string is not there.
 		i++;
@@ -122,15 +122,15 @@ int	export(t_shell *ms, char *cmd)//does cmd have to be a double pointer?
 	int i;
 
 	i = 0;
-	if (!cmd[i])
-		return (1);//envp_print
-	if (!export_str_check(cmd))
+	
+	if (cmd == NULL)
+		envp_print(ms);
+	else if (!export_str_check(cmd))
 	{
 		if (name_exists(ms, cmd))
 			envp_update(ms, cmd);
 		else if (name_exists(ms, cmd) == NULL)
 			envp_add(ms, cmd);
-		//print string?
 	}
 	return(0);
 }

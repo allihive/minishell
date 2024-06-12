@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/06 15:37:12 by alli             ###   ########.fr       */
+/*   Created: 2024/06/12 11:59:34 by alli              #+#    #+#             */
+/*   Updated: 2024/06/12 13:03:03 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
-void	execute_builtin(t_shell *ms)
+void	env(t_shell *ms)
 {
-	if (ft_strncmp(ms->line, "export", 6) == 0)
-		export(ms, 0);
+	int		i;
+	// int		j;
+	char	**tmp;
+
+	i = -1;
+	tmp = ms->envp;
+	while (++i < ms->envp_size)
+	{
+		ft_putstr_fd(tmp[i], 1);
+		ft_putchar_fd('\n', 1);
+	}
 }
