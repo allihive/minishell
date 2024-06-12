@@ -6,22 +6,38 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/11 11:44:20 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/12 08:51:39 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	print_ascii_order(t_shell *ms, char letter)
+static void	print_ascii_order(t_shell *ms, char letter)
 {
+	int		i;
 	int		j;
-	char	**tmp;
+	char **tmp;
 
-	j = ' ';
+	i = -1;
 	tmp = ms->envp;
-	ft_putstr_fd("declare -x ", 1);
-	ft_putstr_fd(ms->envp[i], 1);// or print the single variable of the sorted list
-	ft_putstr_fd("\n", 1);
+	while (++i < ms->envp_size)
+	{
+		j = -1;
+		if (tmp[i][0] == letter)
+		{
+			ft_putstr_fd("declare -x ", 1);
+			while (tmp[i][++j] != '=' && tmp[i][j] != '\0')
+				ft_putchar_fd(tmp[i][j], 1);
+			if (tmp[i][j] == '=')
+			{
+				ft_putstr_fd("=\"", 1);
+				while (tmp[i][++j])
+					ft_putchar_fd(tmp[i][j], 1);
+				ft_putstr_fd("\"\n", 1);
+			}
+		}
+	}
+	free(tmp);
 }
 
 void	envp_print(t_shell *ms)
@@ -29,7 +45,7 @@ void	envp_print(t_shell *ms)
 	char	**new_list;
 	int		i;
 	int		j;
-	char 	*letter;
+	int 	letter;
 
 	i = 0;
 	j = 0;
@@ -41,12 +57,9 @@ void	envp_print(t_shell *ms)
 	{
 		if (ms->envp[i][j] == '_' || ms->envp[i][j + 1] == '=')
 			i++;
-		if (letter < 127)
+		while (letter < 127)
 		{
 			print_ascii_order(ms, letter);
-			// ft_putstr_fd("declare -x ", 1);
-			// ft_putstr_fd(ms->envp[i], 1);// or print the single variable of the sorted list
-			// ft_putstr_fd("\n", 1);
 			letter++;
 		}
 		i++;
@@ -57,4 +70,8 @@ void	execute_builtin(t_shell *ms)
 {
 	if (ft_strncmp(ms->line, "export", 6) == 0)
 		export(ms, 0);
+	if (ft_strncmp(ms->line, "pwd", 3) == 0)
+		pwd(ms);
+	if (ft_strncmp(ms->line, "env", 3) == 0)
+		
 }
