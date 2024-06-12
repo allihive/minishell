@@ -6,7 +6,7 @@
 #    By: alli <alli@student.hive.fi>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/19 12:48:50 by alli              #+#    #+#              #
-#    Updated: 2024/05/20 16:38:23 by alli             ###   ########.fr        #
+#    Updated: 2024/06/12 11:15:03 by alli             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,17 +69,17 @@ SOURCES = ft_atoi.c\
 OBJECTS = ${SOURCES:.c=.o}
 
 %.o: %.c
-	cc ${CFLAGS} -c $< -o $@
+	@cc ${CFLAGS} -c $< -o $@
 
 all: ${NAME}
 
 ${NAME}: ${OBJECTS}
-	ar -rcs ${NAME} ${OBJECTS}
+	@ar -rcs ${NAME} ${OBJECTS}
 
 clean:
-	rm -f ${OBJECTS}
+	@rm -f ${OBJECTS}
 
 fclean: clean
-	rm -f ${NAME}
+	@rm -f ${NAME}
 
 re: fclean all

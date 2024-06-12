@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/12 08:51:39 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/12 13:01:18 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	print_ascii_order(t_shell *ms, char letter)
 			}
 		}
 	}
-	free(tmp);
 }
 
 void	envp_print(t_shell *ms)
@@ -70,8 +69,8 @@ void	execute_builtin(t_shell *ms)
 {
 	if (ft_strncmp(ms->line, "export", 6) == 0)
 		export(ms, 0);
-	if (ft_strncmp(ms->line, "pwd", 3) == 0)
-		pwd(ms);
-	if (ft_strncmp(ms->line, "env", 3) == 0)
-		
+	else if (ft_strncmp(ms->line, "pwd", 3) == 0)
+		pwd(ms, 0);
+	else if (ft_strncmp(ms->line, "env", 3) == 0)
+		env(ms);
 }

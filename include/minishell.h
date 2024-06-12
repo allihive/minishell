@@ -39,13 +39,14 @@ typedef struct s_process_node
 
 typedef struct s_shell 
 {
-	char **envp;
-	int envp_size;
-	int exit_code;
-	int shlvl;//? not sure if we need this
+	char 	**envp;
+	int 	envp_size;
+	int 	exit_code;
+	int 	shlvl;//? not sure if we need this
 	char	*line;// read from realine function
-	int fork_n;//fork number
-	pid_t *pids;
+	int		fork_n;//fork number
+	char	*cwd;
+	pid_t	*pids;
 	t_process_node *list;//list
 }	t_shell;
 
@@ -67,6 +68,8 @@ void	envp_print(t_shell *ms);
 void 	envp_update(t_shell *ms, char *name);
 char 	*env_exists(char *name, t_shell *ms);
 char 	*name_exists(t_shell *ms, char *name);
+void	pwd(t_shell *ms, char **cmd);
+void	env(t_shell *ms);
 
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);

@@ -6,19 +6,19 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/11 09:29:36 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/12 13:12:17 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // /* return 1 if char c is a spaces */
-// // int ifisspace(char c)
-// // {
-// // 		if (c == 32 || (c <= 9 && c >= 13))
-// // 			return (1);	
-// // 	return (0);
-// // }
+// int ifisspace(char c)
+// {
+// 		if (c == 32 || (c <= 9 && c >= 13))
+// 			return (1);	
+// 	return (0);
+// }
 
 // int ifismeta (char c)
 // {

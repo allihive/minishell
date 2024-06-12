@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/07 17:00:06 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/12 13:11:26 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ int	main(int argc, char **argv, char **envp)
 		// }
 		// //--------------
 		
-		// if (!init_process_node(ms.line, &ms))
-		// 	execute_shell(&ms);
-		// //---------------
+		// init_process_node(ms.line, &ms)
+		// execute_shell(&ms);
+		//---------------
 	}
 	return (0);
 	
