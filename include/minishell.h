@@ -92,7 +92,7 @@ void	env(t_shell *ms);
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);
-//char *expand_the_shit(char *cmd, t_process_node *mod, t_shell *ms);
+//char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms);
 /*error handling*/
 void	error_handle(t_shell *ms);
 

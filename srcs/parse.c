@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/12 13:26:04 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/12 14:10:45 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,9 +351,156 @@ void parse_mod(char *input, t_process_node mod, t_shell ms)
 {
 	while( *input)//  echo "hello $USER" > infile.txt
 	{
-			//檢查redirevt
+		mod->append = 1;
+		redirect = redirect + 2;
+		mod->append_s = redirect;
+		
+	}	
+	else if (*(redirect + 1) == '<')//<
+	{
+		mod->heredoc = 1;
+		redirect+= 2;
+		mod->here_doc = redirect;
+	}
+	else if (*redirect == '>')
+	{
+		mod->redirectin = 1;
+		redirect++;
+		end = redirect;
+		
+		while (*end && !ifisredirect(*end))
+			end++;
 
-			//
+		// Ensure mod->redirect_out is allocated and has enough space
+		if (mod->redirect_in == NULL) 
+		{
+			mod->redirect_in = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
+			if (mod->redirect_out == NULL) {
+				perror("malloc");
+				return NULL; // Handle error or return as appropriate
+			}
+			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
+		}
+
+		mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
+		
+		//dprintf(2, "mod->redirect_out[%d]:%s\n", i, mod->redirect_out[i]);
+		dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
+		dprintf(2, "mod->redirect_out[1]:%s\n", mod->redirect_out[1]);
+		while (mod->redirect_out[j])
+			j++;
+		dprintf(2, "end\n" );
+		
+	}	
+	else if (*redirect == '<')
+	{
+		mod->redirectout = 1;
+		redirect++;
+		end = redirect;
+		while (*end && !ifisredirect(*end))
+			end++;
+
+		// Ensure mod->redirect_out is allocated and has enough space
+		if (mod->redirect_out == NULL) 
+		{
+			mod->redirect_out = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
+			if (mod->redirect_out == NULL) {
+				perror("malloc");
+				return NULL; // Handle error or return as appropriate
+			}
+			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
+		}
+
+		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
+		
+		//dprintf(2, "mod->redirect_out[%d]:%s\n", i, mod->redirect_out[i]);
+		dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
+		dprintf(2, "mod->redirect_out[1]:%s\n", mod->redirect_out[1]);
+		while (mod->redirect_out[i])
+			i++;
+		dprintf(2, "end\n" );
+	}
+	return (redirect);
+	}
+
+
+//char	*no_quote(char *cmd, t_process_node *mod) //for get_cmd_arr
+char	*no_quote(char *cmd)//for test
+{
+	char	*result;
+	int		new_len;
+	int		i;
+
+	new_len = ft_strlen(cmd) - 1;
+	result = malloc(sizeof(char) * new_len);
+	if (result == NULL)
+		ft_putstr_fd("malloc error", 2);// need change to print_error
+	i = 0;
+	while (i < new_len - 1)
+	{
+		result[i] = cmd[i + 1];
+		i++;
+	}
+	result[i] = '\0';
+	free(cmd);
+	return (result);
+}
+
+
+//char	**get_cmd_arr(char *command, t_process_node *mod)
+char	**get_cmd_arr(char *command)
+{
+	char	**cmd_arr;
+	int		i;
+
+	cmd_arr = ft_split_pipex(command, " ");
+	if (cmd_arr == NULL)
+		perror("maloc error");
+	i = 0;
+	//dont delete quote
+	// while (cmd_arr[i] != NULL)  
+	// {
+	// 	if (ft_strlen(cmd_arr[i]) > 1)
+	// 	{
+	// 		if ((cmd_arr[i][0] == '\''
+	// 			&& cmd_arr[i][ft_strlen(cmd_arr[i]) - 1] == '\'') ||
+	// 			(cmd_arr[i][0] == '"'
+	// 			&& cmd_arr[i][ft_strlen(cmd_arr[i]) - 1] == '"'))
+	// 			cmd_arr[i] = no_quote(cmd_arr[i]);
+	// 	}
+	// 	i++;
+	// }
+	return (cmd_arr);
+}
+
+//char *expand_the_shit(char *cmd, t_process_node *mod, t_shell *ms)
+char *expand_the_shit(char *cmd)
+{
+	dprintf(2 ,"this line: %s need to be expand\n", cmd);
+	return (cmd);
+}
+
+
+//void check_dollor(char **command, t_process_node *mod, t_shell *ms)
+void check_dollor(char **command)//for parse test
+{
+	int i, j;
+	i = 0;
+	
+	while(command[i])//'hello $USER'
+	{
+		j = 0;
+		while(command[i][j])
+		{
+			if (command[i][j] == '$')
+			{
+				command[i] = expand_the_shit(command[i]);
+				
+				// find the invironmental veriables and return it back , s 
+			}									//command[i] may be $PATH ot '$USER' if there is ' ' outside of the $PATH after exapnt need to add sigle quote back 
+			j++;
+		}
+		i++;
 	}
 }
 
