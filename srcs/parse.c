@@ -6,12 +6,11 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/12 13:25:56 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/12 14:58:20 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static int	is_sep(char *str, int i, char *charset)
 {
