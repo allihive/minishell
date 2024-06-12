@@ -63,6 +63,7 @@ typedef struct s_shell
 	int fork_n;//fork number
 	int	excode;
 	char *cwd;
+	int exitcode;
 	pid_t *pids;
 	t_process_node *list;//list
 }	t_shell;
