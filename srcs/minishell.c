@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/12 18:59:07 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/13 10:25:50 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,15 @@ int	main(int argc, char **argv, char **envp)
 	
 }
 
-int main()// for parse test
-{
-	t_shell ms;
+// int main()// for parse test
+// {
+// 	t_shell ms;
 	
 	
-	char s[30] = "echo hello $USER ";
-	//char s[500] = "echo 'hello $USER' >> infile | cat < outfile.txt < outfile";
-	//char s[34] = "cat 42 < outfile.txt < outfile ";
-	ms.line = s;
-	init_process_node(ms.line, &ms);
-	execute_shell(&ms);
-}
+// 	char s[30] = "echo hello $USER ";
+// 	//char s[500] = "echo 'hello $USER' >> infile | cat < outfile.txt < outfile";
+// 	//char s[34] = "cat 42 < outfile.txt < outfile ";
+// 	ms.line = s;
+// 	init_process_node(ms.line, &ms);
+// 	execute_shell(&ms);
+// }

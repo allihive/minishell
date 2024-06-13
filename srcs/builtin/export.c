@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_export.c                                  :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/11 09:33:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/13 10:38:17 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,10 @@ int	export(t_shell *ms, char *cmd)//does cmd have to be a double pointer?
 		if (name_exists(ms, cmd))
 			envp_update(ms, cmd);
 		else if (name_exists(ms, cmd) == NULL)
+		{
 			envp_add(ms, cmd);
+			printf("added envp");
+		}
 	}
 	return(0);
 }

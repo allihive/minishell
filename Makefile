@@ -1,6 +1,6 @@
 NAME =	minishell
 
-CFLAGS = -Wall -Wextra -Werror -I./include -v -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I./include -g -fsanitize=address
 
 LIBFT_DIR = ./libft
 LIBFT = ./libft/libft.a
@@ -18,17 +18,17 @@ OBJ = ${SRCS:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${LIBFT} ${OBJ}
-	@cc ${CFLAGS} ${OBJ} ${READLINE} -L ${LIBFT_DIR} ${INCLUDES} -lft -o ${NAME}
+	@cc ${CFLAGS} ${OBJ} ${READLINE} ${LIBFT} -L ${LIBFT_DIR} -lft -o ${NAME}
 
 %.o: %.c
 	@cc ${CFLAGS} ${INCLUDES} -c $< -o $@
 
 ${LIBFT}:
-	@make -C ./libft
+	make -C libft/
 
 clean:
 	@rm -f ${OBJ}
-	@make clean -C ${LIBFT_DIR}
+	@make clean -C libft/
 
 fclean: clean
 	@rm -f ${NAME}
