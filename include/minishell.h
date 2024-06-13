@@ -64,6 +64,8 @@ typedef struct s_shell
 	char	*cwd;
 	// int fork_n;//fork number
 	int	excode;
+	char *cwd;
+	int exitcode;
 	pid_t *pids;
 	t_process_node *list;//list
 }	t_shell;
@@ -81,18 +83,20 @@ void	execute_builtin(t_shell *ms);
 /*Export Builtin Functions*/
 int		export_str_check(char *str);
 int		export(t_shell *ms, char *cmd);
-void	envp_add(t_shell *ms, char *name);
+void 	envp_add(t_shell *ms, char *name);
 void	envp_print(t_shell *ms);
 void 	envp_update(t_shell *ms, char *name);
 char 	*env_exists(char *name, t_shell *ms);
 char 	*name_exists(t_shell *ms, char *name);
-void	pwd(t_shell *ms, char **cmd);
 void	env(t_shell *ms);
+void	pwd(t_shell *ms, char **cmd);
+void	unset(t_shell *ms);
 
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);
-//char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms);
+char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms);
+
 /*error handling*/
 void	error_handle(t_shell *ms);
 

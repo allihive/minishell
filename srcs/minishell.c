@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/12 14:08:25 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/13 13:41:39 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,12 @@ int	main(int argc, char **argv, char **envp)
 		// if (!init_process_node(ms.line, &ms))
 		// 	execute_shell(&ms);
 		// //---------------
+<<<<<<< HEAD
 
 		init_process_node(ms.line, &ms);//for parsing test
 		execute_shell(&ms);//for parsing test test
+=======
+>>>>>>> cf35bbd23533d21c45ec0cc551cd0ad95e0a22dc
 	}
 	return (0);
 	
@@ -107,6 +110,7 @@ int	main(int argc, char **argv, char **envp)
 // int main()// for parse test
 // {
 // 	t_shell ms;
+	
 	
 // 	char s[30] = "echo hello $USER ";
 // 	//char s[500] = "echo 'hello $USER' >> infile | cat < outfile.txt < outfile";

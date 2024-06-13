@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/12 13:01:18 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/13 10:35:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,6 @@ void	execute_builtin(t_shell *ms)
 		pwd(ms, 0);
 	else if (ft_strncmp(ms->line, "env", 3) == 0)
 		env(ms);
+	// else if (ft_strncmp(ms->line, "unset", 5) == 0)
+	// 	unset(ms);
 }
