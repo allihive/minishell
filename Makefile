@@ -10,7 +10,7 @@ INCLUDES = -I ~/.brew/opt/readline/include -I ./include/ -I./libft/
 
 READLINE = -lreadline -L ~/.brew/opt/readline/lib
 
-SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c \
+SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c\
 		${addprefix builtin/, builtin.c export.c pwd.c env.c}}
 
 OBJ = ${SRCS:.c=.o}

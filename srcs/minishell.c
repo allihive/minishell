@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/13 13:41:39 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/13 19:04:12 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,58 +64,66 @@ void	initialize_shell(t_shell *ms, char **envp)
 	//know the pwd somehow
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_shell ms;
-	(void)argv;
-	(void)argc;
-
-	initialize_shell(&ms, envp);
-	while (true)
-	{
-		// set_signal();
-		ms.line = readline("lobster-shell 🦞: ");
-		if (!ms.line)
-			error_handle(&ms);
-		else if (ms.line[0] != '\0')
-		{
-			add_history(ms.line);
-			execute_builtin(&ms);
-		}
-		// split and execute shell here
-		// ms.line = readline("lobster-shell 🦞: ");
-		// if (!ms.line)
-		// 	error_handle(&ms);
-		// else
-		// {
-		// 	add_history(ms.line);
-		// 	free(ms.line);
-		// }
-		// //--------------
-		
-		// if (!init_process_node(ms.line, &ms))
-		// 	execute_shell(&ms);
-		// //---------------
-<<<<<<< HEAD
-
-		init_process_node(ms.line, &ms);//for parsing test
-		execute_shell(&ms);//for parsing test test
-=======
->>>>>>> cf35bbd23533d21c45ec0cc551cd0ad95e0a22dc
-	}
-	return (0);
-	
-}
-
-// int main()// for parse test
+// int	main(int argc, char **argv, char **envp)
 // {
 // 	t_shell ms;
+// 	(void)argv;
+// 	(void)argc;
+
+// 	initialize_shell(&ms, envp);
+// 	while (true)
+// 	{
+// 		// set_signal();
+// 		ms.line = readline("lobster-shell 🦞: ");
+// 		if (!ms.line)
+// 			error_handle(&ms);
+// 		else if (ms.line[0] != '\0')
+// 		{
+// 			add_history(ms.line); 
+			
+// 			execute_builtin(&ms);
+// 		}
+
+		
+// 		// split and execute shell here
+// 		// ms.line = readline("lobster-shell 🦞: ");
+// 		// if (!ms.line)
+// 		// 	error_handle(&ms);
+// 		// else
+// 		// {
+// 		// 	add_history(ms.line);
+// 		// 	free(ms.line);
+// 		// }
+// 		// //--------------
+		
+// 		// if (!init_process_node(ms.line, &ms))
+// 		// 	execute_shell(&ms);
+// 		// //---------------
+		
+// 		//init_process_node(ms.line, &ms);
+// 		//execute_shell(&ms);
+// 	}
+// 	return (0);
 	
-	
-// 	char s[30] = "echo hello $USER ";
-// 	//char s[500] = "echo 'hello $USER' >> infile | cat < outfile.txt < outfile";
-// 	//char s[34] = "cat 42 < outfile.txt < outfile ";
-// 	ms.line = s;
-// 	init_process_node(ms.line, &ms);
-// 	execute_shell(&ms);
 // }
+
+
+
+
+
+int main() {
+    t_shell ms;
+    char s[] = "echo \"code '$USER' happy\"";
+    char *env[] = { "USER=yhsu", NULL }; // Environment variables need to be NULL terminated
+    
+    ms.line = s;
+    ms.envp = env;
+
+	//char s[500] = "echo 'hello $USER' >> infile | cat < outfile.txt < outfile";
+	//char s[34] = "cat 42 < outfile.txt < outfile ";
+
+    init_process_node(ms.line, &ms);
+    execute_shell(&ms);
+
+    return 0;
+}
