@@ -6,12 +6,16 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/12 13:01:18 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/13 09:36:02 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+/*
+	some new comment
+*/
 static void	print_ascii_order(t_shell *ms, char letter)
 {
 	int		i;
