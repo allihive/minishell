@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/13 10:38:17 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/13 16:20:36 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,21 +117,26 @@ int	export_str_check(char *str)
 		return (1);
 }
 
-int	export(t_shell *ms, char *cmd)//does cmd have to be a double pointer?
+int	export(t_shell *ms, char **cmd)//works with single pointer but nt a double pointer
 {
 	int i;
 
 	i = 0;
 	
-	if (cmd == NULL)
-		envp_print(ms);
-	else if (!export_str_check(cmd))
+	if (cmd[1] == NULL)
 	{
-		if (name_exists(ms, cmd))
-			envp_update(ms, cmd);
-		else if (name_exists(ms, cmd) == NULL)
+		printf("entered cmd[1] == NULL");
+		envp_print(ms);
+	}
+	else if (!export_str_check(cmd[1]))
+	{
+		if (name_exists(ms, cmd[1]))
+			envp_update(ms, cmd[1]);
+		else if (name_exists(ms, cmd[1]))
+			printf("before envp");
+		else if (name_exists(ms, cmd[1]) == NULL)
 		{
-			envp_add(ms, cmd);
+			envp_add(ms, cmd[1]);
 			printf("added envp");
 		}
 	}

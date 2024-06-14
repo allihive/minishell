@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/06/13 10:25:50 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/13 15:58:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,22 @@ int check_shlvl(t_shell *ms)//create the export function
 	// shlvl = 0;
 	shlvl_str = getenv("SHLVL");
 	if (shlvl_str == NULL || shlvl_str[0] == '\0')
-		return (export(ms, ft_strdup("SHLVL=1")));
+		// return (export(ms, &ft_strdup("SHLVL=1")));
+		envp_add(ms, ft_strdup(("SHLVL=1")));
 	shlvl = ft_atoi(shlvl_str);
 	if (shlvl < 0)
-		return (export(ms, ft_strdup("SHLVL=0")));
+		// return (export(ms, &ft_strdup("SHLVL=0")));
+		envp_update(ms, ft_strdup(("SHLVL=0")));
 	shlvl_str = ft_itoa(shlvl + 1);
 	if (!shlvl_str)
 		return (1);// should be an error here
 	shlvl_str = ft_strjoin("SHLVL=", shlvl_str);
 	if (!shlvl_str)
 		error_handle(ms);
-	shlvl = export(ms, shlvl_str);
-	shlvl = ms->shlvl; //not sure if this is necessary
+	envp_update(ms, shlvl_str);
 	free(shlvl_str);
 	return (shlvl);
 }
-
 
 void	initialize_shell(t_shell *ms, char **envp)
 {
@@ -80,7 +80,9 @@ int	main(int argc, char **argv, char **envp)
 		else if (ms.line[0] != '\0')
 		{
 			add_history(ms.line);
-			execute_builtin(&ms);
+			init_process_node(ms.line, &ms);
+			execute_shell(&ms);
+			execute_builtin(&ms, ms.list);
 		}
 		// split and execute shell here
 		// ms.line = readline("lobster-shell 🦞: ");
@@ -92,9 +94,6 @@ int	main(int argc, char **argv, char **envp)
 		// 	free(ms.line);
 		// }
 		// //--------------
-		
-		// if (!init_process_node(ms.line, &ms))
-		// 	execute_shell(&ms);
 		// //---------------
 	}
 	return (0);

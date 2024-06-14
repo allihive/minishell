@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/13 10:35:28 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/14 09:23:01 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,19 @@ void	envp_print(t_shell *ms)
 	}
 }
 
-void	execute_builtin(t_shell *ms)
+void	execute_builtin(t_shell *ms, t_process_node *node)
 {
-	if (ft_strncmp(ms->line, "export", 6) == 0)
-		export(ms, 0);
-	else if (ft_strncmp(ms->line, "pwd", 3) == 0)
-		pwd(ms, 0);
-	else if (ft_strncmp(ms->line, "env", 3) == 0)
-		env(ms);
+	(void)ms;
+	printf("command [0]: %s\n", node->command[0]);
+	printf("command [1]: %s\n", node->command[1]);
+	// if (ft_strncmp(node->command[0], "export", 6) == 0)
+	// {
+	// 	export(ms, &node->command[1]);
+	// }
+	// else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
+	// 	pwd(ms, 0);
+	// else if (ft_strncmp(node->command[0], "env", 3) == 0)
+	// 	env(ms);
 	// else if (ft_strncmp(ms->line, "unset", 5) == 0)
 	// 	unset(ms);
 }

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/12 16:46:20 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/13 14:56:11 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -619,10 +619,10 @@ void parse_process_node(t_process_node **list)//for parse test
 		//if (mod->command != NULL)
 			//parse_expands(mod, ms);??
 		
-		dprintf(2, "node_line: %s\n", mod->node_line);
-		dprintf(2, "heredoc: %d, %s\n",mod->heredoc, mod->here_doc);
-		dprintf(2, "append: %d, %s\n", mod->append,mod->append_s);
-		dprintf(2, "redirectin: %d\n",mod->redirectin);
+		// dprintf(2, "node_line: %s\n", mod->node_line);
+		// dprintf(2, "heredoc: %d, %s\n",mod->heredoc, mod->here_doc);
+		// dprintf(2, "append: %d, %s\n", mod->append,mod->append_s);
+		// dprintf(2, "redirectin: %d\n",mod->redirectin);
 		// int n = 0;
 		// while (mod->redirect_in[n])
 		// {

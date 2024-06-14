@@ -76,11 +76,11 @@ void	initialize_shell(t_shell *ms, char **envp);
 int 	check_shlvl(t_shell *ms);
 
 /*Builtin*/
-void	execute_builtin(t_shell *ms);
+void	execute_builtin(t_shell *ms, t_process_node *node);
 
 /*Export Builtin Functions*/
 int		export_str_check(char *str);
-int		export(t_shell *ms, char *cmd);
+int		export(t_shell *ms, char **cmd);
 void 	envp_add(t_shell *ms, char *name);
 void	envp_print(t_shell *ms);
 void 	envp_update(t_shell *ms, char *name);
