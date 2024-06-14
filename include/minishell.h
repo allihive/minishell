@@ -30,7 +30,7 @@ typedef enum e_syntax
 int	g_signal;
 typedef struct s_process_node
 {
-	char **command; 
+	char **command;
 	char *node_line;// = input
 	char **redirect_in;//< input
 	char **redirect_out;//> output
@@ -87,7 +87,7 @@ void 	envp_add(t_shell *ms, char *name);
 void	envp_print(t_shell *ms);
 void 	envp_update(t_shell *ms, char *name);
 char 	*env_exists(char *name, t_shell *ms);
-char 	*name_exists(t_shell *ms, char *name);
+// char 	*name_exists(t_shell *ms, char *name);
 void	env(t_shell *ms);
 void	pwd(t_shell *ms, char **cmd);
 void	unset(t_shell *ms);

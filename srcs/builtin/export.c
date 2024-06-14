@@ -6,25 +6,33 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/14 09:34:32 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/14 15:49:05 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *name_exists(t_shell *ms, char *name)
+static char *name_exists(t_shell *ms, char *name)
 {
 	int		len;
 	int		i;
+	char	*key;
 
 	i = 0;
-	len = ft_strlen(name);
-	while (ms->envp[i])
+	while(name[i] && (name[i] != '\0' || name[i] != '='))
+		i++;
+	key = ft_substr(name, 0, i);
+	if (!key)
+		return (NULL); //should be error_handle
+	len = ft_strlen(key);
+	i = 0;
+	while (i < ms->envp_size)
 	{
-		if (ft_strncmp(name, ms->envp[i], len) == 0 && (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+		if (ft_strncmp(key, ms->envp[i], len) == 0 && (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
 			return (ms->envp[i] + len);
 		i++;
 	}
+	// printf("%s\n", ms->envp[i]); //something is not printing here why?idk
 	return (NULL);
 }
 
@@ -78,11 +86,13 @@ void envp_add(t_shell *ms, char *name)
 	
 	i = 0;
 	j = 0;
+	(void)name;
 	ms->envp_size += 1;
 	new = ft_calloc(ms->envp_size, sizeof(char *));
 	if (!new)
 		error_handle(ms);
-	while (i < ms->envp_size)
+	printf("ms->envp_size: %d\n", ms->envp_size);
+	while (i < ms->envp_size - 1)
 	{
 		if (ft_strncmp(ms->envp[i], "_=", 2))//when shell is initally opened, there is _=bin/bash
 		{
@@ -93,11 +103,14 @@ void envp_add(t_shell *ms, char *name)
 		}
 		new[i] = ft_strdup(ms->envp[j]);
 		if (!new[i])
+		{
 			// error_handle(ms);
+			printf("nothing malloced");
+		}
 		i++;
 		j++;
 	}
-	ft_free_strs(ms->envp, 0, 0);
+	// ft_free_strs(ms->envp, 0, 0);
 	ms->envp = new;
 }
 
@@ -108,10 +121,10 @@ int	export_str_check(char *str)
 	i = 0;
 	if (str[i] == ft_isdigit(str[i]))
 		return (1);
-	while (str[++i] && str[i] != '='  && 
+	while (str[i] && str[i] != '='  && 
 			(ft_isalnum(str[i]) || str[i] == '_'))
-		;
-	if (str[i] == '\0')
+		i++;
+	if (str[i] == '=')
 		return (0);
 	else 
 		return (1);
@@ -124,20 +137,20 @@ int	export(t_shell *ms, char **cmd)//works with single pointer but nt a double p
 	i = 0;
 	
 	if (cmd[1] == NULL)
-	{
-		printf("entered cmd[1] == NULL");
 		envp_print(ms);
-	}
 	else if (!export_str_check(cmd[1]))
 	{
+		printf("entered cmd[1]");
 		if (name_exists(ms, cmd[1]))
+		{
+			printf("before envp_update");
 			envp_update(ms, cmd[1]);
-		else if (name_exists(ms, cmd[1]))
-			printf("before envp");
+		}
 		else if (name_exists(ms, cmd[1]) == NULL)
 		{
+			printf("before add_envp\n");
 			envp_add(ms, cmd[1]);
-			printf("added envp");
+			printf("added envp\n");
 		}
 	}
 	return(0);
