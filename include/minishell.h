@@ -60,7 +60,9 @@ typedef struct s_shell
 	int 	exit_code;
 	int 	shlvl;//? not sure if we need this
 	char	*line;// read from realine function
-	int fork_n;//fork number
+	int		fork_n;//fork number
+	// char	*cwd;
+	// int fork_n;//fork number
 	int	excode;
 	char *cwd;
 	int exitcode;
@@ -93,6 +95,8 @@ void	unset(t_shell *ms);
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);
+
+/*expand*/
 char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms);
 
 /*error handling*/

@@ -6,13 +6,12 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/13 14:56:11 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/14 09:35:08 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//delete this comment
 
 static int	is_sep(char *str, int i, char *charset)
 {
@@ -507,15 +506,15 @@ char	**get_cmd_arr(char *command)
 }
 
 //char *expand_the_shit(char *cmd, t_process_node *mod, t_shell *ms)
-char *expand_the_shit(char *cmd)
-{
-	dprintf(2 ,"this line: %s need to be expand\n", cmd);
-	return (cmd);
-}
+// char *expand_the_shit(char *cmd)
+// {
+// 	dprintf(2 ,"this line: %s need to be expand\n", cmd);
+// 	return (cmd);
+// }
 
 
-//void check_dollor(char **command, t_process_node *mod, t_shell *ms)
-void check_dollor(char **command)//for parse test
+void check_dollor(char **command, t_process_node *mod, t_shell *ms)
+//void check_dollor(char **command)//for parse test
 {
 	int i, j;
 	i = 0;
@@ -527,8 +526,9 @@ void check_dollor(char **command)//for parse test
 		{
 			if (command[i][j] == '$')
 			{
-				command[i] = expand_the_shit(command[i]);
 				
+				command[i] = expand_the_shit_out(command[i], mod, ms);
+				dprintf(2, "mod->command in dollar [%d]: %s\n",i ,command[i]);
 				// find the invironmental veriables and return it back , s 
 			}									//command[i] may be $PATH ot '$USER' if there is ' ' outside of the $PATH after exapnt need to add sigle quote back 
 			j++;
@@ -562,7 +562,7 @@ void go_check_redirect(char *input, t_process_node *mod)
 	//return (redirect);
 }
 
-void parse_mod(char *input, t_process_node *mod)
+void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 //void parse_mod(char *input, t_process_node *mod)// for parse test
 {
 	//echo "hello $USER" > infile.txt 
@@ -592,16 +592,14 @@ void parse_mod(char *input, t_process_node *mod)
 	hello $USER
 	*/
 	//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
-	//check_dollor(mod->command,mod , ms);
-	
-	
-	check_dollor(mod->command);//for parse test	
-	dprintf(2, "2mod->command[0]: %s\n",mod->command[0]);
+		
+	check_dollor(mod->command, mod, ms);
+
 }
 
 //dive line by '|' and save them in linked list
-//void parse_process_node(t_process_node **list, t_shell *ms)
-void parse_process_node(t_process_node **list)//for parse test
+void parse_process_node(t_process_node **list, t_shell *ms)
+//void parse_process_node(t_process_node **list)//for parse test
 {
 	t_process_node *mod;//command node
 	char *input;
@@ -614,15 +612,15 @@ void parse_process_node(t_process_node **list)//for parse test
 	{
 		input = mod->node_line;
 		//parse_mod(input, mod, ms);
-		parse_mod(input, mod);//for parse test
+		parse_mod(input, mod, ms);//for parse test
 		//dprintf(2, "test2 parse_process_node\n");
 		//if (mod->command != NULL)
 			//parse_expands(mod, ms);??
 		
-		// dprintf(2, "node_line: %s\n", mod->node_line);
-		// dprintf(2, "heredoc: %d, %s\n",mod->heredoc, mod->here_doc);
-		// dprintf(2, "append: %d, %s\n", mod->append,mod->append_s);
-		// dprintf(2, "redirectin: %d\n",mod->redirectin);
+		//dprintf(2, "node_line: %s\n", mod->node_line);
+		//dprintf(2, "heredoc: %d, %s\n",mod->heredoc, mod->here_doc);
+		//dprintf(2, "append: %d, %s\n", mod->append,mod->append_s);
+		//dprintf(2, "redirectin: %d\n",mod->redirectin);
 		// int n = 0;
 		// while (mod->redirect_in[n])
 		// {
@@ -657,8 +655,8 @@ void parse_process_node(t_process_node **list)//for parse test
 void execute_shell(t_shell *ms)
 {
 	
-	//parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
-	parse_process_node(&ms->list);//for parse test
+	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
+	//parse_process_node(&ms->list);//for parse test
 
 	
 	
