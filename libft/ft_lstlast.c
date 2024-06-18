@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:02:59 by alli              #+#    #+#             */
-/*   Updated: 2023/11/10 16:53:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/18 16:09:55 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	while (lst != '\0')
+	while (lst)
 	{
-		if (lst->next == '\0')
+		if (lst->next == NULL)
 			return (lst);
 		lst = lst->next;
 	}

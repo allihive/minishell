@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 14:25:25 by alli              #+#    #+#             */
-/*   Updated: 2023/11/13 15:32:10 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/18 16:03:23 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	int		i;
+	// int		i;
 	char	*str;
 
-	i = 0;
+	// i = 0;
 	str = (char *) s;
 	while (*str != (char)c)
 	{

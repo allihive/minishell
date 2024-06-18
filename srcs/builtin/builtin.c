@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/18 11:09:38 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/18 16:01:41 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,7 @@ static void	print_ascii_order(t_shell *ms, char letter)
 	char **tmp;
 
 	i = -1;
-	// printf("%d\n", ms->envp_size);
 	tmp = ms->envp;
-	// while (tmp[++i])
-	// {
-	// 	printf("%s", tmp[i]);
-	// 	// i++;
-	// }
 	while (tmp[++i])
 	{
 		j = -1;

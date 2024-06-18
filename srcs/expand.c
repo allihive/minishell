@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/13 19:01:38 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/18 16:24:21 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char *shrink(char *cmd, int remove)
 char *add_value_back( char *value, int start, int len , char *cmd)//expand
 {
 	char *new;
-	char *temp;
+	// char *temp; //had to comment out because of linux
 	int i = 0;
 	int j = 0;
 	int		rest_of_str;
@@ -92,7 +92,7 @@ char *add_value_back( char *value, int start, int len , char *cmd)//expand
 	while(cmd[rest_of_str])
 		new[i++] = cmd[rest_of_str++];
 	//dprintf(2, "3new in add value: %s\n", new);	
-	temp = cmd;
+	// temp = cmd; //commented out for linux
 	cmd = new;
 	//free(temp); // may need ti free temp here
 	
@@ -157,14 +157,14 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)
 	
 	int i;
 	int start;
-	int quote;
+	// int quote; //commented out for linux
 	char *result;
 	
 	i = 0;
 	//expand the variable
 	
 	result = cmd;//$USER
-	quote = 0;
+	// quote = 0; //commented out for linux
 	while (cmd[i])//"hello '$PATH'"
 	{
 		dprintf(2,"icmd[i]%c\n",cmd[i]);
