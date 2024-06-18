@@ -7,6 +7,7 @@ LIBFT = ./libft/libft.a
 LIBFT_INCLUDE = -I ${LIBFT_DIR}
 
 INCLUDES = -I ~/.brew/opt/readline/include -I ./include/ -I./libft/
+#get rid of brew, and figure out path for readline
 
 READLINE = -lreadline -L ~/.brew/opt/readline/lib
 
@@ -18,7 +19,7 @@ OBJ = ${SRCS:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${LIBFT} ${OBJ}
-	@cc ${CFLAGS} ${OBJ} ${READLINE} ${LIBFT} -L ${LIBFT_DIR} -lft -o ${NAME}
+	cc ${CFLAGS} ${OBJ} ${READLINE} ${LIBFT} -L ${LIBFT_DIR} -lft -o ${NAME}
 
 %.o: %.c
 	@cc ${CFLAGS} ${INCLUDES} -c $< -o $@

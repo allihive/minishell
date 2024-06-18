@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/18 09:35:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/18 16:24:53 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,9 @@ int	export_str_check(char *str)
 
 int	export(t_shell *ms, char **cmd)//works with single pointer but nt a double pointer
 {
-	int i;
+	// int i;
 
-	i = 0;
+	// i = 0;
 	
 	if (cmd[1] == NULL)
 		envp_print(ms);
