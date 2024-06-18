@@ -8,7 +8,7 @@ LIBFT_INCLUDE = -I ${LIBFT_DIR}
 
 INCLUDES = -I ~/.brew/opt/readline/include -I ./include/ -I./libft/
 
-READLINE = -lreadline -L ~/.brew/opt/readline/lib
+READLINE = /usr/lib/x86_64-linux-gnu/libreadline.a
 
 SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c\
 		${addprefix builtin/, builtin.c export.c pwd.c env.c}}
