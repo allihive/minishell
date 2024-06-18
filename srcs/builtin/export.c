@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/14 15:49:05 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/18 09:35:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,30 +86,33 @@ void envp_add(t_shell *ms, char *name)
 	
 	i = 0;
 	j = 0;
-	(void)name;
+	// (void)name;
 	ms->envp_size += 1;
-	new = ft_calloc(ms->envp_size, sizeof(char *));
+	new = ft_calloc((ms->envp_size + 2), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
 	printf("ms->envp_size: %d\n", ms->envp_size);
 	while (i < ms->envp_size - 1)
 	{
-		if (ft_strncmp(ms->envp[i], "_=", 2))//when shell is initally opened, there is _=bin/bash
+		if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
 		{
 			new[i] = ft_strdup(name);//it will be replaced when there is something else written
 			if (!new[i])
 				error_handle(ms);
-			i++;
 		}
-		new[i] = ft_strdup(ms->envp[j]);
-		if (!new[i])
+		else
 		{
-			// error_handle(ms);
+			new[i] = ft_strdup(ms->envp[j]);
+			if (!new[i])
+			{
+				// error_handle(ms);
 			printf("nothing malloced");
+			}
 		}
 		i++;
 		j++;
 	}
+	// new[i] = 
 	// ft_free_strs(ms->envp, 0, 0);
 	ms->envp = new;
 }

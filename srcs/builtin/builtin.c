@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/14 11:23:07 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/18 11:09:38 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@ static void	print_ascii_order(t_shell *ms, char letter)
 	char **tmp;
 
 	i = -1;
+	// printf("%d\n", ms->envp_size);
 	tmp = ms->envp;
-	while (++i < ms->envp_size)
+	// while (tmp[++i])
+	// {
+	// 	printf("%s", tmp[i]);
+	// 	// i++;
+	// }
+	while (tmp[++i])
 	{
 		j = -1;
 		if (tmp[i][0] == letter)
