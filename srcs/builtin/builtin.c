@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/18 16:01:41 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/19 14:56:50 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,35 @@ static void	print_ascii_order(t_shell *ms, char letter)
 	int		j;
 	char **tmp;
 
-	i = -1;
+	i = 0;
 	tmp = ms->envp;
-	while (tmp[++i])
+	if (!tmp)
+		return ;
+	while (i < ms->envp_size)
 	{
-		j = -1;
-		if (tmp[i][0] == letter)
+		j = 0;
+		if (tmp[i] && tmp[i][0] == letter)
 		{
+			printf("tmp[i][0]: %c\n", tmp[i][0]);
 			ft_putstr_fd("declare -x ", 1);
-			while (tmp[i][++j] != '=' && tmp[i][j] != '\0')
+			while (tmp[i][j] != '=' && tmp[i][j] != '\0')
+			{
 				ft_putchar_fd(tmp[i][j], 1);
+				j++;
+			}
 			if (tmp[i][j] == '=')
 			{
 				ft_putstr_fd("=\"", 1);
-				while (tmp[i][++j])
+				while (tmp[i][j])
+				{
 					ft_putchar_fd(tmp[i][j], 1);
+					j++;
+				}
 				ft_putstr_fd("\"\n", 1);
 			}
+			j++;
 		}
+		i++;
 	}
 }
 
@@ -68,11 +79,11 @@ void	envp_print(t_shell *ms)
 void	execute_builtin(t_shell *ms, t_process_node *node)
 {
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
-		export(ms, node->command);
+		ft_export(ms, node->command);
 	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
 		pwd(ms, 0);
 	else if (ft_strncmp(node->command[0], "env", 3) == 0)
 		env(ms);
-	// else if (ft_strncmp(ms->line, "unset", 5) == 0)
-	// 	unset(ms);
+	else if (ft_strncmp(ms->line, "unset", 5) == 0)
+		unset(ms, node->command);
 }

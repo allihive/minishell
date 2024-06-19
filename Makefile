@@ -6,20 +6,21 @@ LIBFT_DIR = ./libft
 LIBFT = ./libft/libft.a
 LIBFT_INCLUDE = -I ${LIBFT_DIR}
 
-INCLUDES = -I ~/.brew/opt/readline/include -I ./include/ -I./libft/
-#get rid of brew, and figure out path for readline
+INCLUDES = -I /usr/lib/x86_64-linux-gnu/ -I ./include/ -I./libft/ -I/usr/include
+#/usr/lib/x86_64-linux-gnu/libreadline.a
 
-READLINE = /usr/lib/x86_64-linux-gnu/libreadline.a
+READLINE = -lreadline
+#/usr/lib/x86_64-linux-gnu/libreadline.a
 
 SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c\
-		${addprefix builtin/, builtin.c export.c pwd.c env.c}}
+		${addprefix builtin/, builtin.c export.c pwd.c env.c unset.c}}
 
 OBJ = ${SRCS:.c=.o}
 
 all: ${NAME}
 
 ${NAME}: ${LIBFT} ${OBJ}
-	cc ${CFLAGS} ${OBJ} ${READLINE} ${LIBFT} -L ${LIBFT_DIR} -lft -o ${NAME}
+	cc ${CFLAGS} ${OBJ} ${LIBFT} -L ${LIBFT_DIR} -lft -o ${NAME} ${READLINE}
 
 %.o: %.c
 	@cc ${CFLAGS} ${INCLUDES} -c $< -o $@

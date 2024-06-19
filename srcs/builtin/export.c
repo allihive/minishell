@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/18 16:24:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/19 14:45:16 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ static char *name_exists(t_shell *ms, char *name)
 	i = 0;
 	while (i < ms->envp_size)
 	{
-		if (ft_strncmp(key, ms->envp[i], len) == 0 && (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+		if ((ft_strncmp(key, ms->envp[i], len) == 0) && (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
 			return (ms->envp[i] + len);
 		i++;
 	}
-	// printf("%s\n", ms->envp[i]); //something is not printing here why?idk
 	return (NULL);
 }
 
@@ -88,10 +87,10 @@ void envp_add(t_shell *ms, char *name)
 	j = 0;
 	// (void)name;
 	ms->envp_size += 1;
-	new = ft_calloc((ms->envp_size + 2), sizeof(char *));//check how big this should be
+	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
-	printf("ms->envp_size: %d\n", ms->envp_size);
+	// printf("ms->envp_size: %d\n", ms->envp_size);
 	while (i < ms->envp_size - 1)
 	{
 		if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
@@ -133,7 +132,7 @@ int	export_str_check(char *str)
 		return (1);
 }
 
-int	export(t_shell *ms, char **cmd)//works with single pointer but nt a double pointer
+int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a double pointer
 {
 	// int i;
 
@@ -143,17 +142,16 @@ int	export(t_shell *ms, char **cmd)//works with single pointer but nt a double p
 		envp_print(ms);
 	else if (!export_str_check(cmd[1]))
 	{
-		printf("entered cmd[1]");
 		if (name_exists(ms, cmd[1]))
 		{
-			printf("before envp_update");
+			printf("before envp_update"); //delete comment
 			envp_update(ms, cmd[1]);
 		}
 		else if (name_exists(ms, cmd[1]) == NULL)
 		{
-			printf("before add_envp\n");
+			printf("before add_envp\n"); //delete comment
 			envp_add(ms, cmd[1]);
-			printf("added envp\n");
+			printf("added envp\n");//delete comment
 		}
 	}
 	return(0);
