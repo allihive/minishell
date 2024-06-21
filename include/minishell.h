@@ -53,12 +53,12 @@ typedef struct s_process_node
 	struct 	s_process_node *next;
 }	t_process_node;
 
-typedef	struct s_envp
-{
-	char	*key;
-	char	*value;
-	struct	s_envp	*next;
-}	t_envp;
+// typedef	struct s_envp
+// {
+// 	char	*key;
+// 	char	*value;
+// 	struct	s_envp	*next;
+// }	t_envp;
 
 typedef struct s_shell 
 {
@@ -75,7 +75,7 @@ typedef struct s_shell
 	int exitcode;
 	pid_t *pids;
 	t_process_node *list;//list
-	t_envp	*envp_list;
+	// t_envp	*envp_list;
 }	t_shell;
 
 void	set_termios(int mode);
@@ -89,7 +89,7 @@ int 	check_shlvl(t_shell *ms);
 void	execute_builtin(t_shell *ms, t_process_node *node);
 
 /*Export Builtin Functions*/
-int		export_str_check(char *str);
+// int		export_str_check(char *str);
 int		ft_export(t_shell *ms, char **cmd);
 void 	envp_add(t_shell *ms, char *name);
 void	envp_print(t_shell *ms);

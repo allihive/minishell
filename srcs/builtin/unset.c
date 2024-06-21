@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/21 10:26:29 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/21 10:50:57 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,18 @@ static char *name_exists(t_shell *ms, char *name)
 	char	*key;
 
 	i = 0;
-	while(name[i] && (name[i] != '\0' || name[i] != '='))
+	while(name[i] && name[i] != '=')
 		i++;
-	key = ft_substr(name, 0, i);
+	key = ft_substr(name, 0, i + 1);
 	if (!key)
 		return (NULL); //should be error_handle
-	len = ft_strlen(key);
+	len = ft_strlen(key + 1);
 	i = 0;
-	while (i < ms->envp_size)
+	while (i < ms->envp_size && ms->envp[i])
 	{
-        if (!ms->envp[i])
-            printf("NULL\n");
-        printf("ms->envp[j]: %s\n", ms->envp[i]);
-        printf("name: %s\n", name);
-		if ((!ft_strncmp(key, ms->envp[i], len)) && 
-            (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
-			return (ms->envp[i] + len);
+		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
+			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+				return (ms->envp[i] + len);
 		i++;
 	}
 	return (NULL);

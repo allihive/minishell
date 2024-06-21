@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/21 10:19:38 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/21 14:17:38 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ void	envp_print(t_shell *ms)
 void	execute_builtin(t_shell *ms, t_process_node *node)
 {
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
+	{
 		ft_export(ms, node->command);
+	}
 	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
 		pwd(ms, 0);
 	else if (ft_strncmp(node->command[0], "env", 3) == 0)

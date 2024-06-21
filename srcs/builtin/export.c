@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/21 10:46:29 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/21 15:03:50 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ static char *name_exists(t_shell *ms, char *name)
 	{
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
-			{
-				printf("name exists returns: %s\n", ms->envp[i] + len);
 				return (ms->envp[i] + len);
-			}
 		i++;
 	}
 	return (NULL);
@@ -82,16 +79,36 @@ void envp_update(t_shell *ms, char *name)
 	}
 }
 
+static char	*latest_envp(char *name)
+{
+	char	*new_str;
+
+	if (ft_strchr(name, '='))
+	{
+		new_str = ft_strdup(name);
+		if (!new_str)
+			return (NULL); //error message
+		return (new_str);
+	}
+	printf("name in latest_envp: %s\n", name);
+	new_str = ft_strjoin(name, "=");
+	if (!new_str)
+		return (NULL); //error_message
+ 	return (new_str);
+}
+
 void envp_add(t_shell *ms, char *name)
 {
 	char	**new;
 	int		i;
 	int		j;
+	int		flag;
 	
 	i = 0;
 	j = 0;
-	// (void)name;
+	flag = 0;
 	ms->envp_size += 1;
+	printf("name: %s\n", name);
 	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
@@ -99,28 +116,28 @@ void envp_add(t_shell *ms, char *name)
 	{
 		if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
 		{
-			new[i] = ft_strdup(name);//it will be replaced when there is something else written
+			new[i] = latest_envp(name);//it will be replaced when there is something else written
 			if (!new[i])
 				error_handle(ms);
+			flag = 1;
 		}
 		else
 		{
-			new[i] = ft_strdup(ms->envp[j]);
+			new[i] = ft_strdup(ms->envp[j]);//add elements that are already in the list
 			if (!new[i])
-			{
-				// error_handle(ms);
-			printf("nothing malloced");
-			}
+				return ;// error_handle(ms);
 		}
 		i++;
 		j++;
 	}
-	// new[i] = 
+	printf("flag: %d\n", flag);
+	if (name && !flag)
+		new[i] = latest_envp(name);
 	ft_free_strs(ms->envp, 0, 0);
 	ms->envp = new;
 }
 
-int	export_str_check(char *str)
+static int	export_str_check(char *str)
 {
 	int i;
 	
@@ -130,10 +147,7 @@ int	export_str_check(char *str)
 	while (str[i] && str[i] != '='  && 
 			(ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
-	if (str[i] == '=')
-		return (0);
-	else 
-		return (1);
+	return (0);
 }
 
 int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a double pointer
@@ -146,6 +160,7 @@ int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a doubl
 		envp_print(ms);
 	else if (!export_str_check(cmd[1]) && ms->envp[i])
 	{
+		printf("cmd[1]: %s\n", cmd[1]);
 		if (name_exists(ms, cmd[1]))
 		{
 			printf("before envp_update\n"); //delete comment
@@ -160,3 +175,4 @@ int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a doubl
 	}
 	return(0);
 }
+
