@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/19 14:45:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/21 09:51:15 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ void envp_update(t_shell *ms, char *name)
 	len = 0;
 	while (name[len] != '=')
 		len++;
-	while (i < ms->envp_size) //checking the whole envp size
+	while (ms->envp[i]) //checking the whole envp size
 	{
+		printf("ms->envp[i]: %p\n", ms->envp[i]);
 		if (!ft_strncmp(ms->envp[i], name, len)) // returns 0 when it matches
 			break ;
 		i++;
@@ -90,7 +91,6 @@ void envp_add(t_shell *ms, char *name)
 	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
-	// printf("ms->envp_size: %d\n", ms->envp_size);
 	while (i < ms->envp_size - 1)
 	{
 		if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
@@ -112,7 +112,7 @@ void envp_add(t_shell *ms, char *name)
 		j++;
 	}
 	// new[i] = 
-	// ft_free_strs(ms->envp, 0, 0);
+	ft_free_strs(ms->envp, 0, 0);
 	ms->envp = new;
 }
 
@@ -147,6 +147,7 @@ int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a doubl
 			printf("before envp_update"); //delete comment
 			envp_update(ms, cmd[1]);
 		}
+		printf("%s", )
 		else if (name_exists(ms, cmd[1]) == NULL)
 		{
 			printf("before add_envp\n"); //delete comment

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/19 14:56:50 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/19 16:23:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	print_ascii_order(t_shell *ms, char letter)
 		j = 0;
 		if (tmp[i] && tmp[i][0] == letter)
 		{
-			printf("tmp[i][0]: %c\n", tmp[i][0]);
+			// printf("tmp[i][0]: %c\n", tmp[i][0]);
 			ft_putstr_fd("declare -x ", 1);
 			while (tmp[i][j] != '=' && tmp[i][j] != '\0')
 			{
@@ -36,6 +36,7 @@ static void	print_ascii_order(t_shell *ms, char letter)
 			}
 			if (tmp[i][j] == '=')
 			{
+				j++;
 				ft_putstr_fd("=\"", 1);
 				while (tmp[i][j])
 				{

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/19 16:05:59 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/19 16:15:26 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,16 @@ void    envp_delete(t_shell *ms, char *name)
     new = ft_calloc((ms->envp_size - 1), sizeof(char *));
     if (!new)
         return ;//error handle
-    if (!name)
-        printf("NULL\n");
-    while(i < ms->envp_size)
+    // while(i < ms->envp_size)
+    // {
+    //     printf("ms->envp[%d]: %s", i, ms->envp[i]);
+    //     i++;
+    // }
+    // i = 0;
+    while(ms->envp[i] != NULL)
     {
         if (!ms->envp[j])
-            printf("AAAAAAAAAAAHHHHHH NULL\n");
-        printf("ms->envp[j]: %s\n", ms->envp[j]);
-        printf("name: %s\n", name);
+            printf("AAAAAAAAAAAHHHHHH NULL\n"); //so only segfaulting on the last 
         if (!ft_strncmp(ms->envp[j], name, len) && 
             ((ms->envp[j][len] == '=') || (ms->envp[j][len] == '\0')))//what happened to ft_strncmp?
             j++;
