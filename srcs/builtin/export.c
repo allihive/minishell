@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/21 09:51:15 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/21 10:46:29 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,21 @@ static char *name_exists(t_shell *ms, char *name)
 	char	*key;
 
 	i = 0;
-	while(name[i] && (name[i] != '\0' || name[i] != '='))
+	while(name[i] && name[i] != '=')
 		i++;
-	key = ft_substr(name, 0, i);
+	key = ft_substr(name, 0, i + 1);
 	if (!key)
 		return (NULL); //should be error_handle
-	len = ft_strlen(key);
+	len = ft_strlen(key + 1);
 	i = 0;
-	while (i < ms->envp_size)
+	while (i < ms->envp_size && ms->envp[i])
 	{
-		if ((ft_strncmp(key, ms->envp[i], len) == 0) && (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
-			return (ms->envp[i] + len);
+		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
+			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+			{
+				printf("name exists returns: %s\n", ms->envp[i] + len);
+				return (ms->envp[i] + len);
+			}
 		i++;
 	}
 	return (NULL);
@@ -60,11 +64,11 @@ void envp_update(t_shell *ms, char *name)
 
 	i = 0;
 	len = 0;
+	printf("entered envp_update");
 	while (name[len] != '=')
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
-		printf("ms->envp[i]: %p\n", ms->envp[i]);
 		if (!ft_strncmp(ms->envp[i], name, len)) // returns 0 when it matches
 			break ;
 		i++;
@@ -91,7 +95,7 @@ void envp_add(t_shell *ms, char *name)
 	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
-	while (i < ms->envp_size - 1)
+	while (i < ms->envp_size - 1  && ms->envp[i])
 	{
 		if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
 		{
@@ -134,21 +138,20 @@ int	export_str_check(char *str)
 
 int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a double pointer
 {
-	// int i;
+	int i;
 
-	// i = 0;
+	i = 0;
 	
 	if (cmd[1] == NULL)
 		envp_print(ms);
-	else if (!export_str_check(cmd[1]))
+	else if (!export_str_check(cmd[1]) && ms->envp[i])
 	{
 		if (name_exists(ms, cmd[1]))
 		{
-			printf("before envp_update"); //delete comment
+			printf("before envp_update\n"); //delete comment
 			envp_update(ms, cmd[1]);
 		}
-		printf("%s", )
-		else if (name_exists(ms, cmd[1]) == NULL)
+		if (name_exists(ms, cmd[1]) == NULL)
 		{
 			printf("before add_envp\n"); //delete comment
 			envp_add(ms, cmd[1]);
