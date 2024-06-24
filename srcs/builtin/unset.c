@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/24 10:12:49 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/24 10:41:00 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,19 @@ void    envp_delete(t_shell *ms, char *name)
 
     i = 0;
     j = 0;
+	ms->envp_size -= 1;
     len = ft_strlen(name);
-    new = ft_calloc((ms->envp_size - 1), sizeof(char *));
+    new = ft_calloc((ms->envp_size), sizeof(char *));
     if (!new)
         return ;//error handle
-    while(i < ms->envp_size && ms->envp[i]) //i < ms->envp_size && 
+    while(j < ms->envp_size && ms->envp[i]) //i < ms->envp_size && 
     {
         if (!ft_strncmp(ms->envp[j], name, len) && 
             ((ms->envp[j][len] == '=') || (ms->envp[j][len] == '\0')))//what happened to ft_strncmp?
-        {
-            printf("entered ft_strncmp");
             j++;
-        }
         else
-        {
-			printf("entered else");
             new[i++] = ft_strdup(ms->envp[j++]);
-        }
-
     }
-    ms->envp_size -= 1;
     ft_free_strs(ms->envp, 0, 0);
     ms->envp = new;
 }
@@ -88,6 +81,7 @@ void	unset(t_shell *ms, char **cmd)
         {
             printf("unset cmd[1] %s\n", cmd[1]);
             envp_delete(ms, cmd[1]);
+			printf("deleted cmd[1]\n");
             return ;
         }
         i++;
