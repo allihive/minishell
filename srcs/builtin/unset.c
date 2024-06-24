@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/24 10:41:00 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/24 10:47:53 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void	unset(t_shell *ms, char **cmd)
 		printf("name_exists %s\n", name_exists(ms, cmd[1]));
         if (name_exists(ms, cmd[1])) //tmp should be a=1
         {
-            printf("unset cmd[1] %s\n", cmd[1]);
+            // printf("unset cmd[1] %s\n", cmd[1]);
             envp_delete(ms, cmd[1]);
-			printf("deleted cmd[1]\n");
+			// printf("deleted cmd[1]\n");
             return ;
         }
         i++;
