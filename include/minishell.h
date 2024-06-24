@@ -103,6 +103,9 @@ void	pwd(t_shell *ms, char **cmd);
 void	envp_remove(t_shell *ms, char *content);
 void	unset(t_shell *ms, char **cmd);
 
+/*Echo function*/
+void	echo(t_shell *ms, char **output);
+
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);

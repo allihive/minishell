@@ -77,7 +77,7 @@ else ifeq ($(UNAME_S), Linux)
 endif
 
 SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c\
-        ${addprefix builtin/, builtin.c export.c pwd.c env.c unset.c}}
+        ${addprefix builtin/, builtin.c export.c pwd.c env.c unset.c echo.c}}
 
 OBJ = ${SRCS:.c=.o}
 

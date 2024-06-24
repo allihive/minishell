@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/21 14:17:38 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/24 15:51:24 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ void	envp_print(t_shell *ms)
 void	execute_builtin(t_shell *ms, t_process_node *node)
 {
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
-	{
 		ft_export(ms, node->command);
-	}
 	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
 		pwd(ms, 0);
 	else if (ft_strncmp(node->command[0], "env", 3) == 0)
 		env(ms);
-	else if (ft_strncmp(ms->line, "unset", 5) == 0)
+	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
 		unset(ms, node->command);
+	else if(ft_strncmp(node->command[0], "echo", 4) == 0)
+		echo(ms, node->command);
 }
