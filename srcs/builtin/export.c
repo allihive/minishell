@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/21 15:03:50 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/24 09:56:15 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,10 @@ void envp_add(t_shell *ms, char *name)
 	flag = 0;
 	ms->envp_size += 1;
 	printf("name: %s\n", name);
-	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
+	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
-	while (i < ms->envp_size - 1  && ms->envp[i])
+	while (i < ms->envp_size - 1 && ms->envp[i])
 	{
 		if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
 		{
@@ -130,7 +130,6 @@ void envp_add(t_shell *ms, char *name)
 		i++;
 		j++;
 	}
-	printf("flag: %d\n", flag);
 	if (name && !flag)
 		new[i] = latest_envp(name);
 	ft_free_strs(ms->envp, 0, 0);
@@ -160,7 +159,7 @@ int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a doubl
 		envp_print(ms);
 	else if (!export_str_check(cmd[1]) && ms->envp[i])
 	{
-		printf("cmd[1]: %s\n", cmd[1]);
+		// printf("cmd[1]: %s\n", cmd[1]);
 		if (name_exists(ms, cmd[1]))
 		{
 			printf("before envp_update\n"); //delete comment

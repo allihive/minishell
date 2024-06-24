@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 11:59:34 by alli              #+#    #+#             */
-/*   Updated: 2024/06/12 13:03:03 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/21 15:53:47 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ void	env(t_shell *ms)
 	// int		j;
 	char	**tmp;
 
-	i = -1;
+	i = 0;
 	tmp = ms->envp;
-	while (++i < ms->envp_size)
+	while (i < ms->envp_size)
 	{
 		ft_putstr_fd(tmp[i], 1);
 		ft_putchar_fd('\n', 1);
+		i++;
 	}
 }
