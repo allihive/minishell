@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/18 16:22:30 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/24 13:32:35 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int ifisredirect(char c)
 /* return 1 if char c is a spaces */
  int ifisspace(char c)
  {
-	if (c == 32 || (c <= 9 && c >= 13))
+	if (c == 32 || (c >= 9 && c <= 13))
 		return (1);				
 	return (0);
 }
