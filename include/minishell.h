@@ -105,6 +105,7 @@ void	unset(t_shell *ms, char **cmd);
 
 /*Echo function*/
 void	echo(t_shell *ms, char **output);
+void	print_value(t_shell *ms, char *str);
 
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);
