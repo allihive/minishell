@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/24 21:53:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/24 22:18:23 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char *shrink(char *cmd, int remove) //if something after $ is invalid still prin
 	new = ft_calloc(ft_strlen(cmd), sizeof(char)); //cannot be expanded, the delete the dollar sign
 	if (!new)
 		return (NULL);
-	while(cmd[i] && i != remove)
+	while(cmd[i] && i != remove) //shrink copy first part skip dollar sign and invalid env, copy rest of itif there is any and send it back
 		new[j++] = cmd[i++];
 	while (cmd[i] && cmd[i]!= ' ')
 		i++;
@@ -60,6 +60,7 @@ char *shrink(char *cmd, int remove) //if something after $ is invalid still prin
 	cmd = new; 
 	free (temp);
 	return (cmd);
+	//echo hello $USEroijg haha prints hello haha
 }
 
 //char *add_value_back(char *value, int start, int len , char *cmd, char *envp )//
