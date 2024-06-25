@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/24 19:59:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/24 20:06:16 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ void	echo(t_shell *ms, char **output) //char **output
 	// int	j;
 	// int	k;
 
-	i = 0;
+	i = 1;
 	// j = 0;
 	while (output[i])
 	{
-		i++;
+		printf("output %s\n", output[i]);
 		if (output[i][0] == '-')
 		{
 			if (ft_charncmp(output[i]))

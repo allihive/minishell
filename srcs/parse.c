@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/24 13:32:35 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/24 22:12:31 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -584,7 +584,7 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	//dprintf(2, "command in parse mod: %s\n",command);
 
 	//get rid of ' '' save back to the string ; change mode
-	mod->command = get_cmd_arr(command); 
+	mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
 	//dprintf(2, "1mod->command[0]: %s\n",mod->command[0]);
 	
 	/*

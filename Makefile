@@ -84,10 +84,10 @@ OBJ = ${SRCS:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${LIBFT} ${OBJ}
-	cc ${CFLAGS} ${OBJ} ${LIBFT} -L ${LIBFT_DIR} -lft -o ${NAME} ${READLINE}
+	@cc ${CFLAGS} ${OBJ} ${LIBFT} -L ${LIBFT_DIR} -lft -o ${NAME} ${READLINE}
 
 %.o: %.c
-	cc ${CFLAGS} ${INCLUDES} -c $< -o $@
+	@cc ${CFLAGS} ${INCLUDES} -c $< -o $@
 
 ${LIBFT}:
 	make -C libft/
