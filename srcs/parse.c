@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/24 22:12:31 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/25 12:41:12 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -526,7 +526,7 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 		{
 			if (command[i][j] == '$')
 			{
-				
+				printf("check dollor command[i]: %s\n", command[i]);
 				command[i] = expand_the_shit_out(command[i], mod, ms);
 				dprintf(2, "mod->command in dollar [%d]: %s\n",i ,command[i]);
 				// find the invironmental veriables and return it back , s 

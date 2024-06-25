@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/24 09:56:15 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/25 11:03:39 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void envp_update(t_shell *ms, char *name)
 
 	i = 0;
 	len = 0;
-	printf("entered envp_update");
 	while (name[len] != '=')
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
