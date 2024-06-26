@@ -113,6 +113,8 @@ void execute_shell(t_shell *ms);
 
 /*expand*/
 char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms);
+char	*find_value(t_shell *ms, char *key);
+int	find_key_in_envp(t_shell *ms, char *key);
 
 /*error handling*/
 void	error_handle(t_shell *ms);
