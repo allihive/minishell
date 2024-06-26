@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/26 14:33:36 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/26 14:58:07 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,7 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the
 			mod->process_mode  = 0; //closing quote
 		else if (*cmd == SINGLEQUOTE && mod->process_mode == SINGLEQUOTE)
 			mod->process_mode  = 0; //170-178 checking single quote or double quote mark it
-	
-		dprintf(2,"mod->process_mode%d\n",mod->process_mode);
+		dprintf(2,"mod->process_mode %d\n", mod->process_mode);
 		if (cmd[i] == '$' && mod->process_mode != SINGLEQUOTE) //process_mode integer
 		{
 			
@@ -226,12 +225,10 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the
 			start = i;//PATH
 			while(ft_isalpha(cmd[i]) || cmd[i] == '_')//check this
 				i++;
-			printf("i: %d\n", i);
-			printf("start: %d\n", start);
 			result = get_value(start, i - start, result , ms); // need error handling		
 			dprintf(2,"in expand_the_shit_out result:%s\n", result);
-			// continue;
-			break ;
+			// continue; will continue the loop
+			break ; //break will leave the loop
 		}
 		else
 			i++;
@@ -244,6 +241,7 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the
 
 // echo "3""'hello $USER'""7"
 // echo $HOME
+// echo "hello '$HOME'"
 // X echo $'HOME' = HOME 
 // X echo '$HOME' = $HOME
 // X echo $"'HOME'" = 'HOME'

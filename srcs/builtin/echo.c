@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/25 10:53:21 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/26 15:12:14 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,32 +36,32 @@ static char *name_exists(t_shell *ms, char *name)
 	return (NULL);
 }
 
-void	print_value(t_shell *ms, char *str)
-{
-	char *key;
-	int	len;
-	char *value;
-	int	value_len;
-	int	i;
+// void	print_value(t_shell *ms, char *str)
+// {
+// 	char *key;
+// 	int	len;
+// 	char *value;
+// 	int	value_len;
+// 	int	i;
 
-	i = 0;
-	len = ft_strlen(str) - 1;
-	key = ft_substr(str, 1, len);//USER without $
-	if (!key)
-		return ;//error handle
-	while (i < ms->envp_size && ms->envp[i])
-	{
-		if (name_exists(ms, key))
-		{
-			value_len = ft_strlen(ms->envp[i]);
-			value = ft_substr(ms->envp[i], len + 1, value_len); //len+1 get rid of the equal sign
-			if (!value)
-				return ; //error_handle
-			printf("printf value: %s\n", value);
-			ft_putstr_fd(value, 1);
-		}
-	}
-}
+// 	i = 0;
+// 	len = ft_strlen(str) - 1;
+// 	key = ft_substr(str, 1, len);//USER without $
+// 	if (!key)
+// 		return ;//error handle
+// 	while (i < ms->envp_size && ms->envp[i])
+// 	{
+// 		if (name_exists(ms, key))
+// 		{
+// 			value_len = ft_strlen(ms->envp[i]);
+// 			value = ft_substr(ms->envp[i], len + 1, value_len); //len+1 get rid of the equal sign
+// 			if (!value)
+// 				return ; //error_handle
+// 			printf("printf value: %s\n", value);
+// 			ft_putstr_fd(value, 1);
+// 		}
+// 	}
+// }
 
 static	int ft_charncmp(char *str)
 {
@@ -107,30 +107,4 @@ void	echo(t_shell *ms, char **output) //char **output
 }
 
 
-
-// if (output[i][0] == '-')
-		// {
-		// 	if (ft_charncmp(output[i]))
-		// 	{
-		// 		if (ft_strchr(output[i], '$'))
-		// 		{
-		// 			// k = 1;
-		// 			print_value(ms, output[i]);
-		// 			// j++;
-		// 		}
-		// 		ft_putstr_fd(output[i], 1);
-		// 		i++;
-		// 	}
-		// }
-		// else
-		// {
-		// 	if (ft_strchr(output[i], '$'))
-		// 	{
-		// 		print_value(ms, output[i]);
-		// 	}
-		// 	else
-		// 	{
-		// 		ft_putstr_fd(output[i], 1);
-		// 		ft_putchar('\n');
-		// 		i++;
 
