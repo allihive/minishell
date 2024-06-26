@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/26 09:55:12 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/26 13:16:08 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,27 @@ static int	key_exists(t_shell *ms, char *name)
 	char	*key;
 
 	i = 0;
+	len = 0;
 	while(name[i] && name[i] != '=')
 		i++;
 	key = ft_substr(name, 0, i + 1);
 	if (!key)
 		return (0); //should be error_handle
-	len = ft_strlen(key + 1);
+	len = ft_strlen(key);
 	i = 0;
+	// dprintf(2, "key in key_exists: %s\n", key);
+	// dprintf(2, "len in key_exists: %d\n", len);
 	while (i < ms->envp_size && ms->envp[i])
 	{
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+			{
+				dprintf(2, "key is found\n");
 				return (1);// key is found
+			}
 		i++;
 	}
+	dprintf(2, "key is NOT found\n");
 	return (0);
 }
 
@@ -101,8 +108,7 @@ char *add_value_back( char *value, int start, int len , char *cmd)//expand
 	int j = 0;
 	int		rest_of_str;
 	
-		
-	new = ft_calloc((ft_strlen(cmd) - len + 1 + ft_strlen(value) ) , sizeof(char));// cmd 長度  減 value + 1  + 新從envorinmental variables 找到得直
+	new = ft_calloc((ft_strlen(cmd) - len + 1 + ft_strlen(value)) , sizeof(char));// cmd 長度  減 value + 1  + 新從envorinmental variables 找到得直
 	//加前段
 	while (i < start - 1)//copies echo "hello $USER" copies double quote hello_
 	{
@@ -125,10 +131,9 @@ char *add_value_back( char *value, int start, int len , char *cmd)//expand
 	// temp = cmd; //commented out for linux
 	cmd = new;
 	//free(temp); // may need ti free temp here
-	
+	dprintf(2, "cmd in add_value_back: %s\n", cmd);
 	return (new);
 }
-
 
 
 char *get_value(int start, int len , char *cmd, t_shell *ms)
@@ -147,19 +152,23 @@ char *get_value(int start, int len , char *cmd, t_shell *ms)
 	while (i < len)
 		key[i++]= cmd[start++];// copy key words from cmd to key
 	i = 0;
-	// dprintf(2,"key: %s\n", key);
+	dprintf(2,"key: %s\n", key);
 	// dprintf(2, "keysize: %ld\n", ft_strlen(key));
 	// dprintf(2, "envp_size before %d\n", ms->envp_size);
 	while (i < ms->envp_size) //iterates through the whole list
 	{
 		if (!key_exists(ms, key)) //doesn't match, then it will iterate through the list
 		{
-			// dprintf(2, "ms->envp[%d]:%s\n", i, ms->envp[i]);
+			dprintf(2, "ms->envp[%d]:%s\n", i, ms->envp[i]);
 			// dprintf(2, "ft_strncmp %d\n", ft_strncmp(key, ms->envp[i], len));
 			i++;
 		}
 		else if (key_exists(ms, key)) //breaks if it equals or is at the end of list
-			break ;
+		{
+			dprintf(2, "found key");
+			break;
+		}
+
 	}
 	dprintf(2, "envp_size after %d\n", ms->envp_size);
 	dprintf(2, "i: %d\n", i);
@@ -185,11 +194,22 @@ char *get_value(int start, int len , char *cmd, t_shell *ms)
 	}
 	if (key_exists(ms, key))
 	{
-			dprintf(2, "entered strncmp: %s\n", cmd);
-			value = (ft_strchr(ms->envp[i], '=') + 1);// USER=yhsu    value = yhsu
-			cmd = add_value_back(value, value_start, len, cmd);//need to be protected //changed start to value start
-			dprintf(2, "cmd after add_value_back: %s\n", cmd);
-			 //keep the single quote inside, double quote inside, don't need to expand, then keep double quote inside
+		int	len = ft_strlen(key);
+		dprintf(2, "entered key exists  add_value: %s\n", key);
+		while (ms->envp[i])
+		{
+			if(!ft_strncmp(key, ms->envp[i], ft_strlen(key)) && (ms->envp[i][len] == '\0'  || ms->envp[i][len] == '='))
+			{
+				value = (ft_strchr(ms->envp[i], '=') + 1); // USER=yhsu    value = yhsu
+				break ;
+			}
+			i++;
+		}
+		// value = (ft_strchr(ms->envp[i], '=') + 1);// USER=yhsu    value = yhsu
+		dprintf(2, "value: %s\n", value);
+		cmd = add_value_back(value, value_start, len, cmd);//need to be protected //changed start to value start
+		dprintf(2, "cmd after add_value_back: %s\n", cmd);
+		//keep the single quote inside, double quote inside, don't need to expand, then keep double quote inside
 	}
 	free(key);
 	dprintf(2, "cmd in get_value:%s\n", cmd);	
