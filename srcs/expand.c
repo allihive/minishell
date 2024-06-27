@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/13 19:01:38 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 11:21:35 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ char *add_value_back( char *value, int start, int len , char *cmd)//expand
 	while(cmd[rest_of_str])
 		new[i++] = cmd[rest_of_str++];
 	//dprintf(2, "3new in add value: %s\n", new);	
+	
+	
 	temp = cmd;
 	cmd = new;
 	//free(temp); // may need ti free temp here
@@ -157,14 +159,14 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)
 	
 	int i;
 	int start;
-	int quote;
+	//int quote;
 	char *result;
 	
 	i = 0;
 	//expand the variable
 	
 	result = cmd;//$USER
-	quote = 0;
+	//quote = 0;
 	while (cmd[i])//"hello '$PATH'"
 	{
 		dprintf(2,"icmd[i]%c\n",cmd[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <yhsu@hive.student.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/13 18:13:01 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 11:12:10 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,10 @@ static int	syntax_error(char *token, t_shell *ms)//error_occured need to revise 
 
 int ifisredirect(char c)
 {
-    if ((c == '<' || c == '>' ))
-        return (1);
+    if ((c == '<' || c == '>'))
+	{
+		return (1);
+	}
 	return (0);
 }
 
@@ -483,12 +485,12 @@ char	*no_quote(char *cmd)//for test
 char	**get_cmd_arr(char *command)
 {
 	char	**cmd_arr;
-	int		i;
+	//int		i;
 
 	cmd_arr = ft_split_pipex(command, " ");
 	if (cmd_arr == NULL)
 		perror("maloc error");
-	i = 0;
+	//i = 0;
 	//dont delete quote here
 	// while (cmd_arr[i] != NULL)  
 	// {
@@ -540,8 +542,9 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 void go_check_redirect(char *input, t_process_node *mod)
 {
 	char *redirect;
-	char *end;
+	//char *end;
 	//< infile.txt < infile << end
+	
 	redirect = input;
 	while (*redirect)
 	{
@@ -549,7 +552,7 @@ void go_check_redirect(char *input, t_process_node *mod)
 			break;
 		while ( *redirect && !ifisredirect(*redirect))
 			redirect++;
-		end = redirect;
+		//end = redirect;
 		
 		if (*redirect)
 			redirect = check_redirect(redirect, mod);//檢查redirect  input 0 redirect 19 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:33:07 by alli              #+#    #+#             */
-/*   Updated: 2023/11/15 14:34:08 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/27 10:37:04 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 		return ((char *)haystack);
 	if (len < lenneedle)
 		return (NULL);
-	if (!needle[i] || len < 0)
+	if (!needle[i])
 		return ((char *)haystack);
 	while (haystack[i] != '\0' && i < len)
 	{
