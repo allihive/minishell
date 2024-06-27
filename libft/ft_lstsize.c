@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:32:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/27 10:40:39 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 11:51:47 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_lstsize(t_list *lst)
 	int	i;
 
 	i = 0;
-	while (lst != NULL)
+	while (!lst)
 	{
 		lst = lst->next;
 		++i;

@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 14:25:25 by alli              #+#    #+#             */
-/*   Updated: 2024/06/27 10:15:39 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 11:52:02 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 char	*ft_strchr(const char *s, int c)
 {
+	// int		i;
 	char	*str;
 
+	// i = 0;
 	str = (char *) s;
 	while (*str != (char)c)
 	{

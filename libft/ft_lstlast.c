@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:02:59 by alli              #+#    #+#             */
-/*   Updated: 2024/06/27 10:37:33 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 11:51:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	while (lst != NULL)
+	while (lst)
 	{
 		if (lst->next == NULL)
 			return (lst);

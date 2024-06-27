@@ -27,10 +27,11 @@ typedef enum e_syntax
 	//QUESTIONMARK = 63,
 }	t_syntax;
 
-int	g_signal;
+// int	g_signal = 0;
+
 typedef struct s_process_node
 {
-	char **command; 
+	char **command;
 	char *node_line;// = input
 	char **redirect_in;//< input
 	char **redirect_out;//> output
@@ -52,6 +53,12 @@ typedef struct s_process_node
 	struct 	s_process_node *next;
 }	t_process_node;
 
+// typedef	struct s_envp
+// {
+// 	char	*key;
+// 	char	*value;
+// 	struct	s_envp	*next;
+// }	t_envp;
 
 typedef struct s_shell 
 {
@@ -68,6 +75,7 @@ typedef struct s_shell
 	int exitcode;
 	pid_t *pids;
 	t_process_node *list;//list
+	// t_envp	*envp_list;
 }	t_shell;
 
 void	set_termios(int mode);
@@ -78,19 +86,26 @@ void	initialize_shell(t_shell *ms, char **envp);
 int 	check_shlvl(t_shell *ms);
 
 /*Builtin*/
-void	execute_builtin(t_shell *ms);
+void	execute_builtin(t_shell *ms, t_process_node *node);
 
 /*Export Builtin Functions*/
-int		export_str_check(char *str);
-int		export(t_shell *ms, char *cmd);
+// int		export_str_check(char *str);
+int		ft_export(t_shell *ms, char **cmd);
 void 	envp_add(t_shell *ms, char *name);
 void	envp_print(t_shell *ms);
 void 	envp_update(t_shell *ms, char *name);
 char 	*env_exists(char *name, t_shell *ms);
-char 	*name_exists(t_shell *ms, char *name);
+// char 	*name_exists(t_shell *ms, char *name);
 void	env(t_shell *ms);
 void	pwd(t_shell *ms, char **cmd);
-void	unset(t_shell *ms);
+// void	unset(t_shell *ms, char **cmd);
+// void    envp_delete(t_shell *ms, char *name);
+void	envp_remove(t_shell *ms, char *content);
+void	unset(t_shell *ms, char **cmd);
+
+/*Echo function*/
+void	echo(t_shell *ms, char **output);
+void	print_value(t_shell *ms, char *str);
 
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);
@@ -98,6 +113,8 @@ void execute_shell(t_shell *ms);
 
 /*expand*/
 char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms);
+char	*find_value(t_shell *ms, char *key);
+int	find_key_in_envp(t_shell *ms, char *key);
 
 /*error handling*/
 void	error_handle(t_shell *ms);

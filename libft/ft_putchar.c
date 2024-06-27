@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 13:43:54 by alli              #+#    #+#             */
-/*   Updated: 2024/06/27 10:12:14 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 11:51:56 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	ft_ret_ptr(void *ptr)
 	base = (unsigned long) ptr;
 	help = 0;
 	temp = 0;
-	//if (ptr < 0)
-	//	return (-1);
+	// if (ptr < 0)
+	// 	return (-1);
 	if (base > 15)
 	{
 		temp = ft_ret_ptr((void *)(base / 16));

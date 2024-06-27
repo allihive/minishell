@@ -6,7 +6,7 @@
 /*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/27 11:12:10 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 11:50:53 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int ifisredirect(char c)
 /* return 1 if char c is a spaces */
  int ifisspace(char c)
  {
-	if (c == 32 || (c <= 9 && c >= 13))
+	if (c == 32 || (c >= 9 && c <= 13))
 		return (1);				
 	return (0);
 }
@@ -358,7 +358,7 @@ int init_process_node(char *line, t_shell *ms)
 		//dprintf(2, "temp: %s\n",temp );
 		
 		new->node_line = ft_substr(line, 0, (temp - line));
-		dprintf(2, "new->node_line: %s\n",new->node_line );
+		// dprintf(2, "new->node_line: %s\n",new->node_line );
         if (!new->node_line )
             free(new->node_line );
 		append_process_node(&ms->list, new);// save every command in a node and append them to a list
@@ -528,7 +528,7 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 		{
 			if (command[i][j] == '$')
 			{
-				
+				printf("check dollor command[i]: %s\n", command[i]);
 				command[i] = expand_the_shit_out(command[i], mod, ms);
 				dprintf(2, "mod->command in dollar [%d]: %s\n",i ,command[i]);
 				// find the invironmental veriables and return it back , s 
@@ -587,7 +587,7 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	//dprintf(2, "command in parse mod: %s\n",command);
 
 	//get rid of ' '' save back to the string ; change mode
-	mod->command = get_cmd_arr(command); 
+	mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
 	//dprintf(2, "1mod->command[0]: %s\n",mod->command[0]);
 	
 	/*
@@ -597,7 +597,6 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
 		
 	check_dollor(mod->command, mod, ms);
-
 }
 
 //dive line by '|' and save them in linked list
@@ -610,7 +609,6 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 	mod = *list;
 
 	//dprintf(2, "mod->node_line: %s\n", mod->node_line);
-	
 	while (mod)
 	{
 		input = mod->node_line;
@@ -639,20 +637,19 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		// 	dprintf(2, "mod->redirect_out[%d]: %s\n",i ,mod->redirect_out[i]);
 		// 	i++;
 		// }
-		int j = 0;
-		while (mod->command[j])
-		{
+		// int j = 0;
+		// while (mod->command[j])
+		// {
 			
-			dprintf(2, "mod->command[%d]: %s\n",j ,mod->command[j]);
-			j++;
-		}
-		dprintf(2, "\n");
+		// 	dprintf(2, "mod->command[%d]: %s\n",j ,mod->command[j]);
+		// 	j++;
+		// }
+		// dprintf(2, "\n");
 
-		
 		mod = mod->next;
-
 	}
-
+	if (ms->list->next) //have to add this in order to also update the list to get the latest command
+		ms->list = ms->list->next;
 }
 
 void execute_shell(t_shell *ms)
