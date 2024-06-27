@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/27 11:50:06 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 19:07:14 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char *shrink(char *cmd, int remove) //if something after $ is invalid still prin
 char *add_value_back( char *value, int start, int len , char *cmd)//expand
 {
 	char *new;
-	// char *temp; //had to comment out because of linux
+	//char *temp; //had to comment out because of linux
 	int i = 0;
 	int j = 0;
 	int		rest_of_str;
@@ -117,10 +117,10 @@ char *add_value_back( char *value, int start, int len , char *cmd)//expand
 	//dprintf(2, "3new in add value: %s\n", new);	
 	
 	
-	temp = cmd;
+	//temp = cmd;
 	cmd = new;
 	//free(temp); // don't free causes double free
-	dprintf(2, "cmd in add_value_back: %s\n", cmd);
+	//dprintf(2, "cmd in add_value_back: %s\n", cmd);
 	return (new);
 }
 
@@ -184,6 +184,29 @@ char *get_value(int start, int len , char *cmd, t_shell *ms)
 	return (cmd);
 }
 
+//void delete_quote(char *content, t_shell *ms)
+char *delete_quote(char *content)
+{
+	char *temp;
+	int len;
+	
+	dprintf(2, "1 delete quote content: %s\n", content);
+	len = ft_strlen(content) - 1;
+	dprintf(2, "len: %d\n", len);
+	temp = ft_calloc(len, 1);
+	//if (!temp)
+		//error_handle
+	temp = ft_strdup(content + 1);
+	dprintf(2, "temp : %s\n", temp);
+	ft_bzero(content, len);
+	
+	
+	ft_strlcpy(content, temp, len); //temp + 1 to delete quote
+	dprintf(2, "2 delete quote content: %s\n", content);
+	free(temp);
+	return (content);
+}
+
 
 char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole line
 {  //"hello '$USER'" change it to the correct value
@@ -200,24 +223,27 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the
 	//quote = 0;
 	while (cmd[i])//"hello '$PATH'"
 	{
-		dprintf(2,"icmd[i]%c\n",cmd[i]);
-		if (*cmd == DOUBLEQUOTE && mod->process_mode == 0) //1st double quote
+		//dprintf(2,"icmd[i]%c\n",cmd[i]);
+		if (*cmd == DOUBLEQUOTE && mod->process_mode == 0)
+		{
 			mod->process_mode  = DOUBLEQUOTE;
+			mod->doublequote = i;
+		} //1st double quote	
 		else if (*cmd == SINGLEQUOTE && mod->process_mode == 0)//1st single quote
+		{
 			mod->process_mode  = SINGLEQUOTE;
+			mod->sinquote = i;
+		}
 		else if (*cmd == DOUBLEQUOTE && mod->process_mode == DOUBLEQUOTE)//175-178 commented
 			mod->process_mode  = 0; //closing quote
 		else if (*cmd == SINGLEQUOTE && mod->process_mode == SINGLEQUOTE)
 			mod->process_mode  = 0; //170-178 checking single quote or double quote mark it
-		dprintf(2,"mod->process_mode %d\n", mod->process_mode);
+		//dprintf(2,"mod->process_mode %d\n", mod->process_mode);
 		if (cmd[i] == '$' && mod->process_mode != SINGLEQUOTE) //process_mode integer
 		{
-			
-			dprintf(2,"in get shit out\n");
 			if (cmd[i + 1] == '?' ) //2nd letter ?->exit code
 			{
-				ms->exit_code = 10;//need more functions for exit code
-				
+				ms->exit_code = 10;//need more functions for exit code	
 				//add_value_back(0 , 2 , ft_itoa(10), NULL ); // 要把code加進去
 				i++;
 				continue;
@@ -227,23 +253,52 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the
 			start = i;//PATH
 			while(ft_isalpha(cmd[i]) || cmd[i] == '_')//check this
 				i++;
-			result = get_value(start, i - start, result , ms); // need error handling		
-			dprintf(2,"in expand_the_shit_out result:%s\n", result);
+
+				
+			if (mod->doublequote == -1 && mod->sinquote == -1)//no quote
+			{
+					result = get_value(start, i - start, result , ms); // need error handling
+			}
+			if (mod->doublequote != -1 && mod->sinquote != -1)//" '    ' "
+			{
+				if (mod->doublequote < mod->sinquote)
+					result = get_value(start, i - start, result , ms); // need error handling
+			}
+			if (mod->doublequote != -1 && mod->sinquote == -1)//no quote
+			{
+					result = get_value(start, i - start, result , ms); // need error handling
+			}
+			
+				
+			
+			
+			//dprintf(2,"in expand_the_shit_out result:%s\n", result);
 			// continue; will continue the loop
 			break ; //break will leave the loop
 		}
 		else
 			i++;
 	}
-	dprintf(2,"at the end result:%s\n", result);
+	//dprintf(2,"at the end result:%s\n", result);
 	//delete quote function
+	if ( mod->doublequote > -1 ||  mod->sinquote > -1)
+	{
+		dprintf(2, "in delete quote\n");
+		
+		//delete_quote(result, ms);
+		
+		result = delete_quote(result);
+		dprintf(2, "result in delete quote: %s\n", result);
+		
+	}
+	dprintf(2, "2 result in delete quote: %s\n", result);
 	return (result);
 }
 
 
-// echo "3""'hello $USER'""7"
-// echo $HOME
-// echo "hello '$HOME'"
+//   echo "3""'hello $USER'""7"
+//   echo $HOME
+//   echo "hello '$HOME'"
 // X echo $'HOME' = HOME 
 // X echo '$HOME' = $HOME
 // X echo $"'HOME'" = 'HOME'

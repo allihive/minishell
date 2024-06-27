@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <yhsu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/27 11:50:53 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/27 18:05:25 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,6 +342,8 @@ int init_process_node(char *line, t_shell *ms)
 		new->append = -1;
 		new->heredoc = -1;
 		new->expand = -1;
+		new->doublequote = -1;
+		new->sinquote = -1;
 		new->redirectin = -1;
 		new->redirectout= -1;
 		

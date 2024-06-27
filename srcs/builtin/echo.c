@@ -3,38 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/26 15:12:14 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/27 13:34:08 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *name_exists(t_shell *ms, char *name)
-{
-	int		len;
-	int		i;
-	char	*key;
+// static char *name_exists(t_shell *ms, char *name)
+// {
+// 	int		len;
+// 	int		i;
+// 	char	*key;
 
-	i = 0;
-	while(name[i] && name[i] != '=')
-		i++;
-	key = ft_substr(name, 0, i + 1);
-	if (!key)
-		return (NULL); //should be error_handle
-	len = ft_strlen(key + 1);
-	i = 0;
-	while (i < ms->envp_size && ms->envp[i])
-	{
-		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
-			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
-				return (ms->envp[i] + len);
-		i++;
-	}
-	return (NULL);
-}
+// 	i = 0;
+// 	while(name[i] && name[i] != '=')
+// 		i++;
+// 	key = ft_substr(name, 0, i + 1);
+// 	if (!key)
+// 		return (NULL); //should be error_handle
+// 	len = ft_strlen(key + 1);
+// 	i = 0;
+// 	while (i < ms->envp_size && ms->envp[i])
+// 	{
+// 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
+// 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+// 				return (ms->envp[i] + len);
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
+
+
+
 
 // void	print_value(t_shell *ms, char *str)
 // {
