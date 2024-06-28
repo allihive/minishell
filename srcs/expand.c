@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/27 19:07:14 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/28 11:53:02 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,10 +295,11 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the
 	return (result);
 }
 
-
-//   echo "3""'hello $USER'""7"
-//   echo $HOME
-//   echo "hello '$HOME'"
+/*Test Cases*/
+// echo "3""'hello $USER'""7"
+// echo $HOME
+// echo "hello '$HOME'"
+//export VAR=echo; $VAR helloo -> helloo
 // X echo $'HOME' = HOME 
 // X echo '$HOME' = $HOME
 // X echo $"'HOME'" = 'HOME'
