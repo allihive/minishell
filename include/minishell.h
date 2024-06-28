@@ -115,7 +115,7 @@ void execute_shell(t_shell *ms);
 int count_cmd(t_process_node *list);
 
 /*expand*/
-char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms);
+char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
 char	*find_value(t_shell *ms, char *key);
 int	find_key_in_envp(t_shell *ms, char *key);
 

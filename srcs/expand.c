@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/28 11:53:02 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/28 20:42:17 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,23 @@ char *add_value_back( char *value, int start, int len , char *cmd)//expand
 	int		rest_of_str;
 	
 	new = ft_calloc((ft_strlen(cmd) - len + 1 + ft_strlen(value)) , sizeof(char));// cmd 長度  減 value + 1  + 新從envorinmental variables 找到得直
-	//加前段
+	//char before $
 	while (i < start - 1)//copies echo "hello $USER" copies double quote hello_
 	{
 		new[i] = cmd[i];
 		i++;
 	}		
 	j = 0;
-	//加擴張的
+	//env value
 	while(value[j])
 		new[i++] = value[j++]; //hello yshu replace the $USER->yhsu
 	//dprintf(2, "2new in add value: %s\n", new);	
 	if(j < len)
 		len = j;//? count the value
-	//加後段
+	//add the rest char
 	rest_of_str = start + len; //$USER after that
 	while(cmd[rest_of_str])
 		new[i++] = cmd[rest_of_str++];
-	//dprintf(2, "3new in add value: %s\n", new);	
 	
 	
 	//temp = cmd;
@@ -190,6 +189,7 @@ char *delete_quote(char *content)
 	char *temp;
 	int len;
 	
+	
 	dprintf(2, "1 delete quote content: %s\n", content);
 	len = ft_strlen(content) - 1;
 	dprintf(2, "len: %d\n", len);
@@ -207,93 +207,150 @@ char *delete_quote(char *content)
 	return (content);
 }
 
+void	check_quote(t_process_node *mod, char c, int i)
+{
+	if (c == '\'' || c == '"')
+	{
+		if (mod->process_mode == 0 )
+		{
+			if (c == '\'')
+			{
+				mod->process_mode = SINGLEQUOTE;
+				mod->sinquote = i;
+			}
+			else
+			{
+				mod->process_mode = DOUBLEQUOTE;
+				mod->doublequote = i;
+			}
+		}
+		else if (mod->process_mode == SINGLEQUOTE)
+			mod->process_mode = 0;
+		else if ((mod->process_mode == DOUBLEQUOTE))
+			mod->process_mode = 0;
+	}
+}
 
-char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole line
-{  //"hello '$USER'" change it to the correct value
-	
-	int i;
+
+
+char *if_expandable(char *cmd, int i, t_process_node *mod, t_shell *ms)
+{
+	char *result;
 	int start;
-	//int quote;
+	//int j;
+
+	start = i;//PATH
+	if (ft_isalpha(cmd[i]) || cmd[i] == '_')
+	{
+		while(ft_isalpha(cmd[i]) || cmd[i] == '_')//check this
+			i++;
+		dprintf(2, "cmd in expandable: %s\n", cmd);
+		//result = cmd;
+		//dprintf(2, "0 result in expandable: %s\n", result);
+		// if (mod->doublequote == -1 && mod->sinquote == -1)//no quote
+		// {
+			
+		// 	result = get_value(start, i - start, cmd , ms); // need error handling
+		// 	dprintf(2, "1 result in expandable: %s\n", result);
+			
+		// }
+		// if (mod->doublequote != -1 && mod->sinquote != -1)//" '    ' "
+		// {
+		// 	if (mod->doublequote < mod->sinquote)
+		// 		result = get_value(start, i - start, cmd , ms); // need error handling
+		// }
+		// if (mod->doublequote != -1 && mod->sinquote == -1)//no quote
+		// {
+		// 	result = get_value(start, i - start, cmd , ms); // need error handling
+		// }
+		result = get_value(start, i - start, cmd , ms);
+		
+	}
+	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != DOUBLEQUOTE))
+	{
+		result = cmd + i; //echo $'USER'   reusult = 'USER' 
+	}	
+	else if (cmd[i] == '?' ) //2nd letter ?->exit code
+	{
+		ms->exit_code = 10;//need more functions for exit code	
+		//expand_exit_code(cmd, ms, );
+	}
+	// else if (cmd[i] == '$')
+	// {
+	// 	dprintf(2,"multi $\n");
+	// 	j =  0;
+	// 	while (cmd[j + i + 1] && cmd[i + j + 1] == '$')
+	// 		j++;
+		
+	// 	result = cmd + i + j; 
+	// 	dprintf(2,"%d times of j\n", j);
+	// 	dprintf(2,"result:%s\n", result);
+		
+	// }
+	
+	
+	return (result);
+}
+
+char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole line
+{  //"hello '$USER'" change it to the correct value
+	int j ;
+	int i;
 	char *result;
 	
 	i = 0;
-	//expand the variable
+	//result = cmd;//$USER
+	mod->process_mode = 0;
 	
-	result = cmd;//$USER
-	//quote = 0;
 	while (cmd[i])//"hello '$PATH'"
 	{
-		//dprintf(2,"icmd[i]%c\n",cmd[i]);
-		if (*cmd == DOUBLEQUOTE && mod->process_mode == 0)
+		//dprintf(2, "in expand_it_out :%c\n", cmd[i]);
+		check_quote(mod, cmd[i], i);
+		//dprintf(2, "process_mode:%d\n",mod->process_mode);
+		
+		if (cmd[i] == '$'  && cmd[i+1] != '$' && ((mod->doublequote != -1 && mod->sinquote < mod->doublequote) || (mod->doublequote == -1 && mod->sinquote == -1))) //'" "'  ,  no quote
 		{
-			mod->process_mode  = DOUBLEQUOTE;
-			mod->doublequote = i;
-		} //1st double quote	
-		else if (*cmd == SINGLEQUOTE && mod->process_mode == 0)//1st single quote
-		{
-			mod->process_mode  = SINGLEQUOTE;
-			mod->sinquote = i;
+			dprintf(2, "in expand_it_out cmd[i]:%c\n", cmd[i]);
+			result = if_expandable(cmd, i + 1, mod, ms);	//$
+			dprintf(2, "in expand_it_out reuslt:%s\n", result);
+			break; 	
 		}
-		else if (*cmd == DOUBLEQUOTE && mod->process_mode == DOUBLEQUOTE)//175-178 commented
-			mod->process_mode  = 0; //closing quote
-		else if (*cmd == SINGLEQUOTE && mod->process_mode == SINGLEQUOTE)
-			mod->process_mode  = 0; //170-178 checking single quote or double quote mark it
-		//dprintf(2,"mod->process_mode %d\n", mod->process_mode);
-		if (cmd[i] == '$' && mod->process_mode != SINGLEQUOTE) //process_mode integer
+		else if (cmd[i + 1] == '$')
 		{
-			if (cmd[i + 1] == '?' ) //2nd letter ?->exit code
-			{
-				ms->exit_code = 10;//need more functions for exit code	
-				//add_value_back(0 , 2 , ft_itoa(10), NULL ); // 要把code加進去
-				i++;
-				continue;
-			}
-			while(cmd[i] == '$')//multiple dollar signs, then print other ones
-				i++;
-			start = i;//PATH
-			while(ft_isalpha(cmd[i]) || cmd[i] == '_')//check this
-				i++;
-
-				
-			if (mod->doublequote == -1 && mod->sinquote == -1)//no quote
-			{
-					result = get_value(start, i - start, result , ms); // need error handling
-			}
-			if (mod->doublequote != -1 && mod->sinquote != -1)//" '    ' "
-			{
-				if (mod->doublequote < mod->sinquote)
-					result = get_value(start, i - start, result , ms); // need error handling
-			}
-			if (mod->doublequote != -1 && mod->sinquote == -1)//no quote
-			{
-					result = get_value(start, i - start, result , ms); // need error handling
-			}
+			dprintf(2,"multi $\n");
+			j =  0;
+			// while (cmd[j + i + 1] && cmd[i + j + 1] == '$')
+			// 	j++;
 			
-				
-			
-			
-			//dprintf(2,"in expand_the_shit_out result:%s\n", result);
-			// continue; will continue the loop
-			break ; //break will leave the loop
+			// result = cmd + i + j; 
+			// dprintf(2,"%d times of j\n", j);
+			// dprintf(2,"result:%s\n", result);
+			while (cmd[i+j] == '$')
+				j++;
+			cmd[i] = cmd[i + j];
+			continue;
 		}
 		else
-			i++;
+			result = cmd;
+		i++;
 	}
-	//dprintf(2,"at the end result:%s\n", result);
-	//delete quote function
-	if ( mod->doublequote > -1 ||  mod->sinquote > -1)
-	{
-		dprintf(2, "in delete quote\n");
+	
+	// //delete quote function
+	// if ( mod->doublequote > -1 ||  mod->sinquote > -1)
+	// {
+	// 	dprintf(2, "in delete quote :%s\n", result);
 		
-		//delete_quote(result, ms);
+	// 	//delete_quote(result, ms);
 		
-		result = delete_quote(result);
-		dprintf(2, "result in delete quote: %s\n", result);
+	// 	result = delete_quote(result);
+	// 	dprintf(2, "result in delete quote: %s\n", result);
 		
-	}
-	dprintf(2, "2 result in delete quote: %s\n", result);
+	// }
+	// dprintf(2, "2 result in delete quote: %s\n", result);
 	return (result);
 }
+
+//dont remoce quotes in expand, remove quotes in redierect
 
 /*Test Cases*/
 // echo "3""'hello $USER'""7"

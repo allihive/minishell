@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/28 11:54:39 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/06/28 18:10:03 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static char	**write_arr(char **arr, char *str, char *charset)
 			word++;
 		}
 	}
+	
 	return (arr);
 }
 
@@ -354,10 +355,6 @@ int init_process_node(char *line, t_shell *ms)
 		new->append_s= NULL;//>>
 		
 		
-
-		//dprintf(2, "line: %s\n", line);
-		//dprintf(2, "temp: %s\n",temp );
-		
 		new->node_line = ft_substr(line, 0, (temp - line));
 		// dprintf(2, "new->node_line: %s\n",new->node_line );
         if (!new->node_line )
@@ -508,13 +505,6 @@ char	**get_cmd_arr(char *command)
 	return (cmd_arr);
 }
 
-//char *expand_the_shit(char *cmd, t_process_node *mod, t_shell *ms)
-// char *expand_the_shit(char *cmd)
-// {
-// 	dprintf(2 ,"this line: %s need to be expand\n", cmd);
-// 	return (cmd);
-// }
-
 
 void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 //void check_dollor(char **command)//for parse test
@@ -530,7 +520,7 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 			if (command[i][j] == '$')
 			{
 				printf("check dollor command[i]: %s\n", command[i]);
-				command[i] = expand_the_shit_out(command[i], mod, ms);
+				command[i] = expand_it_out(command[i], mod, ms);
 				dprintf(2, "mod->command in dollar [%d]: %s\n",i ,command[i]);
 				// find the invironmental veriables and return it back , s 
 			}									//command[i] may be $PATH ot '$USER' if there is ' ' outside of the $PATH after exapnt need to add sigle quote back 
@@ -596,7 +586,7 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	hello $USER
 	*/
 	//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
-		
+
 	check_dollor(mod->command, mod, ms);
 }
 
@@ -615,37 +605,7 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		input = mod->node_line;
 		//parse_mod(input, mod, ms);
 		parse_mod(input, mod, ms);//for parse test
-		//dprintf(2, "test2 parse_process_node\n");
-		//if (mod->command != NULL)
-			//parse_expands(mod, ms);??
-		
-		//dprintf(2, "node_line: %s\n", mod->node_line);
-		//dprintf(2, "heredoc: %d, %s\n",mod->heredoc, mod->here_doc);
-		//dprintf(2, "append: %d, %s\n", mod->append,mod->append_s);
-		//dprintf(2, "redirectin: %d\n",mod->redirectin);
-		// int n = 0;
-		// while (mod->redirect_in[n])
-		// {
-			
-		// 	dprintf(2, "mod->redirect_in[%d]: %s\n",n ,mod->redirect_in[n]);
-		// 	n++;
-		// }
-		// dprintf(2, "redirectout: %d\n",mod->redirectout);
-		// int i = 0;
-		// while (mod->redirect_out[i])
-		// {
-			
-		// 	dprintf(2, "mod->redirect_out[%d]: %s\n",i ,mod->redirect_out[i]);
-		// 	i++;
-		// }
-		// int j = 0;
-		// while (mod->command[j])
-		// {
-			
-		// 	dprintf(2, "mod->command[%d]: %s\n",j ,mod->command[j]);
-		// 	j++;
-		// }
-		// dprintf(2, "\n");
+	
 
 		mod = mod->next;
 	}
