@@ -224,27 +224,53 @@ void	check_quote(t_process_node *mod, char c, int i)
 				mod->doublequote = i;
 			}
 		}
-		else if (mod->process_mode == SINGLEQUOTE)
+		else if (c == '\''  && mod->process_mode == SINGLEQUOTE)
 			mod->process_mode = 0;
-		else if ((mod->process_mode == DOUBLEQUOTE))
+		else if (c == '"' && mod->process_mode == DOUBLEQUOTE)
 			mod->process_mode = 0;
 	}
 }
 
-
-
-char *if_expandable(char *cmd, int i, t_process_node *mod, t_shell *ms)
+char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 {
-	char *result;
+	int	i;
+	//int j;
+	char *temp;
+
+	i = 0;
+	//j = 0;
+	temp = cmd;
+	//dprintf(2, "dollar:%d\n", dollar);
+	//dprintf(2, "cmd goes in remove dollar:%s\n", cmd);
+	if (temp[dollar + i] != '$')
+		i++;
+	while (temp[dollar + amount + i])
+	{
+		
+		//dprintf(2, "i:%d\n", i);
+		//dprintf(2, "temp[dollar + amount + i]:%c\n", temp[dollar + amount + i]);
+		cmd[dollar + i] = temp[dollar + amount + i ];
+		//dprintf(2, "cmd[dollar + i]:%c\n", cmd[dollar + i]);
+
+		i++;
+	}
+	cmd[dollar + i] = '\0';
+	//dprintf(2, "cmd in remove dollar:%s\n", cmd);
+	return (cmd);
+}
+
+char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = key
+{
+	char *result = NULL;
 	int start;
 	//int j;
 
 	start = i;//PATH
-	if (ft_isalpha(cmd[i]) || cmd[i] == '_')
+	if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
 	{
 		while(ft_isalpha(cmd[i]) || cmd[i] == '_')//check this
 			i++;
-		dprintf(2, "cmd in expandable: %s\n", cmd);
+		//dprintf(2, "cmd in expandable: %s\n", cmd);
 		//result = cmd;
 		//dprintf(2, "0 result in expandable: %s\n", result);
 		// if (mod->doublequote == -1 && mod->sinquote == -1)//no quote
@@ -263,28 +289,23 @@ char *if_expandable(char *cmd, int i, t_process_node *mod, t_shell *ms)
 		// {
 		// 	result = get_value(start, i - start, cmd , ms); // need error handling
 		// }
-		result = get_value(start, i - start, cmd , ms);
-		
+		result = get_value(start, i - start, cmd , ms);	
 	}
 	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != DOUBLEQUOTE))
 	{
 		result = cmd + i; //echo $'USER'   reusult = 'USER' 
 	}	
-	else if (cmd[i] == '?' ) //2nd letter ?->exit code
-	{
-		ms->exit_code = 10;//need more functions for exit code	
-		//expand_exit_code(cmd, ms, );
-	}
+	// else if (cmd[i] == '?' ) //2nd letter ?->exit code
+	// {
+	// 	ms->exit_code = 10;//need more functions for exit code	
+	// 	//expand_exit_code(cmd, ms, );
+	// }
 	// else if (cmd[i] == '$')
 	// {
-	// 	dprintf(2,"multi $\n");
-	// 	j =  0;
-	// 	while (cmd[j + i + 1] && cmd[i + j + 1] == '$')
-	// 		j++;
+	// 	//dprintf(2,"multi $\n");
+	// 	result = remove_dollar_sign(cmd, i-1, 1);
 		
-	// 	result = cmd + i + j; 
-	// 	dprintf(2,"%d times of j\n", j);
-	// 	dprintf(2,"result:%s\n", result);
+	// 	//dprintf(2,"result:%s\n", result);
 		
 	// }
 	
@@ -294,7 +315,7 @@ char *if_expandable(char *cmd, int i, t_process_node *mod, t_shell *ms)
 
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole line
 {  //"hello '$USER'" change it to the correct value
-	int j ;
+	//int j ;
 	int i;
 	char *result;
 	
@@ -306,30 +327,30 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 	{
 		//dprintf(2, "in expand_it_out :%c\n", cmd[i]);
 		check_quote(mod, cmd[i], i);
-		//dprintf(2, "process_mode:%d\n",mod->process_mode);
+		//dprintf(2, "mod->doublequote:%d\n",mod->doublequote);
+		//dprintf(2, "mod->sinquote:%d\n",mod->sinquote);
 		
-		if (cmd[i] == '$'  && cmd[i+1] != '$' && ((mod->doublequote != -1 && mod->sinquote < mod->doublequote) || (mod->doublequote == -1 && mod->sinquote == -1))) //'" "'  ,  no quote
+		if (cmd[i] == '$'  && ((mod->doublequote != -1 && mod->sinquote < mod->doublequote) || (mod->doublequote == -1 && mod->sinquote == -1))) //'" "'  ,  no quote
 		{
-			dprintf(2, "in expand_it_out cmd[i]:%c\n", cmd[i]);
-			result = if_expandable(cmd, i + 1, mod, ms);	//$
-			dprintf(2, "in expand_it_out reuslt:%s\n", result);
-			break; 	
-		}
-		else if (cmd[i + 1] == '$')
-		{
-			dprintf(2,"multi $\n");
-			j =  0;
-			// while (cmd[j + i + 1] && cmd[i + j + 1] == '$')
-			// 	j++;
+			if ( cmd[i + 1] == '$')
+			{
+				cmd = remove_dollar_sign(cmd, i-1, 1);
+				continue;
+			}
+			//dprintf(2, "in expand_it_out cmd[i]:%c\n", cmd[i]);
+			result = if_expandable(cmd, ms, i + 1, mod);	//$
+			//dprintf(2, "in expand_it_out reuslt:%s\n", result);
+			break;
 			
-			// result = cmd + i + j; 
-			// dprintf(2,"%d times of j\n", j);
-			// dprintf(2,"result:%s\n", result);
-			while (cmd[i+j] == '$')
-				j++;
-			cmd[i] = cmd[i + j];
-			continue;
 		}
+		// else if (cmd[i] == '$' && cmd[i + 1] == '$')
+		// {
+		// 	dprintf(2,"multi $\n");
+		// 	cmd = remove_dollar_sign(cmd, i-1, 1);
+		
+		// 	dprintf(2,"cmd:%s\n", cmd);
+		// 	continue;
+		// }
 		else
 			result = cmd;
 		i++;
