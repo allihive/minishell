@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 
+#include "minishell.h"
 
 static int	is_sep(char *str, int i, char *charset)
 {
@@ -372,6 +372,55 @@ int init_process_node(char *line, t_shell *ms)
 	return (0);
 }
 
+//char	*no_quote(char *cmd, t_process_node *mod) //for get_cmd_arr
+char	*no_quote(char *cmd)//for test
+{
+	char	*result;
+	int		new_len;
+	int		i,j;
+	
+	j = 0;
+	while (ifisspace(cmd[j]))
+		j++;
+	new_len = ft_strlen(cmd + j) - 1;//7
+	result = malloc(sizeof(char) * new_len);
+	if (result == NULL)
+		ft_putstr_fd("malloc error", 2);// need change to print_error
+	i = 0;
+	
+	while (i < new_len - 1)
+	{
+		result[i] = cmd[j+1];
+		i++;
+		j++;
+	}
+	result[i] = '\0';
+	free(cmd);
+	return (result);
+}
+
+
+char *check_if_quote(char *str)
+{
+	int k;
+
+	k = 0;
+	while (str[k])  //if quote
+	{
+		if (ft_strlen(str) > 1)
+		{
+			if ((str[k] == '\''
+				&& str[ft_strlen(str) - 1]  == '\'') ||
+				(str[k] == '"'
+				&& str[ft_strlen(str) - 1] == '"'))
+				str = no_quote(str);
+		}
+		k++;
+	}
+	return (str);
+}
+
+
 //檢查整句 input <>
 char	*check_redirect( char *redirect, t_process_node *mod)
 {
@@ -386,7 +435,6 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 		mod->append = 1;
 		redirect = redirect + 2;
 		mod->append_s = redirect;
-		
 	}	
 	else if (*(redirect + 1) == '<')//<
 	{
@@ -394,7 +442,7 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 		redirect+= 2;
 		mod->here_doc = redirect;
 	}
-	else if (*redirect == '>')
+	else if (*redirect == '<')
 	{
 		mod->redirectin = 1;
 		redirect++;
@@ -402,81 +450,52 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 		
 		while (*end && !ifisredirect(*end))
 			end++;
-
 		// Ensure mod->redirect_out is allocated and has enough space
 		if (mod->redirect_in == NULL) 
 		{
 			mod->redirect_in = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
-			if (mod->redirect_out == NULL) {
-				perror("malloc");
+			if (mod->redirect_in == NULL) 
+			{
+				perror("redirect in malloc");
 				return NULL; // Handle error or return as appropriate
 			}
-			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
+			ft_memset(mod->redirect_in, 0, sizeof(char *) * 100); // Initialize to NULL
 		}
-
 		mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
 		
-		//dprintf(2, "mod->redirect_out[%d]:%s\n", i, mod->redirect_out[i]);
-		dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
-		dprintf(2, "mod->redirect_out[1]:%s\n", mod->redirect_out[1]);
-		while (mod->redirect_out[j])
+		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
+		while (mod->redirect_in[j])
 			j++;
-		dprintf(2, "end\n" );
-		
 	}	
-	else if (*redirect == '<')
+	else if (*redirect == '>')
 	{
 		mod->redirectout = 1;
 		redirect++;
 		end = redirect;
 		while (*end && !ifisredirect(*end))
 			end++;
-
 		// Ensure mod->redirect_out is allocated and has enough space
 		if (mod->redirect_out == NULL) 
 		{
 			mod->redirect_out = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
-			if (mod->redirect_out == NULL) {
-				perror("malloc");
+			if (mod->redirect_out == NULL) 
+			{
+				perror("redirect out malloc");
 				return NULL; // Handle error or return as appropriate
 			}
 			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
 		}
-
 		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
-		
-		//dprintf(2, "mod->redirect_out[%d]:%s\n", i, mod->redirect_out[i]);
-		dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
-		dprintf(2, "mod->redirect_out[1]:%s\n", mod->redirect_out[1]);
+		mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
+		//dprintf(2, "mod->redirect_out[1]:%s\n", mod->redirect_out[1]);
 		while (mod->redirect_out[i])
 			i++;
-		dprintf(2, "end\n" );
 	}
 	return (redirect);
-	}
-
-
-//char	*no_quote(char *cmd, t_process_node *mod) //for get_cmd_arr
-char	*no_quote(char *cmd)//for test
-{
-	char	*result;
-	int		new_len;
-	int		i;
-
-	new_len = ft_strlen(cmd) - 1;
-	result = malloc(sizeof(char) * new_len);
-	if (result == NULL)
-		ft_putstr_fd("malloc error", 2);// need change to print_error
-	i = 0;
-	while (i < new_len - 1)
-	{
-		result[i] = cmd[i + 1];
-		i++;
-	}
-	result[i] = '\0';
-	free(cmd);
-	return (result);
 }
+
+
+
 
 
 //char	**get_cmd_arr(char *command, t_process_node *mod)
@@ -519,9 +538,9 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 		{
 			if (command[i][j] == '$')
 			{
-				printf("check dollor command[i]: %s\n", command[i]);
+				//printf("check dollor command[i]: %s\n", command[i]);
 				command[i] = expand_it_out(command[i], mod, ms);
-				dprintf(2, "mod->command in dollar [%d]: %s\n",i ,command[i]);
+				//dprintf(2, "mod->command in dollar [%d]: %s\n",i ,command[i]);
 				// find the invironmental veriables and return it back , s 
 			}									//command[i] may be $PATH ot '$USER' if there is ' ' outside of the $PATH after exapnt need to add sigle quote back 
 			j++;
@@ -579,7 +598,7 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 
 	//get rid of ' '' save back to the string ; change mode
 	mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
-	//dprintf(2, "1mod->command[0]: %s\n",mod->command[0]);
+
 	
 	/*
 	echo
@@ -599,14 +618,19 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 
 	mod = *list;
 
-	//dprintf(2, "mod->node_line: %s\n", mod->node_line);
+	dprintf(2, "ms->line: %s\n\n", ms->line);
+	
 	while (mod)
 	{
 		input = mod->node_line;
 		//parse_mod(input, mod, ms);
 		parse_mod(input, mod, ms);//for parse test
 	
-
+		//if (mod->redirect_in[0])
+			//dprintf(2, "mod->redirect_in[0]:%s\n", mod->redirect_in[0]);
+		if (mod->redirect_out[0])
+			dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
+	
 		mod = mod->next;
 	}
 	if (ms->list->next) //have to add this in order to also update the list to get the latest command

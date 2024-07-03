@@ -190,19 +190,19 @@ char *delete_quote(char *content)
 	int len;
 	
 	
-	dprintf(2, "1 delete quote content: %s\n", content);
+	//dprintf(2, "1 delete quote content: %s\n", content);
 	len = ft_strlen(content) - 1;
-	dprintf(2, "len: %d\n", len);
+	//dprintf(2, "len: %d\n", len);
 	temp = ft_calloc(len, 1);
 	//if (!temp)
 		//error_handle
 	temp = ft_strdup(content + 1);
-	dprintf(2, "temp : %s\n", temp);
+	//dprintf(2, "temp : %s\n", temp);
 	ft_bzero(content, len);
 	
 	
 	ft_strlcpy(content, temp, len); //temp + 1 to delete quote
-	dprintf(2, "2 delete quote content: %s\n", content);
+	//dprintf(2, "2 delete quote content: %s\n", content);
 	free(temp);
 	return (content);
 }

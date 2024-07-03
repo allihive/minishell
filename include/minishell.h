@@ -69,11 +69,11 @@ typedef struct s_shell
 	char	*line;// read from realine function
 	int		fork_n;//fork number
 	// char	*cwd;
-	// int fork_n;//fork number
 	int	excode;
 	char *cwd;
 	int exitcode;
 	pid_t *pids;
+	int	 index;
 	t_process_node *list;//list
 	// t_envp	*envp_list;
 }	t_shell;
@@ -122,4 +122,7 @@ int	find_key_in_envp(t_shell *ms, char *key);
 /*error handling*/
 void	error_handle(t_shell *ms);
 
+/*free*/
+void	free_single(char *str);
+void	free_double(char **arr);
 #endif
