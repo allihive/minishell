@@ -337,8 +337,7 @@ int init_process_node(char *line, t_shell *ms)
         new = ft_calloc(1, sizeof(t_process_node));
         // if (!new)
         //     error_handle();
-        new->fd[0] = dup(STDIN_FILENO);;
-        new->fd[1] = dup(STDOUT_FILENO);;
+        
 		new->append = -1;
 		new->heredoc = -1;
 		new->expand = -1;
@@ -367,6 +366,8 @@ int init_process_node(char *line, t_shell *ms)
 		if(*line)
 			line++; //跳過pipe
     }
+	ms->fd[0] = dup(STDIN_FILENO);//init as stdin
+    ms->fd[1] = dup(STDOUT_FILENO);
 	ms->fork_n = count_cmd(ms->list);
 	ms->pids = ft_calloc(1,ms->fork_n * sizeof(pid_t));
 	return (0);
@@ -609,7 +610,6 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	hello $USER
 	*/
 	//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
-
 	check_dollor(mod->command, mod, ms);
 }
 
