@@ -337,8 +337,8 @@ int init_process_node(char *line, t_shell *ms)
         new = ft_calloc(1, sizeof(t_process_node));
         // if (!new)
         //     error_handle();
-        new->fd_in = -1;
-        new->fd_out = -1;
+        new->fd[0] = dup(STDIN_FILENO);;
+        new->fd[1] = dup(STDOUT_FILENO);;
 		new->append = -1;
 		new->heredoc = -1;
 		new->expand = -1;
@@ -598,8 +598,12 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 
 	//get rid of ' '' save back to the string ; change mode
 	mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
-
 	
+	if (is_builtin(mod->command[0]))
+		mod->builtin = 1;
+	
+	dprintf(2, "mod->command[0]:%s\n", mod->command[0]);
+	dprintf(2, "mod->builtin:%d\n", mod->builtin);
 	/*
 	echo
 	hello $USER
@@ -628,8 +632,8 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 	
 		//if (mod->redirect_in[0])
 			//dprintf(2, "mod->redirect_in[0]:%s\n", mod->redirect_in[0]);
-		if (mod->redirect_out[0])
-			dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
+		//if (mod->redirect_out[0])
+			//dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
 	
 		mod = mod->next;
 	}
@@ -643,9 +647,12 @@ void execute_shell(t_shell *ms)
 	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
 	//parse_process_node(&ms->list);//for parse test
 
-	
-	
-	//execute_children(ms);
-	//wait_children(ms);
+	/* proper pipex
+	if (!ms->list)
+		exit(free_env(ms));
+	else if (pipex(ms->list, ms) == -1)
+		exit(ms->exitcode);
+	*/
+	//pipex(ms->list, ms);//execute_children(ms); + wait_children(ms);
 }
 

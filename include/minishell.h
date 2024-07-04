@@ -27,6 +27,20 @@ typedef enum e_syntax
 	//QUESTIONMARK = 63,
 }	t_syntax;
 
+typedef struct s_heredoc
+{
+	char	*dlm;
+	char	*line;
+	int		dlm_len;
+	int		fd;
+}	t_heredoc;
+
+typedef struct s_flags
+{
+	int	in_single;
+	int	in_double;
+}	t_flags;
+
 // int	g_signal = 0;
 
 typedef struct s_process_node
@@ -37,8 +51,7 @@ typedef struct s_process_node
 	char **redirect_out;//> output
 	char *here_doc;//<<
 	char *append_s;//>>
-	int fd_in;
-	int fd_out;
+	int fd[2];
 	int pipe;
 	int sinquote;//when ==1 dont exapmd unless expand == 1;
 	int doublequote;
@@ -48,6 +61,7 @@ typedef struct s_process_node
 	int redirectout;
 	int		meta;
 	int		process_mode;
+	int			builtin;
 	int expand;
 	
 	struct 	s_process_node *next;
@@ -68,10 +82,8 @@ typedef struct s_shell
 	int 	shlvl;//? not sure if we need this
 	char	*line;// read from realine function
 	int		fork_n;//fork number
-	// char	*cwd;
-	int	excode;
 	char *cwd;
-	int exitcode;
+	int excode;
 	pid_t *pids;
 	int	 index;
 	t_process_node *list;//list
@@ -125,4 +137,11 @@ void	error_handle(t_shell *ms);
 /*free*/
 void	free_single(char *str);
 void	free_double(char **arr);
+
+/*Builtin utils*/
+_Bool	is_builtin(char *cmd);
+
+/* Pipex*/
+int pipex(t_process_node *process,t_shell *ms);
+
 #endif

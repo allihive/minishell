@@ -93,3 +93,4 @@ void	execute_builtin(t_shell *ms, t_process_node *node)
 		ft_exit(ms, node->command);
 	// else if (ft_strncmp(node->command[0], "cd", 2) == 0)
 	// 	cd(ms, node->command);
+}

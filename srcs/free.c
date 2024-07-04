@@ -22,3 +22,6 @@ void	free_double(char **arr)
 	free(arr);
 	arr = NULL;
 }
+
+
+//free_env(ms)
