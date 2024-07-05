@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/05 18:48:39 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/05 23:52:06 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -432,19 +432,22 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 	static int j = 0;
 		
 
-	if (*(redirect + 1) == '>')//>
-	{
-		mod->append = 1;
-		redirect = redirect + 2;
-		mod->append_s = redirect;
-	}	
-	else if (*(redirect + 1) == '<')//<
+		
+	if (*(redirect + 1) == '<')//<<heredoc
 	{
 		mod->heredoc = 1;
 		redirect+= 2;
 		mod->here_doc = redirect;
+		//handdle_heredocs();
 	}
-	else if (*redirect == '<')
+	else if (*(redirect + 1) == '>')//>append
+	{
+		mod->append = 1;
+		redirect = redirect + 2;
+		mod->append_s = redirect;
+		redir_append(redirect, ms);
+	}
+	else if (*redirect == '<')//in
 	{
 		mod->redirectin = 1;
 		redirect++;
@@ -468,8 +471,10 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
 		while (mod->redirect_in[j])
 			j++;
+		redir_in(mod->redirect_in[j], ms);
+				
 	}	
-	else if (*redirect == '>')
+	else if (*redirect == '>')//out
 	{
 		mod->redirectout = 1;
 		redirect++;
@@ -492,6 +497,7 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 		//dprintf(2, "mod->redirect_out[1]:%s\n", mod->redirect_out[1]);
 		while (mod->redirect_out[i])
 			i++;
+		redir_out(mod->redirect_out[i], ms);
 	}
 	return (redirect);
 }

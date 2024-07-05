@@ -11,6 +11,7 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <signal.h>
+# include <fcntl.h>
 
 
 # define true  1
@@ -145,5 +146,15 @@ _Bool	is_builtin(char *cmd);
 
 /* Pipex*/
 int pipex(t_process_node *process,t_shell *ms);
+
+/*Fd*/
+int get_fd(t_process_node *process,t_shell *ms);
+
+/*Execution*/
+int do_process(t_process_node *process,t_shell *ms);
+
+/*Redirects*/
+int handle_redirects(t_process_node *process,t_shell *ms);
+
 
 #endif
