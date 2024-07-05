@@ -83,7 +83,7 @@ typedef struct s_shell
 	char	*line;// read from realine function
 	int		fork_n;//fork number
 	int fd[2];
-	int read_end; .
+	int read_end;
 	char *cwd;
 	int excode;
 	

@@ -241,6 +241,7 @@ char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 	//j = 0;
 	temp = cmd;
 	//dprintf(2, "dollar:%d\n", dollar);
+	//dprintf(2, "temp[dollar] :%d\n", temp[dollar] );
 	//dprintf(2, "cmd goes in remove dollar:%s\n", cmd);
 	if (temp[dollar + i] != '$')
 		i++;
@@ -334,7 +335,7 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 		{
 			if ( cmd[i + 1] == '$')
 			{
-				cmd = remove_dollar_sign(cmd, i-1, 1);
+				cmd = remove_dollar_sign(cmd, i, 1);
 				continue;
 			}
 			//dprintf(2, "in expand_it_out cmd[i]:%c\n", cmd[i]);
