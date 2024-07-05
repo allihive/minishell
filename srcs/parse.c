@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/28 18:10:03 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/05 18:48:39 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,12 +332,10 @@ int init_process_node(char *line, t_shell *ms)
 
         //make temp point to the end of the
         temp = point_end(line); 
-		
         //calloc for new 
         new = ft_calloc(1, sizeof(t_process_node));
         // if (!new)
         //     error_handle();
-        
 		new->append = -1;
 		new->heredoc = -1;
 		new->expand = -1;
@@ -345,31 +343,34 @@ int init_process_node(char *line, t_shell *ms)
 		new->sinquote = -1;
 		new->redirectin = -1;
 		new->redirectout= -1;
-		
 		new->command = NULL;
 		new->node_line= NULL;// = input
 		new->redirect_in= NULL;//< input
 		new->redirect_out= NULL;//> output
 		new->here_doc= NULL;//<<
 		new->append_s= NULL;//>>
-		
-		
+		new->cmd_path = NULL;
 		new->node_line = ft_substr(line, 0, (temp - line));
 		// dprintf(2, "new->node_line: %s\n",new->node_line );
         if (!new->node_line )
             free(new->node_line );
-		append_process_node(&ms->list, new);// save every command in a node and append them to a list
-		
+		append_process_node(&ms->list, new);// save every command in a node and append them to a list	
 		check_syntax(new->node_line, ms);
 	// malloc pids
 		line = temp;
 		if(*line)
 			line++; //跳過pipe
     }
+	ms->count = 0;
+	ms->read_end = -1;
 	ms->fd[0] = dup(STDIN_FILENO);//init as stdin
     ms->fd[1] = dup(STDOUT_FILENO);
+	ms->execute = 0;
 	ms->fork_n = count_cmd(ms->list);
 	ms->pids = ft_calloc(1,ms->fork_n * sizeof(pid_t));
+	if (ms->pids)
+		return (-1);//error handle close_and_free
+	ms->pids[0] = -1;
 	return (0);
 }
 
@@ -541,9 +542,8 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 			{
 				//printf("check dollor command[i]: %s\n", command[i]);
 				command[i] = expand_it_out(command[i], mod, ms);
-				//dprintf(2, "mod->command in dollar [%d]: %s\n",i ,command[i]);
-				// find the invironmental veriables and return it back , s 
-			}									//command[i] may be $PATH ot '$USER' if there is ' ' outside of the $PATH after exapnt need to add sigle quote back 
+				
+			}	
 			j++;
 		}
 		i++;
@@ -603,8 +603,8 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	if (is_builtin(mod->command[0]))
 		mod->builtin = 1;
 	
-	dprintf(2, "mod->command[0]:%s\n", mod->command[0]);
-	dprintf(2, "mod->builtin:%d\n", mod->builtin);
+	//dprintf(2, "mod->command[0]:%s\n", mod->command[0]);
+	//dprintf(2, "mod->builtin:%d\n", mod->builtin);
 	/*
 	echo
 	hello $USER

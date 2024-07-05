@@ -51,7 +51,7 @@ typedef struct s_process_node
 	char **redirect_out;//> output
 	char *here_doc;//<<
 	char *append_s;//>>
-	
+	char	*cmd_path;
 	int pipe;
 	int sinquote;//when ==1 dont exapmd unless expand == 1;
 	int doublequote;
@@ -74,11 +74,10 @@ typedef struct s_process_node
 // 	struct	s_envp	*next;
 // }	t_envp;
 
-typedef struct s_shell 
+typedef struct s_shell //ms
 {
 	char 	**envp;
 	int 	envp_size;
-	int 	exit_code;
 	int 	shlvl;//? not sure if we need this
 	char	*line;// read from realine function
 	int		fork_n;//fork number
@@ -86,9 +85,9 @@ typedef struct s_shell
 	int read_end;
 	char *cwd;
 	int excode;
-	
+	int	execute;
 	pid_t *pids;
-	int	 index;//count 在pipex 會update
+	int	 count;//node index  在pipex 會update
 	t_process_node *list;//list
 	// t_envp	*envp_list;
 }	t_shell;

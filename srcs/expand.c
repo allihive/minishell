@@ -6,34 +6,83 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/28 20:42:17 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/05 16:23:55 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//void exit_code();
+void init_flag(t_flags *f)
+{
+	f->in_single = -1;
+	f->in_double = -1;
+}
 
-// char	*no_quote(char *cmd)//for test
-// {
-// 	char	*result;
-// 	int		new_len;
-// 	int		i;
+char *remove_quote(char *str, int len)
+{
+	char *new_str;
+	int i;
+	int j;
+	t_flags f;
 
-// 	new_len = ft_strlen(cmd) - 1;
-// 	result = malloc(sizeof(char) * new_len);
-// 	if (result == NULL)
-// 		ft_putstr_fd("malloc error", 2);// need change to print_error
-// 	i = 0;
-// 	while (i < new_len - 1)
-// 	{
-// 		result[i] = cmd[i + 1];
-// 		i++;
-// 	}
-// 	result[i] = '\0';
-// 	free(cmd);
-// 	return (result);
-// }
+	i = 0;
+	j = 0;
+	init_flag(&f);
+	new_str = ft_calloc(len, sizeof(char));
+	if (!new_str)
+		return (NULL);
+	while(str[i])
+	{
+		if (str[i] == '\'' && f.in_double == -1)
+			f.in_single *= -1;	
+		else if (str[i] == '"' && f.in_single == -1)
+			f.in_double *= -1;
+		else
+			new_str[j++] = str[i];	
+		i++;
+	}
+	
+	return (new_str);	
+}
+
+int count_quote(char *str)
+{
+	int i;
+	int quote_n;
+	t_flags f;
+
+	init_flag(&f);
+	i = 0;
+	quote_n = 0;
+	while(str[i])
+	{
+		if (str[i] == '\'' && f.in_double == -1)
+		{
+			quote_n++;
+			f.in_single *= -1;
+		}	
+		if (str[i] == '"' && f.in_single == -1)
+		{
+			quote_n++;
+			f.in_double *= -1;
+		}	
+		i++;	
+	}
+	return (quote_n);
+}
+
+
+char *quote_remover(char *str)
+{
+	int remove_q;
+	int len;
+
+	remove_q = count_quote(str);
+	len = ft_strlen(str) - remove_q + 1;
+	return (remove_quote(str, len));
+}
+
+
 
 static int	key_exists(t_shell *ms, char *name)
 {
@@ -183,29 +232,6 @@ char *get_value(int start, int len , char *cmd, t_shell *ms)
 	return (cmd);
 }
 
-//void delete_quote(char *content, t_shell *ms)
-char *delete_quote(char *content)
-{
-	char *temp;
-	int len;
-	
-	
-	//dprintf(2, "1 delete quote content: %s\n", content);
-	len = ft_strlen(content) - 1;
-	//dprintf(2, "len: %d\n", len);
-	temp = ft_calloc(len, 1);
-	//if (!temp)
-		//error_handle
-	temp = ft_strdup(content + 1);
-	//dprintf(2, "temp : %s\n", temp);
-	ft_bzero(content, len);
-	
-	
-	ft_strlcpy(content, temp, len); //temp + 1 to delete quote
-	//dprintf(2, "2 delete quote content: %s\n", content);
-	free(temp);
-	return (content);
-}
 
 void	check_quote(t_process_node *mod, char c, int i)
 {
@@ -234,15 +260,11 @@ void	check_quote(t_process_node *mod, char c, int i)
 char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 {
 	int	i;
-	//int j;
 	char *temp;
 
 	i = 0;
-	//j = 0;
 	temp = cmd;
-	//dprintf(2, "dollar:%d\n", dollar);
-	//dprintf(2, "temp[dollar] :%d\n", temp[dollar] );
-	//dprintf(2, "cmd goes in remove dollar:%s\n", cmd);
+	
 	if (temp[dollar + i] != '$')
 		i++;
 	while (temp[dollar + amount + i])
@@ -250,7 +272,7 @@ char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 		
 		//dprintf(2, "i:%d\n", i);
 		//dprintf(2, "temp[dollar + amount + i]:%c\n", temp[dollar + amount + i]);
-		cmd[dollar + i] = temp[dollar + amount + i ];
+		cmd[dollar + i] = temp[dollar + amount + i];
 		//dprintf(2, "cmd[dollar + i]:%c\n", cmd[dollar + i]);
 
 		i++;
@@ -326,11 +348,8 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 	
 	while (cmd[i])//"hello '$PATH'"
 	{
-		//dprintf(2, "in expand_it_out :%c\n", cmd[i]);
 		check_quote(mod, cmd[i], i);
-		//dprintf(2, "mod->doublequote:%d\n",mod->doublequote);
-		//dprintf(2, "mod->sinquote:%d\n",mod->sinquote);
-		
+
 		if (cmd[i] == '$'  && ((mod->doublequote != -1 && mod->sinquote < mod->doublequote) || (mod->doublequote == -1 && mod->sinquote == -1))) //'" "'  ,  no quote
 		{
 			if ( cmd[i + 1] == '$')
@@ -338,41 +357,21 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 				cmd = remove_dollar_sign(cmd, i, 1);
 				continue;
 			}
-			//dprintf(2, "in expand_it_out cmd[i]:%c\n", cmd[i]);
+
 			result = if_expandable(cmd, ms, i + 1, mod);	//$
-			//dprintf(2, "in expand_it_out reuslt:%s\n", result);
+			dprintf(2, "reuslt1:%s\n", result);
+			result = quote_remover(result);
+			dprintf(2, "reuslt2:%s\n", result);
 			break;
-			
 		}
-		// else if (cmd[i] == '$' && cmd[i + 1] == '$')
-		// {
-		// 	dprintf(2,"multi $\n");
-		// 	cmd = remove_dollar_sign(cmd, i-1, 1);
-		
-		// 	dprintf(2,"cmd:%s\n", cmd);
-		// 	continue;
-		// }
 		else
 			result = cmd;
 		i++;
 	}
-	
-	// //delete quote function
-	// if ( mod->doublequote > -1 ||  mod->sinquote > -1)
-	// {
-	// 	dprintf(2, "in delete quote :%s\n", result);
-		
-	// 	//delete_quote(result, ms);
-		
-	// 	result = delete_quote(result);
-	// 	dprintf(2, "result in delete quote: %s\n", result);
-		
-	// }
-	// dprintf(2, "2 result in delete quote: %s\n", result);
+	dprintf(2, "reuslt3:%s\n", result);
 	return (result);
 }
 
-//dont remoce quotes in expand, remove quotes in redierect
 
 /*Test Cases*/
 // echo "3""'hello $USER'""7"
