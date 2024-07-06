@@ -87,6 +87,7 @@ int 	add_shlvl(t_shell *ms);
 
 /*Builtin*/
 void	execute_builtin(t_shell *ms, t_process_node *node);
+void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd);
 
 /*Export Builtin Functions*/
 // int		export_str_check(char *str);
