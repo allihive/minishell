@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/05 23:52:06 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/06 21:00:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,11 +284,16 @@ void append_process_node(t_process_node **list, t_process_node *new)
 {
 	t_process_node *last_node;
 	
+
+	
 	if (!*list)
 		*list = new;
 	else
 	{
+		
+		
 		last_node = *list;
+		
 		while(last_node->next)
 			last_node = last_node->next;
 		last_node->next = new;
@@ -303,6 +308,7 @@ int count_cmd(t_process_node *list)
 	n = 0;
 	while (list)
 	{
+		//dprintf(2,"list->node_line;%s\n", list->node_line );
 		list = list->next;
 		n++;
 	}
@@ -351,10 +357,15 @@ int init_process_node(char *line, t_shell *ms)
 		new->append_s= NULL;//>>
 		new->cmd_path = NULL;
 		new->node_line = ft_substr(line, 0, (temp - line));
-		// dprintf(2, "new->node_line: %s\n",new->node_line );
+		//dprintf(2, "new->node_line in init: %s\n",new->node_line );
         if (!new->node_line )
             free(new->node_line );
+
+			
 		append_process_node(&ms->list, new);// save every command in a node and append them to a list	
+		
+		dprintf(2, "new->node_line after append: %s\n",new->node_line );
+		
 		check_syntax(new->node_line, ms);
 	// malloc pids
 		line = temp;
@@ -366,7 +377,8 @@ int init_process_node(char *line, t_shell *ms)
 	ms->fd[0] = dup(STDIN_FILENO);//init as stdin
     ms->fd[1] = dup(STDOUT_FILENO);
 	ms->execute = 0;
-	ms->fork_n = count_cmd(ms->list);
+	ms->fork_n = count_cmd(ms->list) - 1;
+	
 	ms->pids = ft_calloc(1,ms->fork_n * sizeof(pid_t));
 	if (ms->pids)
 		return (-1);//error handle close_and_free
@@ -445,6 +457,7 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 		mod->append = 1;
 		redirect = redirect + 2;
 		mod->append_s = redirect;
+		
 		redir_append(redirect, ms);
 	}
 	else if (*redirect == '<')//in
@@ -471,6 +484,7 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
 		while (mod->redirect_in[j])
 			j++;
+		
 		redir_in(mod->redirect_in[j], ms);
 				
 	}	
@@ -497,6 +511,7 @@ char	*check_redirect( char *redirect, t_process_node *mod)
 		//dprintf(2, "mod->redirect_out[1]:%s\n", mod->redirect_out[1]);
 		while (mod->redirect_out[i])
 			i++;
+		
 		redir_out(mod->redirect_out[i], ms);
 	}
 	return (redirect);
@@ -511,7 +526,7 @@ char	**get_cmd_arr(char *command)
 {
 	char	**cmd_arr;
 	//int		i;
-
+	
 	cmd_arr = ft_split_pipex(command, " ");
 	if (cmd_arr == NULL)
 		perror("maloc error");
@@ -591,32 +606,36 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	char *command;//input without redirection
 	
 	
-	while (ifisspace(*input) )
-		input++;
-	
-	go_check_redirect(input, mod);
-	redirect = input;
-	while ( *redirect && !ifisredirect(*redirect))
-			redirect++;
-	
-	//input  變成 echo "hello $USER"
-	command = ft_substr( input, 0 , (redirect - input)); // may need free 
-	//dprintf(2, "command in parse mod: %s\n",command);
+		while (ifisspace(*input) )
+			input++;
+		
 
-	//get rid of ' '' save back to the string ; change mode
-	mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
-	
-	if (is_builtin(mod->command[0]))
-		mod->builtin = 1;
-	
-	//dprintf(2, "mod->command[0]:%s\n", mod->command[0]);
-	//dprintf(2, "mod->builtin:%d\n", mod->builtin);
-	/*
-	echo
-	hello $USER
-	*/
-	//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
-	check_dollor(mod->command, mod, ms);
+		//get_fd(mod, ms);//redirection
+		
+		//go_check_redirect(input, mod);
+		redirect = input;
+		while ( *redirect && !ifisredirect(*redirect))
+				redirect++;
+		
+		//input  變成 echo "hello $USER"
+		command = ft_substr( input, 0 , (redirect - input)); // may need free 
+		//dprintf(2, "command in parse mod: %s\n",command);
+
+		//get rid of ' '' save back to the string ; change mode
+		mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
+		
+		//dprintf(2, "fork:%d\n", ms->fork_n);
+		
+		
+		if (is_builtin(mod->command[0]))
+			mod->builtin = 1;
+		
+		/*
+		echo
+		hello $USER
+		*/
+		//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
+		check_dollor(mod->command, mod, ms);
 }
 
 //dive line by '|' and save them in linked list
@@ -628,23 +647,33 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 
 	mod = *list;
 
-	dprintf(2, "ms->line: %s\n\n", ms->line);
+	//dprintf(2, "ms->line: %s\n\n", ms->line);
 	
 	while (mod)
 	{
+		// if (mod->next)
+		// 	input = mod->next->node_line;
+		// else
+		// 	input = mod->node_line;
+		
 		input = mod->node_line;
 		//parse_mod(input, mod, ms);
+
+		
+		
 		parse_mod(input, mod, ms);//for parse test
-	
+		
 		//if (mod->redirect_in[0])
 			//dprintf(2, "mod->redirect_in[0]:%s\n", mod->redirect_in[0]);
 		//if (mod->redirect_out[0])
 			//dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
 	
+		ms->count++;
 		mod = mod->next;
+		// if (ms->list->next) //have to add this in order to also update the list to get the latest command
+		// 	ms->list = ms->list->next;
 	}
-	if (ms->list->next) //have to add this in order to also update the list to get the latest command
-		ms->list = ms->list->next;
+	
 }
 
 void execute_shell(t_shell *ms)
@@ -652,13 +681,16 @@ void execute_shell(t_shell *ms)
 	
 	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
 	//parse_process_node(&ms->list);//for parse test
+	
 
+
+	
 	/* proper pipex
 	if (!ms->list)
 		exit(free_env(ms));
 	else if (pipex(ms->list, ms) == -1)
 		exit(ms->exitcode);
 	*/
-	//pipex(ms->list, ms);//execute_children(ms); + wait_children(ms);
+	pipex(ms->list, ms);//execute_children(ms); + wait_children(ms);
 }
 

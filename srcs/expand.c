@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/05 16:23:55 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/06 18:22:21 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,9 +359,9 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 			}
 
 			result = if_expandable(cmd, ms, i + 1, mod);	//$
-			dprintf(2, "reuslt1:%s\n", result);
+			
 			result = quote_remover(result);
-			dprintf(2, "reuslt2:%s\n", result);
+			
 			break;
 		}
 		else

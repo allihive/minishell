@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:28 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/05 21:41:24 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/06 18:09:10 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int first_child(t_process_node *process, t_shell *ms)
     close(ms->fd[0]);
     if (handle_heredocs(process, ms) == -1)
         return (-1);
-    return (handle_redirects(process, ms));
-        
+    //return (handle_redirects(process, ms));
+    return (go_check_redirect(process, mod));    
 }
 
 int middle_child(t_process_node *process, t_shell *ms)
@@ -51,8 +51,8 @@ int middle_child(t_process_node *process, t_shell *ms)
     close(tmp);
     if (handle_heredocs(process, ms) == -1)
         return (-1);
-    return (handle_redirects(process, ms));
-
+    //return (handle_redirects(process, ms));
+    return (go_check_redirect(process, mod));
 }
 
 int last_child(t_process_node *process, t_shell *ms)
@@ -63,19 +63,18 @@ int last_child(t_process_node *process, t_shell *ms)
     ms->fd[1] = dup(STDOUT_FILENO);
     if (handle_heredocs(process, ms)== -1)
         return (-1);
-    return (handle_redirects(process, ms));
-    
+    //return (handle_redirects(process, ms));
+    return (go_check_redirect(process, mod));
 }
-
-
 
 int get_fd(t_process_node *process, t_shell *ms)
 {
-    if (ms->fork_n == 0)//command == 0
+    if (ms->fork_n == 0)//command == 1
     {
         if (handle_heredocs(process, ms) == -1)
             return (-1);
-        return (handle_redirects(process, ms));
+        //return (handle_redirects(process, ms));
+        return (go_check_redirect(process, mod));
     }
     if (ms->count == 0)
         return (first_child(process, ms));

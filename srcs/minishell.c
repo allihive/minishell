@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/05 20:49:04 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/06 21:22:17 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,10 @@ void	initialize_shell(t_shell *ms, char **envp)
 	//know the pwd somehow
 }
 
+
+	
+
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell ms;
@@ -86,7 +90,8 @@ int	main(int argc, char **argv, char **envp)
 				add_history(ms.line);
 				init_process_node(ms.line, &ms);
 				execute_shell(&ms);
-				execute_builtin(&ms, ms.list);
+				//execute_builtin(&ms, ms.list);
+				free_node(&ms.list);	
 			}
 			// split and execute shell here
 			// ms.line = readline("lobster-shell 🦞: ");
@@ -99,7 +104,7 @@ int	main(int argc, char **argv, char **envp)
 			// }
 			// //--------------
 			// //---------------
-			}
+		}
 		return (0);
 	}
 }

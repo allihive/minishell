@@ -140,6 +140,7 @@ void	error_handle(t_shell *ms);
 /*free*/
 void	free_single(char *str);
 void	free_double(char **arr);
+void free_node(t_process_node **lst);
 
 /*Builtin utils*/
 _Bool	is_builtin(char *cmd);
@@ -155,6 +156,9 @@ int do_process(t_process_node *process,t_shell *ms);
 
 /*Redirects*/
 int handle_redirects(t_process_node *process,t_shell *ms);
+void go_check_redirect(char *input, t_process_node *mod);
 
+/*Handle exitcode*/
+int	set_exitcode(t_shell *ms, int exitcode);
 
 #endif
