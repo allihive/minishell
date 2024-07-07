@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 
-static _Bool	check_case(char *cmd, char *builtin)
+_Bool	check_case(char *cmd, char *builtin)
 {
 	int		i;
 

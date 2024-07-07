@@ -19,8 +19,8 @@ int	ft_putstr_fd(char *s, int fd)
 	// i = 0;
 	if (! s)
 	{
-		if (ft_putstr_fd("(null)", fd) == -1)
-			return (-1);
+		//if (ft_putstr_fd("(null)", fd) == -1)
+			//return (-1);
 		return (0);
 	}
 	if (write (fd, s, ft_strlen(s)) == -1)

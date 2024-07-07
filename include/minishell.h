@@ -79,6 +79,7 @@ typedef struct s_shell //ms
 {
 	char 	**envp;
 	int 	envp_size;
+	char	**envp_paths;
 	int 	shlvl;//? not sure if we need this
 	char	*line;// read from realine function
 	int		fork_n;//fork number
@@ -136,6 +137,12 @@ int count_cmd(t_process_node *list);
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
 char	*find_value(t_shell *ms, char *key);
 int	find_key_in_envp(t_shell *ms, char *key);
+char *quote_remover(char *str);
+int count_quote(char *str);
+char *remove_quote(char *str, int len);
+
+
+
 
 /*error handling*/
 void	error_handle(t_shell *ms);
@@ -148,6 +155,7 @@ void free_node(t_process_node **lst);
 
 /*Builtin utils*/
 _Bool	is_builtin(char *cmd);
+_Bool	check_case(char *cmd, char *builtin);
 
 /* Pipex*/
 int pipex(t_process_node *process, t_shell *ms);
@@ -159,6 +167,8 @@ char *get_fd(char *input, t_process_node *process, t_shell *ms);
 
 /*Execution*/
 int do_process(t_process_node *process,t_shell *ms);
+int	call_builtin(t_shell *ms, t_process_node *node);
+
 
 /*Redirects*/
 //int handle_redirects(t_process_node *process,t_shell *ms);

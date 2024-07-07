@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/07 16:43:41 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/07 22:10:21 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -364,7 +364,7 @@ int init_process_node(char *line, t_shell *ms)
 			
 		append_process_node(&ms->list, new);// save every command in a node and append them to a list	
 		
-		dprintf(2, "new->node_line after append: %s\n",new->node_line );
+		//dprintf(2, "new->node_line after append: %s\n",new->node_line );
 		
 		check_syntax(new->node_line, ms);
 	// malloc pids
@@ -379,7 +379,7 @@ int init_process_node(char *line, t_shell *ms)
 	ms->execute = 0;
 	ms->fork_n = count_cmd(ms->list) - 1;
 	
-	ms->pids = ft_calloc(1,ms->fork_n * sizeof(pid_t));
+	ms->pids = ft_calloc((ms->fork_n + 1), sizeof(int));//data->cmds, sizeof(int)
 	if (ms->pids)
 		return (-1);//error handle close_and_free
 	ms->pids[0] = -1;
@@ -519,6 +519,46 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 
 
 
+// char **cmd_content_check(char **cmd)
+// {
+// 	int i;
+// 	char *tmp;
+	
+// 	i = 0;
+// 	while (cmd[i])
+// 	{
+// 		dprintf(2, "cmd[%d]-1:%s\n", i, cmd[i]);
+// 		if (cmd[i][0] == '\'' || cmd[i][0] == '"' )
+// 		{
+// 			dprintf(2, "in loop\n");
+// 			tmp = quote_remover(cmd[i]);
+			
+// 			if (!tmp)
+// 				dprintf(2, "tmp is NULL");
+// 			else 
+// 				dprintf(2, "tmp:%s\n", tmp);
+// 			if (!tmp)
+// 			{
+// 				free_single(cmd[i]);
+// 				free (tmp);
+				
+// 				if (cmd[i + 1])
+// 				{
+// 					dprintf(2, "cmd[%d]:%s\n", i + 1, cmd[i+1]);
+// 					free (cmd[i]);
+// 					//cmd[i] = cmd[i + 1];
+// 					dprintf(2, "cmd[%d]-2:%s\n", i, cmd[i]);
+// 				}
+// 				i--;
+// 			}
+// 			else
+// 				cmd[i] = cmd[i];
+			
+// 		}
+// 		i++;
+// 	}
+// 	return (cmd);	
+// }
 
 
 //char	**get_cmd_arr(char *command, t_process_node *mod)
@@ -530,6 +570,8 @@ char	**get_cmd_arr(char *command)
 	cmd_arr = ft_split_pipex(command, " ");
 	if (cmd_arr == NULL)
 		perror("maloc error");
+	
+	//cmd_arr = cmd_content_check(cmd_arr);//remove "" and ''
 	//i = 0;
 	//dont delete quote here
 	// while (cmd_arr[i] != NULL)  
@@ -567,6 +609,9 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 			}	
 			j++;
 		}
+		//dprintf(2, "a command[i]:%s\n", command[i]);
+		command[i] = quote_remover(command[i]);
+		//dprintf(2, "b command[i]:%s\n", command[i]);
 		i++;
 	}
 }
@@ -624,8 +669,18 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 		//get rid of ' '' save back to the string ; change mode
 		mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
 		
-		//dprintf(2, "fork:%d\n", ms->fork_n);
 		
+
+
+		//command check
+		int p = 0;
+		while (mod->command[p])
+		{
+			dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
+			p++;
+		}
+		
+
 		
 		if (is_builtin(mod->command[0]))
 			mod->builtin = 1;
@@ -663,12 +718,9 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		
 		parse_mod(input, mod, ms);//for parse test
 		
-		//if (mod->redirect_in[0])
-			//dprintf(2, "mod->redirect_in[0]:%s\n", mod->redirect_in[0]);
-		//if (mod->redirect_out[0])
-			//dprintf(2, "mod->redirect_out[0]:%s\n", mod->redirect_out[0]);
+		
 	
-		ms->count++;
+		
 		mod = mod->next;
 		// if (ms->list->next) //have to add this in order to also update the list to get the latest command
 		// 	ms->list = ms->list->next;

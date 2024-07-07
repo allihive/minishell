@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/07/05 18:19:14 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/07 21:41:57 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ void	echo(t_shell *ms, char **output) //char **output
 	i = 0;
 	j = 0;
 	i++; // skip echo
-	// dprintf(2, "output[0]:%s\n", output[0]);
-	// dprintf(2, "output[1]:%s\n", output[1]);
-	// dprintf(2, "output[2]:%s\n", output[2]);
+
 	while (output[i] && ft_charncmp(output[i]))
 	{
 		i++;
@@ -55,9 +53,7 @@ void	echo(t_shell *ms, char **output) //char **output
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
-	// dprintf(2, "output[0]:%s\n", output[0]);
-	// dprintf(2, "output[1]:%s\n", output[1]);
-	// dprintf(2, "output[2]:%s\n", output[2]);
+	
 	ms->excode = 0;
 }
 

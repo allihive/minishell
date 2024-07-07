@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/07 16:40:36 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/07 18:35:28 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int check_cmd(char *str)
     i = 0;
     while(str[i])
     {
-        if (str[i] == ' ')
+        if (str[i])
             return (1);
         i++;            
     }
@@ -61,7 +61,7 @@ int check_cmd(char *str)
 
 int pipex(t_process_node *process, t_shell *ms)
 {
-    dprintf(2, "in pipex\n");
+   
     while(ms->count < (ms->fork_n + 1))   
     {
         ms->execute = check_cmd(process->command[0]);//not sure if necessary
@@ -73,9 +73,9 @@ int pipex(t_process_node *process, t_shell *ms)
         
         // if (do_process(process, ms) == -1)
         //     return (close_and_free(ms));
-
+        //dprintf(2, "in pipex1\n");
         do_process(process, ms);
-
+        //dprintf(2, "in pipex2\n");
         close(ms->fd[0]);
         close(ms->fd[1]);
         ms->count++;
