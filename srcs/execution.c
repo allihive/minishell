@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/06 22:00:55 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/07 15:42:07 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 
 /////////////////////////////////////////////////////////////////////
 
-char	*verify_path(char *cmd, t_process_node *process, t_shell *ms)
+//char	*verify_path(char *cmd, t_process_node *process, t_shell *ms) 
+char	*verify_path(char *cmd, t_shell *ms)
 {
 	if (ft_strchr(cmd, '/') != NULL)
 	{
@@ -39,9 +40,9 @@ int get_path(t_process_node *process, t_shell *ms)
 	char	*str;
 	char	*command_path;
 
-    command_path = verify_path(process->command[0], process, ms);
-	if (process->cmd_path= NULL)
-		return (command_path);
+    command_path = verify_path(process->command[0], ms);
+	if (process->cmd_path == NULL)
+		return (0);
 	i = -1;
 	while (ms->envp != NULL && ms->envp[++i] != NULL)
 	{
@@ -64,8 +65,8 @@ int get_path(t_process_node *process, t_shell *ms)
 void do_dups(t_shell *ms)
 {
     close(ms->read_end);
-    dups(ms->fd[0], STDIN_FILENO);
-    dups(ms->fd[1], STDOUT_FILENO);
+    dup2(ms->fd[0], STDIN_FILENO);
+    dup2(ms->fd[1], STDOUT_FILENO);
     close(ms->fd[0]);
     close(ms->fd[1]);
 }
@@ -79,15 +80,15 @@ int do_command(t_shell *ms, t_process_node *process)
         execute_builtin(ms, process);
         //return (execute_builtin(ms, process));// error check return (-1)
 
-    if (get_path())
+    if (get_path(process, ms))
         return (-1);
     execve(process->cmd_path, process->command, ms->envp);
 	if (access(process->command[0], F_OK) == 0)
 	{
-		ft_printf("shell: %s: is a directory\n", data->cmd[0]);//need to fix error code
+		ft_printf("shell: %s: is a directory\n", process->command[0]);//need to fix error code
 		return (set_exitcode(ms, 126));
 	}
-	ft_printf("shell: %s: Permission denied\n", data->cmd[0]);//need to fix error code
+	ft_printf("shell: %s: Permission denied\n", process->command[0]);//need to fix error code
 	return (set_exitcode(ms, 1));
 }
 
@@ -103,13 +104,13 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
     }    
     else //create child process
     {
-        ms->pid[ms->count] = fork();
-        if (ms->pid[ms->count] < 0)
+        ms->pids[ms->count] = fork();
+        if (ms->pids[ms->count] < 0)
         {
             ft_putstr_fd("shell: error: fork failed\n", 2);
-			return (set_exitcode(data, -1));
+			return (set_exitcode(ms, -1));
         }
-        else if (ms->pid[ms->count] == 0)
+        else if (ms->pids[ms->count] == 0)
         {
             //data->sa.sa_handler = SIG_DFL;       signal
 			//sigaction(SIGQUIT, &data->sa, NULL);
@@ -117,5 +118,6 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
                 return (-1);
         }
     }    
+   
    return (0); 
 }

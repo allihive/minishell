@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/06 21:00:42 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/07 16:43:41 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,7 +436,7 @@ char *check_if_quote(char *str)
 
 
 //檢查整句 input <>
-char	*check_redirect( char *redirect, t_process_node *mod)
+char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 {
 //redierect = > infile.txt
 	char *end;
@@ -571,7 +571,7 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 	}
 }
 
-void go_check_redirect(char *input, t_process_node *mod)
+char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 {
 	char *redirect;
 	//char *end;
@@ -587,14 +587,14 @@ void go_check_redirect(char *input, t_process_node *mod)
 		//end = redirect;
 		
 		if (*redirect)
-			redirect = check_redirect(redirect, mod);//檢查redirect  input 0 redirect 19 
+			redirect = check_redirect(redirect, mod, ms);//檢查redirect  input 0 redirect 19 
 		else
 			break;
 		
 		redirect++;
 	}
 	
-	//return (redirect);
+	return (redirect);
 }
 
 void parse_mod(char *input, t_process_node *mod, t_shell *ms)
@@ -610,10 +610,10 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 			input++;
 		
 
-		//get_fd(mod, ms);//redirection
+		redirect  = get_fd(input, mod, ms);//redirection
 		
-		//go_check_redirect(input, mod);
-		redirect = input;
+		//go_check_redirect(input, mod, ms);
+		
 		while ( *redirect && !ifisredirect(*redirect))
 				redirect++;
 		

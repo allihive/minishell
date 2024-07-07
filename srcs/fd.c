@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:28 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/06 18:09:10 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/07 16:44:43 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,65 +21,74 @@ int	set_exitcode(t_shell *ms, int exitcode)
 	return (-1);
 }
 
-int first_child(t_process_node *process, t_shell *ms)
+char *first_child(char *input, t_process_node *process, t_shell *ms)
 {
     if (pipe(ms->fd)== -1)
     {
-        ft_putstr_fd("lobster-shell 🦞:error opening a pipe\n", 2);
-        return(set_exitcode(ms, -1));
+       
+        //close_fds(pipex);
+        //print_error("pipe error", pipex, 1);
+
+         perror("pipe error");// need to fix
+        
     }
     ms->read_end = dup(ms->fd[0]);    
     close(ms->fd[0]);
-    if (handle_heredocs(process, ms) == -1)
-        return (-1);
+    // if (handle_heredocs(process, ms) == -1)
+    //     return (-1);
     //return (handle_redirects(process, ms));
-    return (go_check_redirect(process, mod));    
+    
+    return (go_check_redirect(input, process, ms));    
 }
 
-int middle_child(t_process_node *process, t_shell *ms)
+char *middle_child(char *input, t_process_node *process, t_shell *ms)
 {
     int tmp_fd;
     
     if (pipe(ms->fd)== -1)
     {
-        ft_putstr_fd("lobster-shell 🦞:error opening a pipe\n", 2);
-        return(set_exitcode(ms, -1));
+         //close_fds(pipex);
+        //print_error("pipe error", pipex, 1);
+        perror("pipe error");// need to fix
     }
     tmp_fd = dup(ms->read_end);
     dup2(ms->fd[0], ms->read_end);
-    dup2( tmp_fd,fd[0]);// use fd[0] to open the file which opened by tmp_fd 
-    close(tmp);
-    if (handle_heredocs(process, ms) == -1)
-        return (-1);
+    dup2( tmp_fd, ms->fd[0]);// use fd[0] to open the file which opened by tmp_fd 
+    close(tmp_fd);
+    // if (handle_heredocs(process, ms) == -1)
+    //     return (-1);
     //return (handle_redirects(process, ms));
-    return (go_check_redirect(process, mod));
+    return (go_check_redirect( input, process, ms));
 }
 
-int last_child(t_process_node *process, t_shell *ms)
+char *last_child(char *input,t_process_node *process, t_shell *ms)
 {
     //last child no pipe
     dup2(ms->read_end, ms->fd[0]);
     close(ms->read_end);
     ms->fd[1] = dup(STDOUT_FILENO);
-    if (handle_heredocs(process, ms)== -1)
-        return (-1);
-    //return (handle_redirects(process, ms));
-    return (go_check_redirect(process, mod));
+    // if (handle_heredocs(process, ms)== -1)
+    //     return (-1);
+   
+    return (go_check_redirect(input, process, ms));
 }
 
-int get_fd(t_process_node *process, t_shell *ms)
+char *get_fd(char *input, t_process_node *process, t_shell *ms)
 {
     if (ms->fork_n == 0)//command == 1
     {
-        if (handle_heredocs(process, ms) == -1)
-            return (-1);
+        // if (handle_heredocs(process, ms) == -1)
+        //     return (-1);
         //return (handle_redirects(process, ms));
-        return (go_check_redirect(process, mod));
+        
+        return (go_check_redirect(input, process, ms));
     }
     if (ms->count == 0)
-        return (first_child(process, ms));
+        return (first_child(input, process, ms));
     else if (ms->count == ms->fork_n)
-        return (last_child(process, ms));
+        return (last_child(input, process, ms));
     else
-        return (middle_child(process, ms));
+        
+        return (middle_child(input, process, ms));
+    return (0);
 }

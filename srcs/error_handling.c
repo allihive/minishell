@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/05 18:18:33 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/07 16:38:36 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,20 @@ void	error_handle(t_shell *ms)
 	}
 	ft_printf("Readline unable to read");
 	exit(ms->excode);
+}
+
+
+
+
+
+
+void	only_print_error(char *name)
+{
+	if (ft_putstr_fd("lobster-shell 🦞: ", 2) == -1)
+	{
+		perror("pipex: write error");
+		exit(1);
+	}
+	perror(name);
+	exit(1);
 }

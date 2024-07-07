@@ -9,10 +9,10 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <unistd.h>
 # include <signal.h>
 # include <fcntl.h>
-
+# include <sys/wait.h>
+# include <unistd.h>
 
 # define true  1
 # define false 0
@@ -110,9 +110,11 @@ void 	envp_add(t_shell *ms, char *name);
 void	envp_print(t_shell *ms);
 void 	envp_update(t_shell *ms, char *name);
 char 	*env_exists(char *name, t_shell *ms);
+
 // char 	*name_exists(t_shell *ms, char *name);
 void	env(t_shell *ms);
 void	pwd(t_shell *ms, char **cmd);
+
 // void    envp_delete(t_shell *ms, char *name);
 void	envp_remove(t_shell *ms, char *content);
 void	unset(t_shell *ms, char **cmd);
@@ -129,6 +131,7 @@ int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);
 int count_cmd(t_process_node *list);
 
+
 /*expand*/
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
 char	*find_value(t_shell *ms, char *key);
@@ -136,6 +139,7 @@ int	find_key_in_envp(t_shell *ms, char *key);
 
 /*error handling*/
 void	error_handle(t_shell *ms);
+void	only_print_error(char *name);
 
 /*free*/
 void	free_single(char *str);
@@ -146,17 +150,23 @@ void free_node(t_process_node **lst);
 _Bool	is_builtin(char *cmd);
 
 /* Pipex*/
-int pipex(t_process_node *process,t_shell *ms);
+int pipex(t_process_node *process, t_shell *ms);
+int check_cmd(char *str);
+int wait_children(t_shell *ms, int *pids, int count);
 
 /*Fd*/
-int get_fd(t_process_node *process,t_shell *ms);
+char *get_fd(char *input, t_process_node *process, t_shell *ms);
 
 /*Execution*/
 int do_process(t_process_node *process,t_shell *ms);
 
 /*Redirects*/
-int handle_redirects(t_process_node *process,t_shell *ms);
-void go_check_redirect(char *input, t_process_node *mod);
+//int handle_redirects(t_process_node *process,t_shell *ms);
+char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
+void redir_in(char *redirectin,t_shell *ms);
+void redir_out(char *redirectout, t_shell *ms);
+void redir_append(char *redirectappend, t_shell *ms);
+char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
 /*Handle exitcode*/
 int	set_exitcode(t_shell *ms, int exitcode);
