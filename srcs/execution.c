@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/07 22:13:24 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/08 14:45:45 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,9 +171,9 @@ int do_command(t_shell *ms, t_process_node *process)
         return (-1);
 
     
-    //dprintf(2, "process->cmd_path: %s\n", process->cmd_path);
-    //dprintf(2, "process->command[0]: %s\n", process->command[0]);
-    //dprintf(2, "process->command[1]: %s\n", process->command[1]);
+    dprintf(2, "process->cmd_path: %s\n", process->cmd_path);
+    dprintf(2, "process->command[0]: %s\n", process->command[0]);
+    dprintf(2, "process->command[1]: %s\n", process->command[1]);
     
     execve(process->cmd_path, process->command, ms->envp);
 	if (access(process->command[0], F_OK) == 0)
@@ -181,7 +181,7 @@ int do_command(t_shell *ms, t_process_node *process)
 		ft_printf("shell: %s: is a directory\n", process->command[0]);//need to fix error code
 		return (set_exitcode(ms, 126));
 	}
-	ft_printf("shell: %s: Permission denied\n", process->command[0]);//need to fix error code
+	ft_printf("shell: %s: haha Permission denied\n", process->command[0]);//need to fix error code
 	//dprintf(2, "do command3\n");
     return (set_exitcode(ms, 1));
 }
@@ -192,7 +192,7 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
     //dprintf(2, "process->builtin:%d\n", process->builtin);
     //dprintf(2, "ms->fork:%d\n", ms->fork_n);
     //dprintf(2, "ms->count:%d\n", ms->count);
-    if (ms->fork_n == 0 && process->builtin)
+    if (ms->fork_n == 1 && process->builtin )
     {
        
         //if (!ms->execute)

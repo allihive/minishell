@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/07 22:10:21 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/08 14:15:14 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,7 +377,7 @@ int init_process_node(char *line, t_shell *ms)
 	ms->fd[0] = dup(STDIN_FILENO);//init as stdin
     ms->fd[1] = dup(STDOUT_FILENO);
 	ms->execute = 0;
-	ms->fork_n = count_cmd(ms->list) - 1;
+	ms->fork_n = count_cmd(ms->list);
 	
 	ms->pids = ft_calloc((ms->fork_n + 1), sizeof(int));//data->cmds, sizeof(int)
 	if (ms->pids)
@@ -442,7 +442,7 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 	char *end;
 	static int i = 0;
 	static int j = 0;
-		
+	int k;	
 
 		
 	if (*(redirect + 1) == '<')//<<heredoc
@@ -462,6 +462,7 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	else if (*redirect == '<')//in
 	{
+		k = 0;
 		mod->redirectin = 1;
 		redirect++;
 		end = redirect;
@@ -481,20 +482,27 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 		}
 		mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
 		
+		dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
 		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
+		if (ifisspace(mod->redirect_in[j][k]))
+		 	k++;
+		redir_in(mod->redirect_in[j] + k, ms);
 		while (mod->redirect_in[j])
 			j++;
 		
-		redir_in(mod->redirect_in[j], ms);
+		
 				
 	}	
 	else if (*redirect == '>')//out
 	{
 		mod->redirectout = 1;
+		
 		redirect++;
 		end = redirect;
+		dprintf(2, "end in redirect: %s\n", end);
 		while (*end && !ifisredirect(*end))
 			end++;
+		dprintf(2, "end in redirect 2: %s\n", end);
 		// Ensure mod->redirect_out is allocated and has enough space
 		if (mod->redirect_out == NULL) 
 		{
@@ -507,12 +515,17 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
 		}
 		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
+		dprintf(2, "redirect in redirect: %s\n", redirect);
+		dprintf(2, "end - redirect: %ld\n", end - redirect);
+		dprintf(2, "1 mod->redirect_out[]:%s\n", mod->redirect_out[i]);
 		mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
-		//dprintf(2, "mod->redirect_out[1]:%s\n", mod->redirect_out[1]);
+		dprintf(2, "2 mod->redirect_out[i]:%s\n", mod->redirect_out[i]);
+		redir_out(mod->redirect_out[i], ms);
+		
 		while (mod->redirect_out[i])
 			i++;
+		dprintf(2, "3 mod->redirect_out[i]: %s\n", mod->redirect_out[i]);
 		
-		redir_out(mod->redirect_out[i], ms);
 	}
 	return (redirect);
 }
@@ -649,7 +662,7 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	//ls -la
 	char *redirect;
 	char *command;//input without redirection
-	
+	char *start;// check the first redirect for cmd
 	
 		while (ifisspace(*input) )
 			input++;
@@ -659,13 +672,19 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 		
 		//go_check_redirect(input, mod, ms);
 		
-		while ( *redirect && !ifisredirect(*redirect))
-				redirect++;
+		
+		
+		start = input;
+		while ( *start && !ifisredirect(*start))
+				start++;
 		
 		//input  變成 echo "hello $USER"
-		command = ft_substr( input, 0 , (redirect - input)); // may need free 
-		//dprintf(2, "command in parse mod: %s\n",command);
-
+		
+		
+		command = ft_substr( input, 0 , (start - input)); // may need free 
+		
+		dprintf(2, "command:%s\n", command);
+		
 		//get rid of ' '' save back to the string ; change mode
 		mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
 		
@@ -720,7 +739,7 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		
 		
 	
-		
+		ms->count++;
 		mod = mod->next;
 		// if (ms->list->next) //have to add this in order to also update the list to get the latest command
 		// 	ms->list = ms->list->next;

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/07 18:35:28 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/08 14:31:48 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int wait_children(t_shell *ms, int *pids, int count)
     i = 0;
     status = 0;
    //ignore_signal();
-   while(i < count)
+   while(i < count - 1)
    {
         if (pids[i] == -1)
         {    
@@ -29,6 +29,7 @@ int wait_children(t_shell *ms, int *pids, int count)
             continue;
         }
         waitpid(pids[i], &status, 0);//函式等待子進程結束並獲取其狀態。
+        dprintf(2, "wait_children\n");
         if (WIFEXITED(status))//如果子進程正常結束，設置 data->excode 為子進程的退出狀態。
             ms->excode = WEXITSTATUS(status);
         else if (WIFSIGNALED(status))
@@ -61,11 +62,11 @@ int check_cmd(char *str)
 
 int pipex(t_process_node *process, t_shell *ms)
 {
-   
-    while(ms->count < (ms->fork_n + 1))   
+    
+        dprintf(2, "im here %d %d\n\n", ms->count, ms->fork_n);
+    while(ms->count < ms->fork_n + 1)   
     {
-        ms->execute = check_cmd(process->command[0]);//not sure if necessary
-        
+        //ms->execute = check_cmd(process->command[0]);//not sure if necessary 
         // if (get_fd(process, ms) == -1)
         //     return (close_and_free(ms));
 
@@ -73,13 +74,17 @@ int pipex(t_process_node *process, t_shell *ms)
         
         // if (do_process(process, ms) == -1)
         //     return (close_and_free(ms));
-        //dprintf(2, "in pipex1\n");
         do_process(process, ms);
+        //dprintf(2, "in pipex1\n");
         //dprintf(2, "in pipex2\n");
         close(ms->fd[0]);
         close(ms->fd[1]);
+        dprintf(2, "ms count pipex: %d\n", ms->count);
         ms->count++;
-        process = process->next;//to next node
+        if (process->next)
+        {
+            process = process->next;//to next node
+        }
    }
     wait_children(ms, ms->pids, (ms->fork_n + 1));
     //singal

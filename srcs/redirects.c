@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/07 16:45:44 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/08 13:03:08 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ void redir_out(char *redirectout, t_shell *ms)
 	//if (validate_redir(data, redir) == -1)
 		//return (-1);
 	close(ms->fd[1]);
-	if (redirectout[1] == '>')//>>
+	
+	if (redirectout)//>>
 		ms->fd[1] = open(redirectout, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (ms->fd[1] < 0)
 	{
-		if (access(redirectout + 1, F_OK) != 0)
+		if (access(redirectout, F_OK) != 0)
 			ft_printf( "shell: %s: No such file or directory\n", redirectout);//need to fix fd 2
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectout );//need to fix fd 2
@@ -67,11 +68,13 @@ void redir_in(char *redirectin,t_shell *ms)
     //if (validate_redir(data, redir) == -1)
 		//set_exitcode(data, -1);
 	close(ms->fd[0]);
+	
+	dprintf(2, "redirectin: %s\n", redirectin);//outfile
 	ms->fd[0] = open(redirectin, O_RDONLY);
 	if (ms->fd[0] < 0)
 	{
 		if (access(redirectin, F_OK) != 0)
-			ft_printf( "shell: %s: No such file or directory\n",redirectin);// need to fix fd 2
+			ft_printf( "hshsshell: %s: No such file or directory\n",redirectin);// need to fix fd 2
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectin);// need to fix fd 2
 		ms->execute = 0;
