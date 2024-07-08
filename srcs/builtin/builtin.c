@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/28 08:36:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/08 15:27:13 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	execute_builtin(t_shell *ms, t_process_node *node)
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
 		ft_export(ms, node->command);
 	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
-		pwd(ms, 0);
+		pwd(ms, 0, ms->fd[1]);
 	else if (ft_strncmp(node->command[0], "env", 3) == 0)
 		env(ms);
 	else if (ft_strncmp(node->command[0], "unset", 5) == 0)

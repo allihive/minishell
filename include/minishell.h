@@ -114,7 +114,8 @@ char 	*env_exists(char *name, t_shell *ms);
 
 // char 	*name_exists(t_shell *ms, char *name);
 void	env(t_shell *ms);
-void	pwd(t_shell *ms, char **cmd);
+//void	pwd(t_shell *ms, char **cmd);
+void	pwd(t_shell *ms, char **cmd, int fd_out);
 
 // void    envp_delete(t_shell *ms, char *name);
 void	envp_remove(t_shell *ms, char *content);
@@ -180,5 +181,9 @@ char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
 /*Handle exitcode*/
 int	set_exitcode(t_shell *ms, int exitcode);
+
+
+/*Utils*/
+int ifisspace(char c);
 
 #endif

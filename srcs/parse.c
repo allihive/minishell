@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/08 14:15:14 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/08 20:47:51 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,8 @@ int ifisredirect(char c)
 
 
 /* return 1 if char c is a spaces */
- int ifisspace(char c)
- {
+int ifisspace(char c)
+{
 	if (c == 32 || (c >= 9 && c <= 13))
 		return (1);				
 	return (0);
@@ -284,8 +284,9 @@ void append_process_node(t_process_node **list, t_process_node *new)
 {
 	t_process_node *last_node;
 	
-
-	
+	if (!list || !new)
+		return ;
+	new->next = NULL;
 	if (!*list)
 		*list = new;
 	else
@@ -499,10 +500,10 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 		
 		redirect++;
 		end = redirect;
-		dprintf(2, "end in redirect: %s\n", end);
+		//dprintf(2, "end in redirect: %s\n", end);
 		while (*end && !ifisredirect(*end))
 			end++;
-		dprintf(2, "end in redirect 2: %s\n", end);
+		//dprintf(2, "end in redirect 2: %s\n", end);
 		// Ensure mod->redirect_out is allocated and has enough space
 		if (mod->redirect_out == NULL) 
 		{
@@ -515,16 +516,16 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
 		}
 		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
-		dprintf(2, "redirect in redirect: %s\n", redirect);
-		dprintf(2, "end - redirect: %ld\n", end - redirect);
-		dprintf(2, "1 mod->redirect_out[]:%s\n", mod->redirect_out[i]);
+		//dprintf(2, "redirect in redirect: %s\n", redirect);
+		//dprintf(2, "end - redirect: %ld\n", end - redirect);
+		//dprintf(2, "1 mod->redirect_out[]:%s\n", mod->redirect_out[i]);
 		mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
-		dprintf(2, "2 mod->redirect_out[i]:%s\n", mod->redirect_out[i]);
+		//dprintf(2, "2 mod->redirect_out[i]:%s\n", mod->redirect_out[i]);
 		redir_out(mod->redirect_out[i], ms);
 		
 		while (mod->redirect_out[i])
 			i++;
-		dprintf(2, "3 mod->redirect_out[i]: %s\n", mod->redirect_out[i]);
+		//dprintf(2, "3 mod->redirect_out[i]: %s\n", mod->redirect_out[i]);
 		
 	}
 	return (redirect);
@@ -660,20 +661,14 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 {
 	//echo "hello $USER" > infile.txt 
 	//ls -la
-	char *redirect;
+	//char *redirect;
 	char *command;//input without redirection
 	char *start;// check the first redirect for cmd
 	
-		while (ifisspace(*input) )
-			input++;
-		
-
-		redirect  = get_fd(input, mod, ms);//redirection
-		
+		// while (ifisspace(*input) )
+		// 	input++;
+		// redirect  = get_fd(input, mod, ms);//redirection
 		//go_check_redirect(input, mod, ms);
-		
-		
-		
 		start = input;
 		while ( *start && !ifisredirect(*start))
 				start++;
@@ -683,27 +678,19 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 		
 		command = ft_substr( input, 0 , (start - input)); // may need free 
 		
-		dprintf(2, "command:%s\n", command);
+		//dprintf(2, "command:%s\n", command);
 		
 		//get rid of ' '' save back to the string ; change mode
 		mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
-		
-		
-
-
 		//command check
 		int p = 0;
 		while (mod->command[p])
 		{
-			dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
+			//dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
 			p++;
 		}
-		
-
-		
 		if (is_builtin(mod->command[0]))
 			mod->builtin = 1;
-		
 		/*
 		echo
 		hello $USER
@@ -732,14 +719,8 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		
 		input = mod->node_line;
 		//parse_mod(input, mod, ms);
-
-		
-		
 		parse_mod(input, mod, ms);//for parse test
-		
-		
-	
-		ms->count++;
+		//ms->count++;
 		mod = mod->next;
 		// if (ms->list->next) //have to add this in order to also update the list to get the latest command
 		// 	ms->list = ms->list->next;
@@ -752,10 +733,7 @@ void execute_shell(t_shell *ms)
 	
 	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
 	//parse_process_node(&ms->list);//for parse test
-	
 
-
-	
 	/* proper pipex
 	if (!ms->list)
 		exit(free_env(ms));
@@ -763,5 +741,6 @@ void execute_shell(t_shell *ms)
 		exit(ms->exitcode);
 	*/
 	pipex(ms->list, ms);//execute_children(ms); + wait_children(ms);
+	
 }
 

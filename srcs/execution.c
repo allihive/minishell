@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/08 14:45:45 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/08 20:32:01 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 	else if (node->command[0][0] == 'p' || node->command[0][0] == 'P')
 	{
 		if (check_case(node->command[0], "pwd"))//PWD pwD
-			pwd(ms, 0);
+			pwd(ms, 0,  ms->fd[1]);
 	}
 	else if (node->command[0][0] == 'e' || node->command[0][0] == 'E')
 	{
@@ -163,7 +163,7 @@ int do_command(t_shell *ms, t_process_node *process)
         do_dups(ms);
     if (process->builtin)
     {
-        
+        dprintf(2, "1 command:%s, builtin:%d\n", process->command[0],process->builtin);
         return (call_builtin (ms, process));
     }
     
@@ -171,10 +171,10 @@ int do_command(t_shell *ms, t_process_node *process)
         return (-1);
 
     
-    dprintf(2, "process->cmd_path: %s\n", process->cmd_path);
-    dprintf(2, "process->command[0]: %s\n", process->command[0]);
-    dprintf(2, "process->command[1]: %s\n", process->command[1]);
-    
+    //dprintf(2, "process->cmd_path: %s\n", process->cmd_path);
+    //dprintf(2, "process->command[0]: %s\n", process->command[0]);
+    //dprintf(2, "process->command[1]: %s\n", process->command[1]);
+   dprintf(2, "2 command:%s, builtin:%d\n", process->command[0],process->builtin);
     execve(process->cmd_path, process->command, ms->envp);
 	if (access(process->command[0], F_OK) == 0)
 	{
@@ -189,7 +189,8 @@ int do_command(t_shell *ms, t_process_node *process)
 
 int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流程，包括處理內建命令和創建子進程
 {
-    //dprintf(2, "process->builtin:%d\n", process->builtin);
+    
+	dprintf(2, "process->builtin:%d\n", process->builtin);
     //dprintf(2, "ms->fork:%d\n", ms->fork_n);
     //dprintf(2, "ms->count:%d\n", ms->count);
     if (ms->fork_n == 1 && process->builtin )
@@ -202,23 +203,26 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
     }    
     else //create child process
     {
-        
+        dprintf(2, "in do prcess else \n");
         ms->pids[ms->count] = fork();
+		dprintf(2, "in do prcess fork: %d, pids: %d \n",ms->count, ms->pids[ms->count]);
         if (ms->pids[ms->count] < 0)
         {
-            //dprintf(2, "in do process0\n");
+            dprintf(2, "in do process 0\n");
             ft_putstr_fd("shell: error: fork failed\n", 2);
 			return (set_exitcode(ms, -1));
         }
-        else if (ms->pids[ms->count] == 0)
+        if (ms->pids[ms->count] == 0)
         {
-            //data->sa.sa_handler = SIG_DFL;       signal
+            dprintf(2,"in child\n");
+			//data->sa.sa_handler = SIG_DFL;       signal
 			//sigaction(SIGQUIT, &data->sa, NULL);
-            //dprintf(2, "in do process1\n");
+            dprintf(2, "in do process 1\n");
             do_command(ms, process);
-            if (ms->execute || do_command(ms, process))
-                return (-1);
+            // if (ms->execute || do_command(ms, process))
+            //     return (-1);
         }
+		
     }    
    
    return (0); 
