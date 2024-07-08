@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/08 16:37:43 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/08 17:05:11 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,28 +161,48 @@ static int	export_str_check(char *str)
 	return (0);
 }
 
+static int	cmd_counter(char **cmd)
+{
+	int	cmd_args;
+	
+	cmd_args = 0;
+	while (cmd[cmd_args])
+	{
+		cmd_args++;
+	}
+	return (cmd_args);
+}
+
 int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt a double pointer
 {
 	int i;
+	int	j;
+	int	cmd_args;
 
 	i = 0;
-	
-	if (cmd[1] == NULL)
-		envp_print(ms, fd);
-	else if (!export_str_check(cmd[1]) && ms->envp[i])
+	j = 1;
+
+	cmd_args = cmd_counter(cmd);
+	while (j <= cmd_args)
 	{
-		// printf("cmd[1]: %s\n", cmd[1]);
-		if (name_exists(ms, cmd[1]))
+		if (cmd[j] == NULL)
+			envp_print(ms, fd);
+		else if (!export_str_check(cmd[j]) && ms->envp[i])
 		{
-			printf("before envp_update\n"); //delete comment
-			envp_update(ms, cmd[1]);
+			// printf("cmd[1]: %s\n", cmd[1]);
+			if (name_exists(ms, cmd[j]))
+			{
+				printf("before envp_update\n"); //delete comment
+				envp_update(ms, cmd[j]);
+			}
+			if (name_exists(ms, cmd[j]) == NULL)
+			{
+				printf("before add_envp\n"); //delete comment
+				envp_add(ms, cmd[j]);
+				printf("added envp\n");//delete comment
+			}
 		}
-		if (name_exists(ms, cmd[1]) == NULL)
-		{
-			printf("before add_envp\n"); //delete comment
-			envp_add(ms, cmd[1]);
-			printf("added envp\n");//delete comment
-		}
+		j++;
 	}
 	return(0);
 }
