@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 09:25:55 by alli              #+#    #+#             */
-/*   Updated: 2024/06/27 10:36:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/08 16:44:48 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 // 	ft_putchar_fd('\n', 1);
 // 	free(pwd_path);
 // }
-void	pwd(t_shell *ms, char **cmd)
+void	pwd(t_shell *ms, char **cmd, int fd)
 {
 	char	*str;
 	char	buf[1000];
@@ -34,9 +34,9 @@ void	pwd(t_shell *ms, char **cmd)
 	str = getcwd(buf, 1000);
 	if (str)
 	{
-		ft_putendl_fd(str, 1);
+		ft_putendl_fd(str, fd);
 		ms->excode = 0;
 	}
 	else
-		ft_putendl_fd(ms->cwd, 1);
+		ft_putendl_fd(ms->cwd, fd);
 }

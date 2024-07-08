@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/08 15:51:24 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/08 16:37:43 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,14 +161,14 @@ static int	export_str_check(char *str)
 	return (0);
 }
 
-int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a double pointer
+int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt a double pointer
 {
 	int i;
 
 	i = 0;
 	
 	if (cmd[1] == NULL)
-		envp_print(ms);
+		envp_print(ms, fd);
 	else if (!export_str_check(cmd[1]) && ms->envp[i])
 	{
 		// printf("cmd[1]: %s\n", cmd[1]);

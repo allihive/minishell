@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/29 19:29:21 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/08 16:45:31 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_ascii_order(t_shell *ms, char letter)
+static void	print_ascii_order(t_shell *ms, char letter, int fd)
 {
 	int		i;
 	int		j;
@@ -28,22 +28,22 @@ static void	print_ascii_order(t_shell *ms, char letter)
 		if (tmp[i] && tmp[i][0] == letter)
 		{
 			// printf("tmp[i][0]: %c\n", tmp[i][0]);
-			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd("declare -x ", fd);
 			while (tmp[i][j] != '=' && tmp[i][j] != '\0')
 			{
-				ft_putchar_fd(tmp[i][j], 1);
+				ft_putchar_fd(tmp[i][j], fd);
 				j++;
 			}
 			if (tmp[i][j] == '=')
 			{
 				j++;
-				ft_putstr_fd("=\"", 1);
+				ft_putstr_fd("=\"", fd);
 				while (tmp[i][j])
 				{
-					ft_putchar_fd(tmp[i][j], 1);
+					ft_putchar_fd(tmp[i][j], fd);
 					j++;
 				}
-				ft_putstr_fd("\"\n", 1);
+				ft_putstr_fd("\"\n", fd);
 			}
 			j++;
 		}
@@ -51,7 +51,7 @@ static void	print_ascii_order(t_shell *ms, char letter)
 	}
 }
 
-void	envp_print(t_shell *ms)
+void	envp_print(t_shell *ms, int fd)
 {
 	char	**new_list;
 	int		i;
@@ -70,7 +70,7 @@ void	envp_print(t_shell *ms)
 			i++;
 		while (letter < 127)
 		{
-			print_ascii_order(ms, letter);
+			print_ascii_order(ms, letter, fd);
 			letter++;
 		}
 		i++;
@@ -80,15 +80,15 @@ void	envp_print(t_shell *ms)
 void	execute_builtin(t_shell *ms, t_process_node *node)
 {
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
-		ft_export(ms, node->command);
+		ft_export(ms, node->command, 1);
 	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
-		pwd(ms, 0);
+		pwd(ms, 0, 1);
 	else if (ft_strncmp(node->command[0], "env", 3) == 0)
-		env(ms);
+		env(ms, 1);
 	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
 		unset(ms, node->command);
 	else if(ft_strncmp(node->command[0], "echo", 4) == 0)
-		echo(ms, node->command);
+		echo(ms, node->command, 1);
 	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
 		ft_exit(ms, node->command);
 	else if (ft_strncmp(node->command[0], "cd", 2) == 0)
