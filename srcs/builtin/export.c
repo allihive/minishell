@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/29 19:42:29 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/08 15:51:24 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,29 @@ void envp_update(t_shell *ms, char *name)
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
-		if (!ft_strncmp(ms->envp[i], name, len)) // returns 0 when it matches
+		if (ft_strncmp(ms->envp[i], name, len) == 0) // returns 0 when it matches
+		{
+			printf("ms->envp[i] found: %s\n", name_exists(ms, name));
 			break ;
+		}
 		i++;
 	}
+	printf("i: %d\n", i);
+	printf("len: %d\n", len);
+	printf("ms->envp[i]: %s\n", ms->envp[i]);
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
+		printf("ft_strlen(name): %zu\n", ft_strlen(name));
 		ft_bzero(ms->envp[i], ft_strlen(name));//give it a null space in the string the length of the name
 		ms->envp[i] = ft_strjoin(ms->envp[i], name);//this should be nulled and replaced.
 		if (!ms->envp[i]) //malloc check
+		{
+			printf("did not malloc");
 			error_handle(ms);
+		}
+		printf("ms->envp[i]: %s\n", ms->envp[i]);
 	}
+	printf("finished name in update: %s\n", name);
 }
 
 static char	*latest_envp(char *name)

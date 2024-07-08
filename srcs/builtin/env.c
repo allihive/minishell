@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 11:59:34 by alli              #+#    #+#             */
-/*   Updated: 2024/06/21 15:53:47 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/08 16:09:45 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	env(t_shell *ms)
 
 	i = 0;
 	tmp = ms->envp;
-	while (i < ms->envp_size)
+	while (*tmp && i < ms->envp_size)
 	{
 		ft_putstr_fd(tmp[i], 1);
 		ft_putchar_fd('\n', 1);
