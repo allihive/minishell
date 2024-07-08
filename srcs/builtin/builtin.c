@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/06/24 19:42:06 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/29 19:29:21 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,8 @@ void	execute_builtin(t_shell *ms, t_process_node *node)
 		unset(ms, node->command);
 	else if(ft_strncmp(node->command[0], "echo", 4) == 0)
 		echo(ms, node->command);
+	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
+		ft_exit(ms, node->command);
+	else if (ft_strncmp(node->command[0], "cd", 2) == 0)
+		cd(ms, node->command, 0, 0);
 }

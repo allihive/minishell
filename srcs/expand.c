@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/06/26 14:58:07 by alli             ###   ########.fr       */
+/*   Updated: 2024/06/27 08:29:49 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,10 +238,11 @@ char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms)//send the
 	return (result);
 }
 
-
+/*Test Cases*/
 // echo "3""'hello $USER'""7"
 // echo $HOME
 // echo "hello '$HOME'"
+//export VAR=echo; $VAR helloo -> helloo
 // X echo $'HOME' = HOME 
 // X echo '$HOME' = $HOME
 // X echo $"'HOME'" = 'HOME'

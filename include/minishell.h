@@ -83,10 +83,11 @@ void	set_signal(void);
 void	sig_ctrl_c(int sig);
 void	init_envp(t_shell *ms, char **envp);
 void	initialize_shell(t_shell *ms, char **envp);
-int 	check_shlvl(t_shell *ms);
+int 	add_shlvl(t_shell *ms);
 
 /*Builtin*/
 void	execute_builtin(t_shell *ms, t_process_node *node);
+void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd);
 
 /*Export Builtin Functions*/
 // int		export_str_check(char *str);
@@ -98,7 +99,6 @@ char 	*env_exists(char *name, t_shell *ms);
 // char 	*name_exists(t_shell *ms, char *name);
 void	env(t_shell *ms);
 void	pwd(t_shell *ms, char **cmd);
-// void	unset(t_shell *ms, char **cmd);
 // void    envp_delete(t_shell *ms, char *name);
 void	envp_remove(t_shell *ms, char *content);
 void	unset(t_shell *ms, char **cmd);
@@ -107,9 +107,13 @@ void	unset(t_shell *ms, char **cmd);
 void	echo(t_shell *ms, char **output);
 void	print_value(t_shell *ms, char *str);
 
+/*Exit Function*/
+void	ft_exit(t_shell *ms, char **cmd);
+
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);
+int count_cmd(t_process_node *list);
 
 /*expand*/
 char *expand_the_shit_out(char *cmd, t_process_node *mod, t_shell *ms);
