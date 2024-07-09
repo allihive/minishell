@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/08 17:05:11 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/09 11:06:06 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ static int	export_str_check(char *str)
 	return (0);
 }
 
-static int	cmd_counter(char **cmd)
+int	cmd_counter(char **cmd)
 {
 	int	cmd_args;
 	
