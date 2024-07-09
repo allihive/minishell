@@ -2,6 +2,7 @@ NAME = minishell
 #-fsanitize=address
 CFLAGS = -Wall -Wextra -Werror -I./include -g 
 
+
 LIBFT_DIR = ./libft
 LIBFT = ./libft/libft.a
 
@@ -21,7 +22,7 @@ else ifeq ($(UNAME_S), Linux)
 endif
 
 SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c fd.c\
-        ${addprefix builtin/, builtin.c export.c pwd.c env.c unset.c echo.c exit.c}}
+        ${addprefix builtin/, builtin.c export.c pwd.c env.c unset.c echo.c exit.c cd.c}}
 
 OBJ = ${SRCS:.c=.o}
 
@@ -39,7 +40,6 @@ ${LIBFT}:
 clean:
 	@rm -f ${OBJ}
 	@make clean -C libft/
-
 fclean: clean
 	@rm -f ${NAME}
 	@make fclean -C ${LIBFT_DIR}
