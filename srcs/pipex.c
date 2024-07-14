@@ -63,20 +63,19 @@ int check_cmd(char *str)
 int pipex(t_process_node *process, t_shell *ms)
 {
     
-    dprintf(2, "im here count:%d fork:%d\n\n", ms->count, ms->fork_n);
+   // dprintf(2, "im here count:%d fork:%d\n\n", ms->count, ms->fork_n);
    // ms->count = 0;
-    
-    
     while(ms->count < ms->fork_n)   
     //while (process != NULL)
     {
-        dprintf(2, "im here 2 count:%d, fork:%d\n\n", ms->count, ms->fork_n);
-        dprintf(2, "2 command:%s\n", process->command[0]);
+        //dprintf(2, "im here 2 count:%d, fork:%d\n\n", ms->count, ms->fork_n);
+        //dprintf(2, "2 command:%s\n", process->command[0]);
     
         //get_fd(process, ms);
         while (ifisspace(*process->node_line))
 			(process->node_line)++;
-		get_fd(process->node_line, process, ms);//redirection
+		if (get_fd(process->node_line, process, ms))
+            return (-1);//redirection
 
         
         // if (do_process(process, ms) == -1)
@@ -85,7 +84,6 @@ int pipex(t_process_node *process, t_shell *ms)
         if (ms->pids[ms->count] == 0)
             exit(0);
 
-        
         close(ms->fd[0]);
         close(ms->fd[1]);
         //dprintf(2, "ms count pipex: %d\n", ms->count);

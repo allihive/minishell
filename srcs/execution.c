@@ -190,7 +190,7 @@ int do_command(t_shell *ms, t_process_node *process)
 int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流程，包括處理內建命令和創建子進程
 {
     
-	dprintf(2, "process->builtin:%d\n", process->builtin);
+	//dprintf(2, "process->builtin:%d\n", process->builtin);
     //dprintf(2, "ms->fork:%d\n", ms->fork_n);
     //dprintf(2, "ms->count:%d\n", ms->count);
     if (ms->fork_n == 1 && process->builtin )
@@ -203,21 +203,21 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
     }    
     else //create child process
     {
-        dprintf(2, "in do prcess else \n");
+        //dprintf(2, "in do prcess else \n");
         ms->pids[ms->count] = fork();
-		dprintf(2, "in do prcess fork: %d, pids: %d \n",ms->count, ms->pids[ms->count]);
+		//dprintf(2, "in do prcess fork: %d, pids: %d \n",ms->count, ms->pids[ms->count]);
         if (ms->pids[ms->count] < 0)
         {
-            dprintf(2, "in do process 0\n");
+            //dprintf(2, "in do process 0\n");
             ft_putstr_fd("shell: error: fork failed\n", 2);
 			return (set_exitcode(ms, -1));
         }
         if (ms->pids[ms->count] == 0)
         {
-            dprintf(2,"in child\n");
+            //dprintf(2,"in child\n");
 			//data->sa.sa_handler = SIG_DFL;       signal
 			//sigaction(SIGQUIT, &data->sa, NULL);
-            dprintf(2, "in do process 1\n");
+            //dprintf(2, "in do process 1\n");
             do_command(ms, process);
             // if (ms->execute || do_command(ms, process))
             //     return (-1);

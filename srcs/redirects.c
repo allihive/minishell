@@ -16,9 +16,9 @@
 
 void redir_append(char *redirectappend, t_shell *ms)
 {
-	int		i;
+	//int		i;
 
-	i = 1;
+	//i = 1;
 	//if (validate_redir(data, redir) == -1)
 		//return (-1);
 	close(ms->fd[1]);
@@ -40,9 +40,9 @@ void redir_append(char *redirectappend, t_shell *ms)
 
 void redir_out(char *redirectout, t_shell *ms)
 {
-	int		i;
+	//int		i;
 
-	i = 1;
+	//i = 1;
 	//if (validate_redir(data, redir) == -1)
 		//return (-1);
 	close(ms->fd[1]);

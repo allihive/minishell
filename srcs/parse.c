@@ -437,7 +437,7 @@ char *check_if_quote(char *str)
 
 
 //檢查整句 input <>
-char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
+char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 {
 //redierect = > infile.txt
 	char *end;
@@ -448,10 +448,18 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 		
 	if (*(redirect + 1) == '<')//<<heredoc
 	{
-		mod->heredoc = 1;
-		redirect+= 2;
-		mod->here_doc = redirect;
-		//handdle_heredocs();
+		// mod->heredoc = 1;
+		// redirect+= 2;
+		// mod->here_doc = redirect;
+		// dprintf(2, "mod->here_doc: %s\n", mod->here_doc) ;
+		
+		
+		handle_heredocs(redirect, mod, ms);
+		// while (!ifisredirect(*(redirect + 2)))
+		// 	redirect++;
+		redirect = redirect + 2;
+		
+		//handle_heredocs(redirect, mod);
 	}
 	else if (*(redirect + 1) == '>')//>append
 	{
@@ -483,16 +491,19 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 		}
 		mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
 		
-		dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
+		//may need to free redirect
+		
+		
+		//dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
 		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
 		if (ifisspace(mod->redirect_in[j][k]))
 		 	k++;
 		redir_in(mod->redirect_in[j] + k, ms);
+
+		dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
 		while (mod->redirect_in[j])
 			j++;
-		
-		
-				
+			
 	}	
 	else if (*redirect == '>')//out
 	{
@@ -516,9 +527,6 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
 		}
 		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
-		//dprintf(2, "redirect in redirect: %s\n", redirect);
-		//dprintf(2, "end - redirect: %ld\n", end - redirect);
-		//dprintf(2, "1 mod->redirect_out[]:%s\n", mod->redirect_out[i]);
 		mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
 		//dprintf(2, "2 mod->redirect_out[i]:%s\n", mod->redirect_out[i]);
 		redir_out(mod->redirect_out[i], ms);
@@ -630,7 +638,7 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 	}
 }
 
-char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
+int go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 {
 	char *redirect;
 	//char *end;
@@ -653,7 +661,8 @@ char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 		redirect++;
 	}
 	
-	return (redirect);
+	//return (redirect);
+	return (0);
 }
 
 void parse_mod(char *input, t_process_node *mod, t_shell *ms)

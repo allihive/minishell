@@ -132,7 +132,7 @@ void	ft_exit(t_shell *ms, char **cmd);
 int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);
 int count_cmd(t_process_node *list);
-
+int ifisredirect(char c);
 
 /*expand*/
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
@@ -164,7 +164,7 @@ int check_cmd(char *str);
 int wait_children(t_shell *ms, int *pids, int count);
 
 /*Fd*/
-char *get_fd(char *input, t_process_node *process, t_shell *ms);
+int get_fd(char *input, t_process_node *process, t_shell *ms);
 
 /*Execution*/
 int do_process(t_process_node *process,t_shell *ms);
@@ -177,7 +177,7 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
 void redir_in(char *redirectin,t_shell *ms);
 void redir_out(char *redirectout, t_shell *ms);
 void redir_append(char *redirectappend, t_shell *ms);
-char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
+int go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
 /*Handle exitcode*/
 int	set_exitcode(t_shell *ms, int exitcode);
@@ -186,4 +186,8 @@ int	set_exitcode(t_shell *ms, int exitcode);
 /*Utils*/
 int ifisspace(char c);
 
+
+/*Heredoc*/
+int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms);
+//int handle_heredocs(char *redirect, t_process_node *process);
 #endif

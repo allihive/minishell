@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int handle_heredocs(t_process_node *process,t_shell *ms);
+
 
 
 int	set_exitcode(t_shell *ms, int exitcode)
@@ -21,7 +21,7 @@ int	set_exitcode(t_shell *ms, int exitcode)
 	return (-1);
 }
 
-char *first_child(char *input, t_process_node *process, t_shell *ms)
+int first_child(char *input, t_process_node *process, t_shell *ms)
 {
     dprintf(2, "checkfirst\n");
     
@@ -42,14 +42,13 @@ char *first_child(char *input, t_process_node *process, t_shell *ms)
     
     //dprintf(2, "first_child: ms->fd[1] = %d, ms->read_end = %d\n", ms->fd[1], ms->read_end);
     
-    // if (handle_heredocs(process, ms) == -1)
+    // if (handle_heredocs(input, process, ms) == -1)
     //     return (-1);
-    //return (handle_redirects(process, ms));
     
     return (go_check_redirect(input, process, ms));    
 }
 
-char *middle_child(char *input, t_process_node *process, t_shell *ms)
+int middle_child(char *input, t_process_node *process, t_shell *ms)
 {
     int tmp_fd;
     
@@ -69,15 +68,13 @@ char *middle_child(char *input, t_process_node *process, t_shell *ms)
     // close(ms->fd[0]);
     // close(ms->fd[1]);
 
-
-    //dprintf(2, "middle_child: ms->fd[1] = %d, ms->read_end = %d\n", ms->fd[1], ms->read_end);
-    // if (handle_heredocs(process, ms) == -1)
+    // if (handle_heredocs(input, process, ms) == -1)
     //     return (-1);
-    //return (handle_redirects(process, ms));
-    return (go_check_redirect( input, process, ms));
+
+    return (go_check_redirect(input, process, ms));
 }
 
-char *last_child(char *input,t_process_node *process, t_shell *ms)
+int last_child(char *input,t_process_node *process, t_shell *ms)
 {
     dprintf(2, "checklast\n");
     
@@ -85,23 +82,21 @@ char *last_child(char *input,t_process_node *process, t_shell *ms)
     dup2(ms->read_end, ms->fd[0]);
     close(ms->read_end);
     ms->fd[1] = dup(STDOUT_FILENO);
-    // if (handle_heredocs(process, ms)== -1)
+    // if (handle_heredocs(input, process, ms)== -1)
     //     return (-1);
-   
-
      //dprintf(2, "last_child: ms->fd[0] = %d, ms->fd[1] = %d\n", ms->fd[0], ms->fd[1]);
    
     return (go_check_redirect(input, process, ms));
 }
 
-char *get_fd(char *input, t_process_node *process, t_shell *ms)
+int get_fd(char *input, t_process_node *process, t_shell *ms)
 {
+    dprintf(2, "input in get_fd: %s\n\n", input) ;
     if (ms->fork_n == 1)//command == 1
     {
-        // if (handle_heredocs(process, ms) == -1)
+        // if (handle_heredocs(input, process, ms) == -1)
         //     return (-1);
-        //return (handle_redirects(process, ms));
-        
+            
         return (go_check_redirect(input, process, ms));
     }
     //dprintf(2, "ms count: %d\n", ms->count);
