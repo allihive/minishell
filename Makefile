@@ -38,7 +38,8 @@ ${LIBFT}:
 	make -C libft/
 
 clean:
-	@rm -f ${OBJ}
+	@rm -f ${OBJ} 
+	# infile1 infile outfile outfile1 outfile2
 	@make clean -C libft/
 fclean: clean
 	@rm -f ${NAME}

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:15:21 by alli              #+#    #+#             */
-/*   Updated: 2024/07/08 16:21:17 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/15 09:54:30 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 		if (!home)
 		{
 			ft_putstr_fd("bash: cd: HOME not set", 2);
-			ms->exit_code = 1;
+			ms->excode = 1;
 			return ;//don't exit remain in shell
 		}
 		// printf("pwd: %s\n", pwd);
@@ -60,7 +60,7 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 			ft_putstr_fd("bash: cd: ", 2);
 			ft_putstr_fd(home_value, 2);
 			ft_putstr_fd(": No such file or directory", 2);
-			ms->exit_code = 1;
+			ms->excode = 1;
 			return ;
 		}
 	}

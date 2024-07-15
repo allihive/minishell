@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/07/09 11:40:54 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/15 10:14:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@ static int	cmd_is_digit(char *cmd)
 	// int	j;
 
 	i = 0;
+	printf("cmd  in cmd_is_digit %s\n", cmd);
 	while (cmd[i] && ft_isdigit(cmd[i]))
 		i++;
-	if (!ft_isdigit(cmd[i]))
+	if (cmd[i] == '\0')
+		return (ft_atoi(cmd));
+	else //(ft_isdigit(cmd[i]) == 0)
 			return (0);
-	return (1);
+	
 }
 
 void	ft_exit(t_shell *ms, char **cmd)
@@ -30,10 +33,11 @@ void	ft_exit(t_shell *ms, char **cmd)
 	int	i;
 
 	i = 0;// cannot have more than 1 argv only exit 1234
+	printf("cmd_is_digit(cmd[1]): %d\n", cmd_is_digit(cmd[1]));
 	if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
 	{
 		ft_putstr_fd("exit\n", 1);
-		exit(0);
+		exit(ms->excode % 256);
 	}
 	else if (cmd_counter(cmd) > 2)
 	{
