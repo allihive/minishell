@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
+/*   Updated: 2024/07/15 19:29:15 by yhsu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -42,9 +54,9 @@ typedef struct s_flags
 	int	in_double;
 }	t_flags;
 
-// int	g_signal = 0;
+//int g_signal = 0; //global variable
 
-typedef struct s_process_node
+typedef struct s_process_node//
 {
 	char **command;
 	char *node_line;// = input
