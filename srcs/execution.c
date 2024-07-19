@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/08 20:32:01 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/19 16:44:32 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,7 @@ int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
     {
         process->cmd_path = command_path;
         return (0);
-    }
-		
+    }	
 	i = -1;
 	while (ms->envp_paths != NULL && ms->envp_paths[++i] != NULL)
 	{
@@ -115,8 +114,8 @@ int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
     //dprintf(2, "command_path-end: %s\n", command_path);
     process->cmd_path = command_path;
 	return (0);
-    
 }
+
 
 int	call_builtin(t_shell *ms, t_process_node *node)
 {
@@ -169,13 +168,12 @@ int do_command(t_shell *ms, t_process_node *process)
     
     if (get_path(process, ms))
         return (-1);
-
-    
     //dprintf(2, "process->cmd_path: %s\n", process->cmd_path);
     //dprintf(2, "process->command[0]: %s\n", process->command[0]);
     //dprintf(2, "process->command[1]: %s\n", process->command[1]);
-   dprintf(2, "2 command:%s, builtin:%d\n", process->command[0],process->builtin);
+   	//dprintf(2, "2 command:%s, builtin:%d\n", process->command[0],process->builtin);
     execve(process->cmd_path, process->command, ms->envp);
+
 	if (access(process->command[0], F_OK) == 0)
 	{
 		ft_printf("shell: %s: is a directory\n", process->command[0]);//need to fix error code

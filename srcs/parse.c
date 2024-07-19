@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/08 20:47:51 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/19 18:15:10 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -684,13 +684,16 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 		
 		//input  變成 echo "hello $USER"
 		
-		
-		command = ft_substr( input, 0 , (start - input)); // may need free 
+		if (!input)
+			return ;
+		else
+			command = ft_substr( input, 0 , (start - input)); // may need free 
 		
 		//dprintf(2, "command:%s\n", command);
 		
 		//get rid of ' '' save back to the string ; change mode
 		mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
+		
 		//command check
 		int p = 0;
 		while (mod->command[p])
@@ -698,6 +701,7 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 			//dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
 			p++;
 		}
+		
 		if (is_builtin(mod->command[0]))
 			mod->builtin = 1;
 		/*

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/15 19:29:15 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/18 15:09:04 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_flags
 
 //int g_signal = 0; //global variable
 
-typedef struct s_process_node//
+typedef struct s_process_node
 {
 	char **command;
 	char *node_line;// = input
@@ -89,20 +89,20 @@ typedef struct s_process_node//
 
 typedef struct s_shell //ms
 {
-	char 	**envp;
-	int 	envp_size;
-	char	**envp_paths;
-	int 	shlvl;//? not sure if we need this
-	char	*line;// read from realine function
-	int		fork_n;//fork number
-	int fd[2];
-	int read_end;
-	char *cwd;
-	int excode;
-	int	execute;
-	pid_t *pids;
-	int	 count;//node index  在pipex 會update
-	t_process_node *list;//list
+	char 			**envp;
+	int 			envp_size;
+	char			**envp_paths;
+	int 			shlvl;//? not sure if we need this
+	char			*line;// read from realine function
+	int				fork_n;//fork number
+	int 			fd[2];
+	int 			read_end;
+	char 			*cwd;
+	int 			excode;
+	int				execute;
+	pid_t 			*pids;
+	int	 			count;//node index  在pipex 會update
+	t_process_node *list;//node
 	// t_envp	*envp_list;
 }	t_shell;
 
@@ -164,7 +164,11 @@ void	only_print_error(char *name);
 /*free*/
 void	free_single(char *str);
 void	free_double(char **arr);
-void free_node(t_process_node **lst);
+void 	free_node(t_process_node **lst);
+void free_shell(t_shell *ms);
+int free_env(t_shell *ms);
+int close_and_free(t_shell *ms);
+
 
 /*Builtin utils*/
 _Bool	is_builtin(char *cmd);

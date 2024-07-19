@@ -20,7 +20,6 @@ _Bool	check_case(char *cmd, char *builtin)
 
 _Bool	is_builtin(char *cmd)
 {
-	
 	if (ft_strncmp(cmd, "export\0", 7) == 0)
 		return (1);
 	if (ft_strncmp(cmd, "unset\0", 6) == 0)

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/06 20:49:06 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/19 16:38:49 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	free_double(char **arr)
 {
 	int	i;
 
-	if (!arr || !*arr)
-		return ;
+	// if (!arr || !*arr)
+	// 	return ;
 	i = 0;
 	while (arr[i])
 		free_single(arr[i++]);
@@ -34,10 +34,12 @@ void	free_double(char **arr)
 }
 
 
-void free_node(t_process_node **lst)
+void free_node(t_process_node **lst)// free node
 {
 	t_process_node *temp;
 	
+	if (lst == NULL || *lst == NULL)
+		return;
 	while (*lst)
 	{
 		temp = (*lst)->next;
@@ -55,14 +57,42 @@ void free_node(t_process_node **lst)
 			free_single((*lst)->append_s);
 		if ((*lst)->cmd_path != NULL)//char	*input;
 			free_single((*lst)->cmd_path);
-		
 		free(*lst);
 		*lst = temp;
 	}
 	*lst = NULL;
 }
 
+int free_env(t_shell *ms)
+{
+	if (ms->envp)
+	{	
+		free_double(ms->envp);	
+	}
+	if (ms->cwd)
+		free_single(ms->cwd);
+	//may need to free old pwd
+	return (-1);
+}
 
-//free_env(ms)
+void free_shell(t_shell *ms)//free ms
+{
+	if (ms->envp_paths)
+		free_double(ms->envp_paths);
+	// if (ms->line)
+	// 	free(ms->line);
+	// if (ms->pids)
+	// 	free(ms->pids);
+	
+}
 
 //close_and_free
+int close_and_free(t_shell *ms)
+{
+	close(ms->fd[0]);
+	close(ms->fd[1]);
+	close(ms->read_end);
+	free_shell(ms);
+	//free_env(ms);
+	return (-1);
+}
