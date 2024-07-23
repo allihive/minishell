@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/19 16:44:32 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 15:17:29 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	init_envp_path(char **envp, t_shell *ms)
 {
 	char	**arr;
 
+	
+
 	if (*envp == NULL)
 	{
 		arr = ft_split("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin", ':');
@@ -88,8 +90,12 @@ int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
 	char	*str;
 	char	*command_path;
 
-    //dprintf(2, "in get path process->command[0]: %s\n", process->command[0]);
+    if (!process->command[0])
+		return (-1);
+	dprintf(2, "in get path process->command[0]: %s\n", process->command[0]);
+	dprintf(2, "in get path process->command[1]: %s\n", process->command[1]);
     init_envp_path(ms->envp, ms);
+	
     command_path = verify_path(process->command[0], ms);
     //dprintf(2, "command_path: %s\n", command_path);
 	if (command_path != NULL)

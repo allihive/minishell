@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/07 16:38:36 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 13:38:10 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	error_handle(t_shell *ms)
 {
+	if (!ms->envp)//hsu added for <infile
+		return ;
 	if (ms->envp)
 	{
 		ft_free_strs(ms->envp, 0, 0);

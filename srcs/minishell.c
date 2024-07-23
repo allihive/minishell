@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/18 14:57:12 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 15:18:47 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,6 @@ void	initialize_shell(t_shell *ms, char **envp)
 }
 
 
-	
-
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell ms;
@@ -104,7 +101,8 @@ int	main(int argc, char **argv, char **envp)
 			// //--------------
 			// //---------------
 			free_shell(&ms);
-			free_node(&ms.list);	
+			free_node(&ms.list);
+			//free_env(&ms);
 		}
 		return (0);
 	}

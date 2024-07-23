@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/19 16:38:49 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 13:38:21 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ void free_node(t_process_node **lst)// free node
 
 int free_env(t_shell *ms)
 {
+	
+	// if (!ms->envp_paths)
+	// 	return ;
 	if (ms->envp)
 	{	
 		free_double(ms->envp);	
@@ -77,7 +80,9 @@ int free_env(t_shell *ms)
 
 void free_shell(t_shell *ms)//free ms
 {
-	if (ms->envp_paths)
+	if (!ms->envp_paths)
+		return ;
+	else
 		free_double(ms->envp_paths);
 	// if (ms->line)
 	// 	free(ms->line);
