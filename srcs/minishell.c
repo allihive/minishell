@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/09 11:53:17 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 17:05:40 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int add_shlvl(t_shell *ms)//create the export function
 	if (!shlvl_str)
 		error_handle(ms);
 	envp_update(ms, shlvl_str);
-	printf("shlvl: %d\n", shlvl);
-	printf("before exiting %s\n", shlvl_str);
+	// printf("shlvl: %d\n", shlvl);
+	// printf("before exiting %s\n", shlvl_str);
 	free(shlvl_str);
 	return (shlvl);
 }
@@ -65,9 +65,6 @@ void	initialize_shell(t_shell *ms, char **envp)
 	add_shlvl(ms);
 	//know the pwd somehow
 }
-
-
-	
 
 
 int	main(int argc, char **argv, char **envp)

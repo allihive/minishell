@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/08 20:49:07 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/19 11:54:42 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ int pipex(t_process_node *process, t_shell *ms)
         // if (do_process(process, ms) == -1)
         //     return (close_and_free(ms));
         do_process(process, ms);
-        if (ms->pids[ms->count] == 0)
-            exit(0);
+        // if (ms->pids[ms->count] == 0)
+        //     exit(0);
 
         
         close(ms->fd[0]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/07 19:52:46 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 17:19:05 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,14 @@ char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 	//dprintf(2, "cmd in remove dollar:%s\n", cmd);
 	return (cmd);
 }
+char	*echo_exit_code(t_shell *ms)
+{
+	char *code;
 
+	code = ft_itoa(ms->excode);
+	ft_putstr_fd(code, 1);
+	return (code);
+}
 char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = key
 {
 	char *result = NULL;
@@ -317,12 +324,12 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != DOUBLEQUOTE))
 	{
 		result = cmd + i; //echo $'USER'   reusult = 'USER' 
-	}	
-	// else if (cmd[i] == '?' ) //2nd letter ?->exit code
-	// {
-	// 	ms->exit_code = 10;//need more functions for exit code	
-	// 	//expand_exit_code(cmd, ms, );
-	// }
+	}
+	else if (cmd[i] == '?' ) //2nd letter ?->exit code
+	{
+		
+		result = echo_exit_code(ms);
+	}
 	// else if (cmd[i] == '$')
 	// {
 	// 	//dprintf(2,"multi $\n");
@@ -374,6 +381,7 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 
 
 /*Test Cases*/
+//echo hello $USEroijg haha prints hello haha
 // echo "3""'hello $USER'""7"
 // echo $HOME
 // echo "hello '$HOME'"

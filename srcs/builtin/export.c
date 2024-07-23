@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/09 11:06:06 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/23 16:24:37 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,34 +61,34 @@ void envp_update(t_shell *ms, char *name)
 
 	i = 0;
 	len = 0;
-	printf("name in update: %s\n", name);
+	// printf("name in update: %s\n", name);
 	while (name[len] != '=')
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
 		if (ft_strncmp(ms->envp[i], name, len) == 0) // returns 0 when it matches
 		{
-			printf("ms->envp[i] found: %s\n", name_exists(ms, name));
+			// printf("ms->envp[i] found: %s\n", name_exists(ms, name));
 			break ;
 		}
 		i++;
 	}
-	printf("i: %d\n", i);
-	printf("len: %d\n", len);
-	printf("ms->envp[i]: %s\n", ms->envp[i]);
+	// printf("i: %d\n", i);
+	// printf("len: %d\n", len);
+	// printf("ms->envp[i]: %s\n", ms->envp[i]);
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
-		printf("ft_strlen(name): %zu\n", ft_strlen(name));
+		// printf("ft_strlen(name): %zu\n", ft_strlen(name));
 		ft_bzero(ms->envp[i], ft_strlen(name));//give it a null space in the string the length of the name
 		ms->envp[i] = ft_strjoin(ms->envp[i], name);//this should be nulled and replaced.
 		if (!ms->envp[i]) //malloc check
 		{
-			printf("did not malloc");
+			// printf("did not malloc");
 			error_handle(ms);
 		}
-		printf("ms->envp[i]: %s\n", ms->envp[i]);
+		// printf("ms->envp[i]: %s\n", ms->envp[i]);
 	}
-	printf("finished name in update: %s\n", name);
+	// printf("finished name in update: %s\n", name);
 }
 
 static char	*latest_envp(char *name)
@@ -102,7 +102,7 @@ static char	*latest_envp(char *name)
 			return (NULL); //error message
 		return (new_str);
 	}
-	printf("name in latest_envp: %s\n", name);
+	// printf("name in latest_envp: %s\n", name);
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
 		return (NULL); //error_message
@@ -192,7 +192,7 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 			// printf("cmd[1]: %s\n", cmd[1]);
 			if (name_exists(ms, cmd[j]))
 			{
-				printf("before envp_update\n"); //delete comment
+				// printf("before envp_update\n"); //delete comment
 				envp_update(ms, cmd[j]);
 			}
 			if (name_exists(ms, cmd[j]) == NULL)
