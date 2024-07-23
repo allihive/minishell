@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/06/25 11:03:39 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/09 11:06:06 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,34 @@ void envp_update(t_shell *ms, char *name)
 
 	i = 0;
 	len = 0;
+	printf("name in update: %s\n", name);
 	while (name[len] != '=')
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
-		if (!ft_strncmp(ms->envp[i], name, len)) // returns 0 when it matches
+		if (ft_strncmp(ms->envp[i], name, len) == 0) // returns 0 when it matches
+		{
+			printf("ms->envp[i] found: %s\n", name_exists(ms, name));
 			break ;
+		}
 		i++;
 	}
+	printf("i: %d\n", i);
+	printf("len: %d\n", len);
+	printf("ms->envp[i]: %s\n", ms->envp[i]);
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
+		printf("ft_strlen(name): %zu\n", ft_strlen(name));
 		ft_bzero(ms->envp[i], ft_strlen(name));//give it a null space in the string the length of the name
 		ms->envp[i] = ft_strjoin(ms->envp[i], name);//this should be nulled and replaced.
 		if (!ms->envp[i]) //malloc check
+		{
+			printf("did not malloc");
 			error_handle(ms);
+		}
+		printf("ms->envp[i]: %s\n", ms->envp[i]);
 	}
+	printf("finished name in update: %s\n", name);
 }
 
 static char	*latest_envp(char *name)
@@ -148,28 +161,48 @@ static int	export_str_check(char *str)
 	return (0);
 }
 
-int	ft_export(t_shell *ms, char **cmd)//works with single pointer but nt a double pointer
+int	cmd_counter(char **cmd)
+{
+	int	cmd_args;
+	
+	cmd_args = 0;
+	while (cmd[cmd_args])
+	{
+		cmd_args++;
+	}
+	return (cmd_args);
+}
+
+int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt a double pointer
 {
 	int i;
+	int	j;
+	int	cmd_args;
 
 	i = 0;
-	
-	if (cmd[1] == NULL)
-		envp_print(ms);
-	else if (!export_str_check(cmd[1]) && ms->envp[i])
+	j = 1;
+
+	cmd_args = cmd_counter(cmd);
+	while (j <= cmd_args)
 	{
-		// printf("cmd[1]: %s\n", cmd[1]);
-		if (name_exists(ms, cmd[1]))
+		if (cmd[j] == NULL)
+			envp_print(ms, fd);
+		else if (!export_str_check(cmd[j]) && ms->envp[i])
 		{
-			printf("before envp_update\n"); //delete comment
-			envp_update(ms, cmd[1]);
+			// printf("cmd[1]: %s\n", cmd[1]);
+			if (name_exists(ms, cmd[j]))
+			{
+				printf("before envp_update\n"); //delete comment
+				envp_update(ms, cmd[j]);
+			}
+			if (name_exists(ms, cmd[j]) == NULL)
+			{
+				printf("before add_envp\n"); //delete comment
+				envp_add(ms, cmd[j]);
+				printf("added envp\n");//delete comment
+			}
 		}
-		if (name_exists(ms, cmd[1]) == NULL)
-		{
-			printf("before add_envp\n"); //delete comment
-			envp_add(ms, cmd[1]);
-			printf("added envp\n");//delete comment
-		}
+		j++;
 	}
 	return(0);
 }

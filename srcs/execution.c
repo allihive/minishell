@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/23 15:17:29 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 15:29:55 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 {
 	
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
-		ft_export(ms, node->command);
+		ft_export(ms, node->command, 1); //added 1 for fd
 	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
 		unset(ms, node->command);
 	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
@@ -140,9 +140,9 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 	else if (node->command[0][0] == 'e' || node->command[0][0] == 'E')
 	{
 		if (check_case(node->command[0], "env"))
-			env(ms);
+			env(ms, 1); //added 1 for fd
 		else if (check_case(node->command[0], "echo"))
-			echo(ms, node->command);
+			echo(ms, node->command, 1);//added 1 for fd
 	}
     // else if (ft_strncmp(node->command[0], "cd", 2) == 0)
 	// 	cd(ms, node->command);

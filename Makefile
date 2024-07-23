@@ -2,6 +2,7 @@ NAME = minishell
 #-fsanitize=address
 CFLAGS = -Wall -Wextra -Werror -I./include 
 
+
 LIBFT_DIR = ./libft
 LIBFT = ./libft/libft.a
 
@@ -37,9 +38,9 @@ ${LIBFT}:
 	make -C libft/
 
 clean:
-	@rm -f ${OBJ}
+	@rm -f ${OBJ} 
+	# infile1 infile outfile outfile1 outfile2
 	@make clean -C libft/
-
 fclean: clean
 	@rm -f ${NAME}
 	@make fclean -C ${LIBFT_DIR}

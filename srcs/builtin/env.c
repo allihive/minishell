@@ -6,13 +6,13 @@
 /*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 11:59:34 by alli              #+#    #+#             */
-/*   Updated: 2024/06/21 15:53:47 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/08 16:34:26 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	env(t_shell *ms)
+void	env(t_shell *ms, int fd)
 {
 	int		i;
 	// int		j;
@@ -20,10 +20,10 @@ void	env(t_shell *ms)
 
 	i = 0;
 	tmp = ms->envp;
-	while (i < ms->envp_size)
+	while (*tmp && i < ms->envp_size)
 	{
-		ft_putstr_fd(tmp[i], 1);
-		ft_putchar_fd('\n', 1);
+		ft_putstr_fd(tmp[i], fd);
+		ft_putchar_fd('\n', fd);
 		i++;
 	}
 }

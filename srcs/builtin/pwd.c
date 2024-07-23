@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 09:25:55 by alli              #+#    #+#             */
-/*   Updated: 2024/07/08 20:28:04 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/09 11:53:11 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 // 	ft_putchar_fd('\n', 1);
 // 	free(pwd_path);
 // }
-void	pwd(t_shell *ms, char **cmd, int fd_out)
+void	pwd(t_shell *ms, char **cmd, int fd)
 {
 	char	*str;
 	char	buf[1000];
@@ -35,10 +35,9 @@ void	pwd(t_shell *ms, char **cmd, int fd_out)
 	str = getcwd(buf, 1000);
 	if (str)
 	{
-		ft_putendl_fd(str, fd_out);
-		
+		ft_putendl_fd(str, fd);
 		ms->excode = 0;
 	}
 	else
-		ft_putendl_fd(ms->cwd, fd_out);
+		ft_putendl_fd(ms->cwd, fd);
 }
