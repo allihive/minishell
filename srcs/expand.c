@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/23 17:19:05 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/24 11:34:15 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,11 +283,15 @@ char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 }
 char	*echo_exit_code(t_shell *ms)
 {
-	char *code;
+	char *exit_code;
 
-	code = ft_itoa(ms->excode);
-	ft_putstr_fd(code, 1);
-	return (code);
+	printf("in echo_exit %d\n", ms->excode);
+	exit_code = ft_itoa(ms->excode);
+	if (!exit_code)
+		return (NULL);
+	printf("in echo_exit str %s\n", exit_code);
+	ft_putstr_fd(exit_code, 1);
+	return (exit_code);
 }
 char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = key
 {
@@ -327,8 +331,9 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 	}
 	else if (cmd[i] == '?' ) //2nd letter ?->exit code
 	{
-		
+		printf("ms->excode before %d\n", ms->excode);
 		result = echo_exit_code(ms);
+		printf("finished printing\n");
 	}
 	// else if (cmd[i] == '$')
 	// {
@@ -352,7 +357,7 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 	i = 0;
 	//result = cmd;//$USER
 	mod->process_mode = 0;
-	
+	// printf("ms->excode in expand_it_out %d\n", ms->excode);
 	while (cmd[i])//"hello '$PATH'"
 	{
 		check_quote(mod, cmd[i], i);

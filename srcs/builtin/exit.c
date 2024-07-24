@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/07/15 10:14:28 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/24 15:35:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ static int	cmd_is_digit(char *cmd)
 
 	i = 0;
 	printf("cmd  in cmd_is_digit %s\n", cmd);
+	if (!cmd)
+	{
+		return 0;
+	}
 	while (cmd[i] && ft_isdigit(cmd[i]))
 		i++;
 	if (cmd[i] == '\0')
@@ -28,23 +32,34 @@ static int	cmd_is_digit(char *cmd)
 	
 }
 
-void	ft_exit(t_shell *ms, char **cmd)
+int	ft_exit(t_shell *ms, char **cmd)
 {
 	int	i;
 
-	i = 0;// cannot have more than 1 argv only exit 1234
-	printf("cmd_is_digit(cmd[1]): %d\n", cmd_is_digit(cmd[1]));
-	if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
+	i = 0;
+	// printf("cmd_is_digit(cmd[1]): %d\n", ft_atoi(cmd[1]));
+	if ((!cmd[1] || !ft_strncmp(cmd[1], "0", 1)))
+	{
+		ms->excode = 0;
+		printf("exit code in ft-exit %d\n", ms->excode);
+		return (ms->excode);
+	}
+	else if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
 	{
 		ft_putstr_fd("exit\n", 1);
-		exit(ms->excode % 256);
+		// exit(ms->excode % 256);
+		ms->excode = ft_atoi(cmd[1]) % 256;
+		printf("exit code in ft-exit %d\n", ms->excode);
+		return(ms->excode);
 	}
 	else if (cmd_counter(cmd) > 2)
 	{
 		ft_putstr_fd("exit\n", 1);
 		ft_putstr_fd("exit: ", 1);
 		ft_putstr_fd("too many arguments", 1);
-		exit (2);
+		// exit (2);
+		ms->excode = 1;
+		return(ms->excode);
 	}
 	else if (!cmd_is_digit(cmd[1]))
 	{
@@ -53,12 +68,8 @@ void	ft_exit(t_shell *ms, char **cmd)
 		ft_putstr_fd(": ", 1);
 		ft_putstr_fd("numeric arguments required\n", 1);
 		ms->excode = 2;
-		exit(2);//free_exit(); pipe exit and cleann up
+		return(ms->excode);
+		// exit(2);//free_exit(); pipe exit and cleann up
 	}
-	//figure out exit number 
-	// if (count_cmd(ms->list) == 1)
-	// {
-	// 	// free_exit(); pipe exit
-	// }
-	// exit(ex_code % 256);
+	return (0);
 }

@@ -126,7 +126,7 @@ void	echo(t_shell *ms, char **output, int fd);
 void	print_value(t_shell *ms, char *str);
 
 /*Exit Function*/
-void	ft_exit(t_shell *ms, char **cmd);
+int	ft_exit(t_shell *ms, char **cmd);
 
 /*Parse Functions*/
 int init_process_node(char *line, t_shell *ms);

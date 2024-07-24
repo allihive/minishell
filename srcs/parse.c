@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/08 20:47:51 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/24 13:36:18 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -740,6 +740,7 @@ void execute_shell(t_shell *ms)
 	else if (pipex(ms->list, ms) == -1)
 		exit(ms->exitcode);
 	*/
+	printf("ms->execute shell %d\n", ms->excode);
 	pipex(ms->list, ms);//execute_children(ms); + wait_children(ms);
 	
 }

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/19 11:52:34 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/24 13:52:47 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,13 +120,16 @@ int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
 
 int	call_builtin(t_shell *ms, t_process_node *node)
 {
-	
+	printf("ms->excode before in call builtin %d\n", ms->excode);
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
 		ft_export(ms, node->command, 1); //added 1 for fd
 	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
 		unset(ms, node->command);
 	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
+	{
 		ft_exit(ms, node->command);
+		printf("ms->excode in call builtin after func %d\n", ms->excode);
+	}
 	else if (node->command[0][0] == 'p' || node->command[0][0] == 'P') //doesn't work on linux with capitals
 	{
 		if (check_case(node->command[0], "pwd"))//PWD pwD
@@ -143,6 +146,7 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 	// 	cd(ms, node->command);
 	//else
 		//error_command();
+	printf("ms->excode in after call builtin %d\n", ms->excode);
 	return (ms->excode);
 }
 
@@ -166,7 +170,8 @@ int do_command(t_shell *ms, t_process_node *process)
     if (process->builtin)
     {
         dprintf(2, "1 command:%s, builtin:%d\n", process->command[0],process->builtin);
-        return (call_builtin (ms, process));
+		printf("ms->excode do_command %d\n", ms->excode);
+        return (ms->excode = call_builtin (ms, process));
     }
     
     if (get_path(process, ms))
@@ -202,7 +207,8 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
             //return (ms->excode);// need to check excode
         if (do_command(ms, process) == -1)
             return (-1);
-    }    
+		printf("ms->excode do_process %d\n", ms->excode);
+    }
     else //create child process
     {
         dprintf(2, "in do prcess else \n");
@@ -225,7 +231,6 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
             //     return (-1);
         }
 		
-    }    
-   
-   return (0); 
+    }
+   return (ms->excode); 
 }
