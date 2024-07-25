@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/07/09 11:52:29 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/24 11:28:57 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	echo(t_shell *ms, char **output, int fd) //char **output
 {
 	int	i;
 	int	j;
-	// int	k;
 
 	i = 0;
 	j = 0;
@@ -53,10 +52,6 @@ void	echo(t_shell *ms, char **output, int fd) //char **output
 			ft_putchar_fd(' ', fd);
 		i++;
 	}
-	
-	ms->excode = 0;
+	ms->excode  = 0;
 }
-
-
-
 

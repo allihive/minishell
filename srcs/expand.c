@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/07 19:52:46 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 12:22:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ char	*find_value(t_shell *ms, char *key)
 	}
 	return (NULL);
 }
-int	find_key_in_envp(t_shell *ms, char *key)
+char	*find_key_in_envp(t_shell *ms, char *key)
 {
 	int	i;
 
@@ -200,9 +200,9 @@ int	find_key_in_envp(t_shell *ms, char *key)
 		if (!key_exists(ms, key)) //doesn't match, then it will iterate through the list
 			i++;
 		else if (key_exists(ms, key)) //breaks if it equals or is at the end of list
-			return (1);
+			return (key);
 	}
-	return (0);
+	return (NULL);
 }
 
 char *get_value(int start, int len , char *cmd, t_shell *ms)
@@ -280,7 +280,18 @@ char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 	//dprintf(2, "cmd in remove dollar:%s\n", cmd);
 	return (cmd);
 }
+char	*echo_exit_code(t_shell *ms)
+{
+	char *exit_code;
 
+	printf("in echo_exit %d\n", ms->excode);
+	exit_code = ft_itoa(ms->excode);
+	if (!exit_code)
+		return (NULL);
+	printf("in echo_exit str %s\n", exit_code);
+	ft_putstr_fd(exit_code, 1);
+	return (exit_code);
+}
 char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = key
 {
 	char *result = NULL;
@@ -316,12 +327,13 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != DOUBLEQUOTE))
 	{
 		result = cmd + i; //echo $'USER'   reusult = 'USER' 
-	}	
-	// else if (cmd[i] == '?' ) //2nd letter ?->exit code
-	// {
-	// 	ms->exit_code = 10;//need more functions for exit code	
-	// 	//expand_exit_code(cmd, ms, );
-	// }
+	}
+	else if (cmd[i] == '?' ) //2nd letter ?->exit code
+	{
+		printf("ms->excode before %d\n", ms->excode);
+		result = echo_exit_code(ms);
+		printf("finished printing\n");
+	}
 	// else if (cmd[i] == '$')
 	// {
 	// 	//dprintf(2,"multi $\n");
@@ -344,7 +356,7 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 	i = 0;
 	//result = cmd;//$USER
 	mod->process_mode = 0;
-	
+	// printf("ms->excode in expand_it_out %d\n", ms->excode);
 	while (cmd[i])//"hello '$PATH'"
 	{
 		check_quote(mod, cmd[i], i);
@@ -373,6 +385,7 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 
 
 /*Test Cases*/
+//echo hello $USEroijg haha prints hello haha
 // echo "3""'hello $USER'""7"
 // echo $HOME
 // echo "hello '$HOME'"

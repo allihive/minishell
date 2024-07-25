@@ -12,7 +12,7 @@
 
 NAME = minishell
 #-fsanitize=address
-CFLAGS = -Wall -Wextra -Werror -I./include -g 
+CFLAGS = -Wall -Wextra -Werror -I./include
 
 
 LIBFT_DIR = ./libft

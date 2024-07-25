@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/23 17:28:46 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 13:44:40 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,20 @@ void	error_handle(t_shell *ms)
 	ft_printf("Readline unable to read");
 	exit(ms->excode);
 }
+
+// void	free_everything(t_shell *ms, t_process_node *node)
+// {
+// 	if 
+// }
+
+// void	error_command(t_shell *ms, t_process_node *node)
+// {
+// 	// ft_putstr_fd("%s: command not found", node->command[0]);
+// 	ms->excode = 1;
+// 	//should free everything and exit
+// 	// free_everything(ms, node);
+// 	return (ms->excode);
+// }
 
 
 

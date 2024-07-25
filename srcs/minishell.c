@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/25 13:32:22 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 13:45:54 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int add_shlvl(t_shell *ms)//create the export function
 	if (!shlvl_str)
 		error_handle(ms);
 	envp_update(ms, shlvl_str);
-	//printf("shlvl: %d\n", shlvl);
-	//printf("before exiting %s\n", shlvl_str);
+	// printf("shlvl: %d\n", shlvl);
+	// printf("before exiting %s\n", shlvl_str);
 	free(shlvl_str);
 	return (shlvl);
 }
@@ -107,8 +107,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 }
 */
-
-
 
 int	main(int argc, char **argv, char **envp)
 {
