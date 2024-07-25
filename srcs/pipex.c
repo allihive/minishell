@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/18 11:28:25 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 17:43:59 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int pipex(t_process_node *process, t_shell *ms)
         //get_fd(process, ms);
         while (ifisspace(*process->node_line))
 			(process->node_line)++;
+		dprintf(2, "in pipex process->node_line:%s\n", process->node_line);
 		if (get_fd(process->node_line, process, ms))
             return (-1);//redirection
 

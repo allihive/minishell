@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/08 13:03:08 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 13:02:48 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,14 @@ void redir_in(char *redirectin,t_shell *ms)
 	if (ms->fd[0] < 0)
 	{
 		if (access(redirectin, F_OK) != 0)
-			ft_printf( "hshsshell: %s: No such file or directory\n",redirectin);// need to fix fd 2
+			ft_printf( "shell: %s: No such file or directory\n",redirectin);// need to fix fd 2
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectin);// need to fix fd 2
 		ms->execute = 0;
 		set_exitcode(ms, -1);// need to check
 	}
+	
+	
 }
 
 

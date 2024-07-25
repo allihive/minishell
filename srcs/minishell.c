@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/23 15:30:10 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 13:32:22 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int add_shlvl(t_shell *ms)//create the export function
 	if (!shlvl_str)
 		error_handle(ms);
 	envp_update(ms, shlvl_str);
-	printf("shlvl: %d\n", shlvl);
-	printf("before exiting %s\n", shlvl_str);
+	//printf("shlvl: %d\n", shlvl);
+	//printf("before exiting %s\n", shlvl_str);
 	free(shlvl_str);
 	return (shlvl);
 }
@@ -66,12 +66,54 @@ void	initialize_shell(t_shell *ms, char **envp)
 	//know the pwd somehow
 }
 
-
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell ms;
 	(void)argv;
 	// (void)argc;
+
+	if (argc == 1)
+	{
+		initialize_shell(&ms, envp);
+		while (true)
+		{
+			set_signal();
+			ms.line = readline("lobster-shell 🦞: ");
+			//add_history(ms.line);
+			if (!ms.line)
+				error_handle(&ms);
+			else if (ms.line[0] != 0)
+			{
+				add_history(ms.line);
+			}
+			if (init_process_node(ms.line, &ms) == 0)
+			{
+				//execute_shell(&ms);
+				//printf("main0\n");
+				parse_process_node(&ms.list,&ms);
+				
+				//printf("main1\n");
+				if (!ms.list)
+					exit(free_env(&ms));
+				else if (pipex(ms.list, &ms) == -1)
+					exit(ms.excode);
+			}
+			//printf("main2\n");
+			free_shell(&ms);
+			free_node(&ms.list);
+		}
+		return (ms.excode);
+	}
+}
+*/
+
+
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell ms;
+	(void)argv;
 
 	if (argc == 1)
 	{
@@ -89,43 +131,11 @@ int	main(int argc, char **argv, char **envp)
 				execute_shell(&ms);
 				//execute_builtin(&ms, ms.list);
 			}
-			// split and execute shell here
-			// ms.line = readline("lobster-shell 🦞: ");
-			// if (!ms.line)
-			// 	error_handle(&ms);
-			// else
-			// {
-			// 	add_history(ms.line);
-			// 	free(ms.line);
-			// }
-			// //--------------
-			// //---------------
 			free_shell(&ms);
 			free_node(&ms.list);
-			//free_env(&ms);
 		}
 		return (0);
 	}
 }
-// }
 
 
-
-
-
-// int main() {
-//     t_shell ms;
-//     char s[] = "echo \"code '$USER' happy\"";
-//     char *env[] = { "USER=yhsu", NULL }; // Environment variables need to be NULL terminated
-    
-//     ms.line = s;
-//     ms.envp = env;
-
-// 	//char s[500] = "echo 'hello $USER' >> infile | cat < outfile.txt < outfile";
-// 	//char s[34] = "cat 42 < outfile.txt < outfile ";
-
-//     init_process_node(ms.line, &ms);
-//     execute_shell(&ms);
-
-//     return 0;
-// }

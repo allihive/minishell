@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/15 20:39:25 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 13:25:04 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)
     line = get_next_line(STDIN_FILENO);
     delimiter = (ft_strjoin( process->here_doc, "\n"));
     dprintf(2, "delimiter:%s\n", delimiter);
-    while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter) - 2) != 0 )// need to fix this my delimiter has invisible char (ascii 22)
+    while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter) -2) != 0 )// need to fix this my delimiter has invisible char (ascii 22)
     //while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) != 0 )
     {
         dprintf(2, "get_heredoc_input line:%s\n", line);
@@ -35,7 +35,7 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)
         }
         free(line);
         line = get_next_line(STDIN_FILENO);
-        printf("line=%s(%zu), delimiter=%s(%zu)\n", line, ft_strlen(line), delimiter, ft_strlen(delimiter) - 2);
+        printf("line=%s(%zu), delimiter=%s(%zu)\n", line, ft_strlen(line), delimiter, ft_strlen(delimiter));
         printf("%d\n", ft_strncmp(line, delimiter, 3));
     }
     // while (1)//fix should change to g_signal != 1

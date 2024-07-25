@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:15:21 by alli              #+#    #+#             */
-/*   Updated: 2024/07/15 09:54:30 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/23 15:44:26 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 {
 	char cwd[1000];
 
-	printf("cmd[1]: %s\n", cmd[1]);
+	
+	printf("in cd cmd[1]: %s\n", cmd[1]);
 	if (getcwd(cwd, 1000) == NULL)//getting current working directory
 	{
 		return ;

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/23 13:38:10 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 17:28:46 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	error_handle(t_shell *ms)
 
 void	only_print_error(char *name)
 {
-	if (ft_putstr_fd("lobster-shell 🦞: ", 2) == -1)
+	if (ft_putstr_fd("lobster-shell 🦞: in only print error", 2) == -1)
 	{
 		perror("pipex: write error");
 		exit(1);

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/23 15:29:55 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 17:54:04 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,8 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 		else if (check_case(node->command[0], "echo"))
 			echo(ms, node->command, 1);//added 1 for fd
 	}
-    // else if (ft_strncmp(node->command[0], "cd", 2) == 0)
-	// 	cd(ms, node->command);
+    else if (ft_strncmp(node->command[0], "cd", 2) == 0)
+		cd(ms, node->command, 0, 0);
 	return (ms->excode);
 }
 
@@ -182,10 +182,10 @@ int do_command(t_shell *ms, t_process_node *process)
 
 	if (access(process->command[0], F_OK) == 0)
 	{
-		ft_printf("shell: %s: is a directory\n", process->command[0]);//need to fix error code
+		ft_printf("🦞shell: %s: is a directory\n", process->command[0]);//need to fix error code
 		return (set_exitcode(ms, 126));
 	}
-	ft_printf("shell: %s: haha Permission denied\n", process->command[0]);//need to fix error code
+	ft_printf("🦞shell: %s: Permission denied\n", process->command[0]);//need to fix error code
 	//dprintf(2, "do command3\n");
     return (set_exitcode(ms, 1));
 }
@@ -222,9 +222,9 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
 			//data->sa.sa_handler = SIG_DFL;       signal
 			//sigaction(SIGQUIT, &data->sa, NULL);
             //dprintf(2, "in do process 1\n");
-            do_command(ms, process);
-            // if (ms->execute || do_command(ms, process))
-            //     return (-1);
+            //do_command(ms, process);
+            if (ms->execute || do_command(ms, process))
+            	return (-1);
         }
 		
     }    

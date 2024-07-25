@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/18 15:09:04 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 18:33:56 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);
 int count_cmd(t_process_node *list);
 int ifisredirect(char c);
+void parse_process_node(t_process_node **list, t_shell *ms);
+
 
 /*expand*/
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);

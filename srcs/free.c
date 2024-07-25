@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/23 13:38:21 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/23 17:55:27 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,6 @@ int close_and_free(t_shell *ms)
 	close(ms->fd[1]);
 	close(ms->read_end);
 	free_shell(ms);
-	//free_env(ms);
+	free_env(ms);
 	return (-1);
 }
