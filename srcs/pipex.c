@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 13:47:10 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 15:31:54 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,14 @@ int pipex(t_process_node *process, t_shell *ms)
     while(ms->count < ms->fork_n)   
     //while (process != NULL)
     {
-        //dprintf(2, "im here 2 count:%d, fork:%d\n\n", ms->count, ms->fork_n);
-        //dprintf(2, "2 command:%s\n", process->command[0]);
-    
-        //get_fd(process, ms);
+		//add data->execute = check_cmd
         while (ifisspace(*process->node_line))
 			(process->node_line)++;
+		
 		dprintf(2, "in pipex process->node_line:%s\n", process->node_line);
-		if (get_fd(process->node_line, process, ms))
-            return (-1);//redirection
+		
+		if (get_fd(process->node_line, process, ms) == -1)
+            return (close_and_free(ms));//redirection
 
         if (do_process(process, ms) == -1 || ms->pids[ms->count] == 0)
         	return (close_and_free(ms));

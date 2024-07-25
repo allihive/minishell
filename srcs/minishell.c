@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/25 13:45:54 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 15:22:29 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,17 +122,40 @@ int	main(int argc, char **argv, char **envp)
 			ms.line = readline("lobster-shell 🦞: ");
 			if (!ms.line)
 				error_handle(&ms);
-			else if (ms.line[0] != '\0')
+			// else if (ms.line[0] != '\0')
+			// {
+			// 	add_history(ms.line);
+			// 	init_process_node(ms.line, &ms);
+			// 	execute_shell(&ms);
+			// 	//execute_builtin(&ms, ms.list);
+			// }
+			else if (ms.line[0] != 0)
 			{
 				add_history(ms.line);
-				init_process_node(ms.line, &ms);
-				execute_shell(&ms);
-				//execute_builtin(&ms, ms.list);
 			}
-			free_shell(&ms);
-			free_node(&ms.list);
+			if (init_process_node(ms.line, &ms) == 0)
+			{
+				//execute_shell(&ms);
+				//printf("main0\n");
+				parse_process_node(&ms.list,&ms);
+				
+				//printf("main1\n");
+				if (!ms.list)
+					exit(free_env(&ms));
+				else if (pipex(ms.list, &ms) == -1)
+					exit(ms.excode);
+				
+				free_shell(&ms);
+				free_node(&ms.list);
+			
+			}
+			
+
+
+			
+			
 		}
-		return (0);
+		return (ms.excode);
 	}
 }
 

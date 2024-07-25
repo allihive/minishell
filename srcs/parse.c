@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 13:43:55 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 16:07:21 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,7 +332,7 @@ int init_process_node(char *line, t_shell *ms)
 	
     
 	if (!line || !*line || check_syntax(ms->line, ms) || empty_prompt(line))
-        return (-1);
+        return (set_exitcode(ms, -1));
   
 	
 	while (*line)
@@ -382,8 +382,8 @@ int init_process_node(char *line, t_shell *ms)
 	
 	ms->count = 0;
 	ms->read_end = -1;
-	ms->fd[0] = dup(STDIN_FILENO);//init as stdin
-    ms->fd[1] = dup(STDOUT_FILENO);
+	ms->fd[0] = dup(0);//init as stdin
+    ms->fd[1] = dup(1);
 	ms->execute = 0;
 	ms->fork_n = count_cmd(ms->list);
 	
@@ -392,7 +392,6 @@ int init_process_node(char *line, t_shell *ms)
 	if (!ms->pids)
 		return (close_and_free(ms));
 	ms->pids[0] = -1;
-	
 	return (0);
 }
 
@@ -470,7 +469,7 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 		
 		//handle_heredocs(redirect, mod);
 	}
-	else if (*(redirect + 1) == '>')//>append
+	else if (*(redirect + 1) == '>')//>>append
 	{
 		mod->append = 1;
 		redirect = redirect + 2;

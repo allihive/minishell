@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:28 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/08 17:26:47 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 16:17:22 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ int first_child(char *input, t_process_node *process, t_shell *ms)
     if (pipe(ms->fd)== -1)
     {
        
-        //close_fds(pipex);
-        //print_error("pipe error", pipex, 1);
-
-         perror("pipe error");// need to fix
+        ft_putstr_fd( "shell: error opening a pipe\n", 2);
+		return (set_exitcode(ms, -1));
         
     }
     dprintf(2, "checkfirst 1\n");
@@ -56,9 +54,8 @@ int middle_child(char *input, t_process_node *process, t_shell *ms)
    
     if (pipe(ms->fd)== -1)
     {
-         //close_fds(pipex);
-        //print_error("pipe error", pipex, 1);
-        perror("pipe error");// need to fix
+        ft_putstr_fd("shell: error opening a pipe\n", 2);
+		return (set_exitcode(ms, -1));
     }
     tmp_fd = dup(ms->read_end);
     dup2(ms->fd[0], ms->read_end);
@@ -81,7 +78,7 @@ int last_child(char *input,t_process_node *process, t_shell *ms)
     //last child no pipe
     dup2(ms->read_end, ms->fd[0]);
     close(ms->read_end);
-    ms->fd[1] = dup(STDOUT_FILENO);
+    ms->fd[1] = dup(1);
     // if (handle_heredocs(input, process, ms)== -1)
     //     return (-1);
      //dprintf(2, "last_child: ms->fd[0] = %d, ms->fd[1] = %d\n", ms->fd[0], ms->fd[1]);
@@ -91,16 +88,16 @@ int last_child(char *input,t_process_node *process, t_shell *ms)
 
 int get_fd(char *input, t_process_node *process, t_shell *ms)
 {
-    dprintf(2, "input in get_fd: %s\n\n", input) ;
+    dprintf(2, "input in get_fd: %s\n", input);
+	dprintf(2, "fork_n in get_fd: %d\n", ms->fork_n);
     if (ms->fork_n == 1)//command == 1
-    {
-        // if (handle_heredocs(input, process, ms) == -1)
-        //     return (-1);
-            
-        return (go_check_redirect(input, process, ms));
+    { 
+         dprintf(2, "in if condition in get fd\n");
+		return (go_check_redirect(input, process, ms));
     }
     //dprintf(2, "ms count: %d\n", ms->count);
-    if (ms->count == 0)
+    dprintf(2, "get fd2\n") ;
+	if (ms->count == 0)
         return (first_child(input, process, ms));
     else if (ms->count == ms->fork_n -1)
         return (last_child(input, process, ms));

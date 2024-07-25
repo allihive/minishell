@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 13:45:18 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 15:15:24 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
 
 int	call_builtin(t_shell *ms, t_process_node *node)
 {
-	printf("ms->excode before in call builtin %d\n", ms->excode);
+	//printf("ms->excode before in call builtin %d\n", ms->excode);
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
 		ft_export(ms, node->command, 1); //added 1 for fd
 	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
@@ -158,8 +158,8 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 void do_dups(t_shell *ms)
 {
     close(ms->read_end);
-    dup2(ms->fd[0], STDIN_FILENO);
-    dup2(ms->fd[1], STDOUT_FILENO);
+    dup2(ms->fd[0], 0);// stdinput
+    dup2(ms->fd[1], 1);//stdoutput
     close(ms->fd[0]);
     close(ms->fd[1]);
 }
@@ -172,7 +172,7 @@ int do_command(t_shell *ms, t_process_node *process)
         do_dups(ms);
     if (process->builtin)
     {
-        dprintf(2, "1 command:%s, builtin:%d\n", process->command[0],process->builtin);
+        //dprintf(2, "1 command:%s, builtin:%d\n", process->command[0],process->builtin);
 		// printf("ms->excode do_command %d\n", ms->excode);
         return (ms->excode = call_builtin (ms, process));
     }

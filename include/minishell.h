@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/23 18:33:56 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 16:12:19 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,9 +193,9 @@ int	call_builtin(t_shell *ms, t_process_node *node);
 /*Redirects*/
 //int handle_redirects(t_process_node *process,t_shell *ms);
 char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
-void redir_in(char *redirectin,t_shell *ms);
-void redir_out(char *redirectout, t_shell *ms);
-void redir_append(char *redirectappend, t_shell *ms);
+int redir_in(char *redirectin,t_shell *ms);
+int redir_out(char *redirectout, t_shell *ms);
+int redir_append(char *redirectappend, t_shell *ms);
 int go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
 /*Handle exitcode*/

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 13:02:48 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 16:12:34 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 
-void redir_append(char *redirectappend, t_shell *ms)
+int redir_append(char *redirectappend, t_shell *ms)
 {
 	//int		i;
 
@@ -22,8 +22,9 @@ void redir_append(char *redirectappend, t_shell *ms)
 	//if (validate_redir(data, redir) == -1)
 		//return (-1);
 	close(ms->fd[1]);
-	if (redirectappend[1] == '>')//>>
-		ms->fd[1] = open(redirectappend, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	//if (redirectappend[1] == '>')//>>
+	if (ms->list->append == 1)
+		ms->fd[1] = open(redirectappend, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (ms->fd[1] < 0)
 	{
 		if (access(redirectappend, F_OK) != 0)
@@ -31,14 +32,12 @@ void redir_append(char *redirectappend, t_shell *ms)
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectappend);//need to fix fd 2
 		ms->execute = 0;
-		set_exitcode(ms, -1);
+		return (set_exitcode(ms, -1));
 	}
-	
+	return (0);
 }
 
-
-
-void redir_out(char *redirectout, t_shell *ms)
+int redir_out(char *redirectout, t_shell *ms)
 {
 	//int		i;
 
@@ -56,14 +55,14 @@ void redir_out(char *redirectout, t_shell *ms)
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectout );//need to fix fd 2
 		ms->execute = 0;
-		set_exitcode(ms, -1);
+		return (set_exitcode(ms, -1));
 	}
-	
+	return (0);
 }
 
 
 
-void redir_in(char *redirectin,t_shell *ms)
+int redir_in(char *redirectin,t_shell *ms)
 {
     //if (validate_redir(data, redir) == -1)
 		//set_exitcode(data, -1);
@@ -78,9 +77,9 @@ void redir_in(char *redirectin,t_shell *ms)
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectin);// need to fix fd 2
 		ms->execute = 0;
-		set_exitcode(ms, -1);// need to check
+		return (set_exitcode(ms, -1));// need to check
 	}
-	
+	return (0);
 	
 }
 
