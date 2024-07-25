@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 15:31:54 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/25 16:42:58 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,13 @@ int pipex(t_process_node *process, t_shell *ms)
 		if (get_fd(process->node_line, process, ms) == -1)
             return (close_and_free(ms));//redirection
 
-        if (do_process(process, ms) == -1 || ms->pids[ms->count] == 0)
-        	return (close_and_free(ms));
         
+        // if (do_process(process, ms) == -1)
+        //     return (close_and_free(ms));
+        do_process(process, ms);
+        if (ms->pids[ms->count] == 0)
+            exit(0);
+
         close(ms->fd[0]);
         close(ms->fd[1]);
         //dprintf(2, "ms count pipex: %d\n", ms->count);

@@ -6,7 +6,11 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/07/23 17:55:27 by yhsu             ###   ########.fr       */
+=======
+/*   Updated: 2024/07/06 20:49:06 by yhsu             ###   ########.fr       */
+>>>>>>> parent of 60c5e28 (added free_shell and free_env)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +28,8 @@ void	free_double(char **arr)
 {
 	int	i;
 
-	// if (!arr || !*arr)
-	// 	return ;
+	if (!arr || !*arr)
+		return ;
 	i = 0;
 	while (arr[i])
 		free_single(arr[i++]);
@@ -34,12 +38,10 @@ void	free_double(char **arr)
 }
 
 
-void free_node(t_process_node **lst)// free node
+void free_node(t_process_node **lst)
 {
 	t_process_node *temp;
 	
-	if (lst == NULL || *lst == NULL)
-		return;
 	while (*lst)
 	{
 		temp = (*lst)->next;
@@ -57,6 +59,7 @@ void free_node(t_process_node **lst)// free node
 			free_single((*lst)->append_s);
 		if ((*lst)->cmd_path != NULL)//char	*input;
 			free_single((*lst)->cmd_path);
+		
 		free(*lst);
 		*lst = temp;
 	}

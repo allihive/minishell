@@ -6,7 +6,11 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/07/25 16:07:21 by yhsu             ###   ########.fr       */
+=======
+/*   Updated: 2024/07/08 20:47:51 by yhsu             ###   ########.fr       */
+>>>>>>> parent of 60c5e28 (added free_shell and free_env)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -692,10 +696,8 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 		
 		//input  變成 echo "hello $USER"
 		
-		if (!input)
-			return ;
-		else
-			command = ft_substr( input, 0 , (start - input)); // may need free 
+		
+		command = ft_substr( input, 0 , (start - input)); // may need free 
 		
 		//dprintf(2, "command:%s\n", command);
 		
@@ -709,7 +711,6 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 			//dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
 			p++;
 		}
-		
 		if (is_builtin(mod->command[0]))
 			mod->builtin = 1;
 		/*
