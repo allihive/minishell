@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/24 11:34:15 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/25 12:22:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ char	*find_value(t_shell *ms, char *key)
 	}
 	return (NULL);
 }
-int	find_key_in_envp(t_shell *ms, char *key)
+char	*find_key_in_envp(t_shell *ms, char *key)
 {
 	int	i;
 
@@ -201,9 +201,9 @@ int	find_key_in_envp(t_shell *ms, char *key)
 		if (!key_exists(ms, key)) //doesn't match, then it will iterate through the list
 			i++;
 		else if (key_exists(ms, key)) //breaks if it equals or is at the end of list
-			return (1);
+			return (key);
 	}
-	return (0);
+	return (NULL);
 }
 
 char *get_value(int start, int len , char *cmd, t_shell *ms)

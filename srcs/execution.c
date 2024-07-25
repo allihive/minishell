@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/24 13:52:47 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/25 12:31:15 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,9 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 		unset(ms, node->command);
 	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
 	{
+		printf("goes into ft_exit\n");
 		ft_exit(ms, node->command);
-		printf("ms->excode in call builtin after func %d\n", ms->excode);
+		// printf("ms->excode in call builtin after func %d\n", ms->excode);
 	}
 	else if (node->command[0][0] == 'p' || node->command[0][0] == 'P') //doesn't work on linux with capitals
 	{
@@ -146,7 +147,7 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 	// 	cd(ms, node->command);
 	//else
 		//error_command();
-	printf("ms->excode in after call builtin %d\n", ms->excode);
+	// printf("ms->excode in after call builtin %d\n", ms->excode);
 	return (ms->excode);
 }
 
@@ -170,7 +171,7 @@ int do_command(t_shell *ms, t_process_node *process)
     if (process->builtin)
     {
         dprintf(2, "1 command:%s, builtin:%d\n", process->command[0],process->builtin);
-		printf("ms->excode do_command %d\n", ms->excode);
+		// printf("ms->excode do_command %d\n", ms->excode);
         return (ms->excode = call_builtin (ms, process));
     }
     
@@ -207,7 +208,7 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
             //return (ms->excode);// need to check excode
         if (do_command(ms, process) == -1)
             return (-1);
-		printf("ms->excode do_process %d\n", ms->excode);
+		// printf("ms->excode do_process %d\n", ms->excode);
     }
     else //create child process
     {

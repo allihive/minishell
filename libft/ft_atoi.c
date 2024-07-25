@@ -6,12 +6,12 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 09:23:36 by alli              #+#    #+#             */
-/*   Updated: 2024/07/24 15:29:47 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/25 11:01:12 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
+#include <stdio.h>
 // static int	check_longint(long num, int dig)
 // {
 // 	long long	llong_max;
@@ -103,7 +103,7 @@ long	ft_atoi(const char *str)
 	total = 0;
 	i = 0;
 	if (str_char_check(str) == -1)
-		return (-1);
+		return (0);// should return NULL
 	if (((str[i] == '+') || str[i] == '-') && str[i])
 	{
 		if (str[i] == '-')
@@ -113,7 +113,10 @@ long	ft_atoi(const char *str)
 	while (str[i])
 	{
 		if (check_longint(total, str[i] - '0'))
-			return (sign * -1);
+		{
+			printf("is a long int");
+			return (0);
+		}
 		total = total * 10 + (str[i++] - '0');
 	}
 	if (!sign)

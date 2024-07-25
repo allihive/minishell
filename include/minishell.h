@@ -13,6 +13,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <limits.h>
 
 # define true  1
 # define false 0
@@ -137,7 +138,7 @@ int count_cmd(t_process_node *list);
 /*expand*/
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
 char	*find_value(t_shell *ms, char *key);
-int	find_key_in_envp(t_shell *ms, char *key);
+char 	*find_key_in_envp(t_shell *ms, char *key);
 char *quote_remover(char *str);
 int count_quote(char *str);
 char *remove_quote(char *str, int len);

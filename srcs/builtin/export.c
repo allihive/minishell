@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/23 16:24:37 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/25 13:13:25 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,11 @@ static int	export_str_check(char *str)
 	int i;
 	
 	i = 0;
-	if (str[i] == ft_isdigit(str[i]))
+	if (ft_isdigit(str[0]))
+	{
+		printf("enters here\n");
 		return (1);
+	}
 	while (str[i] && str[i] != '='  && 
 			(ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
@@ -178,16 +181,28 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 	int i;
 	int	j;
 	int	cmd_args;
+	int	flag;
 
 	i = 0;
 	j = 1;
+	flag = 0;
 
 	cmd_args = cmd_counter(cmd);
-	while (j <= cmd_args)
+	while (j < cmd_args)
 	{
+		printf("cmd_args %d\n", cmd_args);
 		if (cmd[j] == NULL)
 			envp_print(ms, fd);
-		else if (!export_str_check(cmd[j]) && ms->envp[i])
+		else if(export_str_check(cmd[j]) && ms->envp[i])
+		{
+			ft_putstr_fd(cmd[0], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putstr_fd(cmd[j], 2); // where the command was not valid
+			ft_putstr_fd("not a valid identifier\n", 2);
+			ms->excode = 1;
+			flag = 1;
+		}
+		if (!export_str_check(cmd[j]) && ms->envp[i])
 		{
 			// printf("cmd[1]: %s\n", cmd[1]);
 			if (name_exists(ms, cmd[j]))
@@ -201,9 +216,11 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 				envp_add(ms, cmd[j]);
 				printf("added envp\n");//delete comment
 			}
+			if (flag == 0)
+				ms->excode = 0;
 		}
 		j++;
 	}
-	return(0);
+	return(ms->excode);
 }
 

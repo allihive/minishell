@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/24 16:06:25 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/25 12:30:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int wait_children(t_shell *ms, int *pids, int count)
 	status = 0;
 	tmp = ms->excode; //to store the old exit code?
    //ignore_signal();
-   printf("ms->excode in wait_children1 %d\n", ms->excode);
+//    printf("ms->excode in wait_children1 %d\n", ms->excode);
    while(i < count - 1)
    {
         if (pids[i] == -1)
@@ -42,12 +42,12 @@ int wait_children(t_shell *ms, int *pids, int count)
         if (WIFEXITED(status))//如果子進程正常結束，設置 data->excode 為子進程的退出狀態。
 		{
             ms->excode = WEXITSTATUS(status); // this is making everything turun to 0. entered as 42 and after sets it to 0
-			printf("ms->excode in wait_children1.5 %d\n", ms->excode);
+			// printf("ms->excode in wait_children1.5 %d\n", ms->excode);
 		}
         else if (WIFSIGNALED(status)) //when I write exit it goes into here maybe segfaulting somewhere so it calls this
 		{
             ms->excode = WTERMSIG(status) + 128;
-			printf("ms->excode in wait_children2 %d\n", ms->excode);
+			// printf("ms->excode in wait_children2 %d\n", ms->excode);
 		}
         if (ms->excode == 131)
             ft_putstr_fd("^\\Quit: 3\n", 2);
@@ -112,10 +112,10 @@ int pipex(t_process_node *process, t_shell *ms)
             process = process->next;//to next node
         } 
     }
-	printf("ms->excode in pipex1 %d\n", ms->excode);
+	// printf("ms->excode in pipex1 %d\n", ms->excode);
     wait_children(ms, ms->pids, (ms->fork_n + 1));
     //singal
-	printf("ms->excode in pipex2 %d\n", ms->excode);
+	// printf("ms->excode in pipex2 %d\n", ms->excode);
     return (ms->excode);
 
 }
