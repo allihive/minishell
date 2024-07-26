@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 12:31:15 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/25 15:48:26 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,8 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 		else if (check_case(node->command[0], "echo"))
 			echo(ms, node->command, 1);//added 1 for fd
 	}
-    // else if (ft_strncmp(node->command[0], "cd", 2) == 0)
-	// 	cd(ms, node->command);
+    else if (ft_strncmp(node->command[0], "cd", 2) == 0)
+		cd(ms, node->command, 0, 0);
 	//else
 		//error_command();
 	// printf("ms->excode in after call builtin %d\n", ms->excode);

@@ -149,6 +149,7 @@ char *remove_quote(char *str, int len);
 /*error handling*/
 void	error_handle(t_shell *ms);
 void	only_print_error(char *name);
+void	error_msg(char *cmd, char *str, char *msg);
 
 /*free*/
 void	free_single(char *str);

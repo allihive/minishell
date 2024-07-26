@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/19 11:42:13 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 09:32:45 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,33 @@ void	error_handle(t_shell *ms)
 	}
 	ft_printf("Readline unable to read");
 	exit(ms->excode);
+}
+
+void	error_msg(char *cmd, char *str, char *msg)
+{
+	if (!ft_strncmp(cmd, "export", 6))
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putchar_fd('\'', 2);
+		ft_putstr_fd(str, 2);
+		ft_putchar_fd('\'', 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(msg, 2);
+		ft_putchar_fd('\n', 2);
+	}
+	else
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(str, 2);
+		if (str)
+			ft_putstr_fd(": ", 2);
+		ft_putstr_fd(msg, 2);
+		ft_putchar_fd('\n', 2);
+	}
 }
 
 // void	free_everything(t_shell *ms, t_process_node *node)

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/25 13:13:25 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/25 16:18:32 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,10 +195,7 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 			envp_print(ms, fd);
 		else if(export_str_check(cmd[j]) && ms->envp[i])
 		{
-			ft_putstr_fd(cmd[0], 2);
-			ft_putstr_fd(": ", 2);
-			ft_putstr_fd(cmd[j], 2); // where the command was not valid
-			ft_putstr_fd("not a valid identifier\n", 2);
+			error_msg(cmd[0], cmd[j], "not a valid identifier");
 			ms->excode = 1;
 			flag = 1;
 		}

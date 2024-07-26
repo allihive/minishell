@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 12:30:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 09:34:22 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int wait_children(t_shell *ms, int *pids, int count)
         }
 		if (pids[i] == 0)
 		{
-			printf("exit code in waitchild1%d\n", ms->excode);
+			// printf("exit code in waitchild1%d\n", ms->excode);
 			return(ms->excode); //added this so that it would exit 42 echo $? = 42
 		}
         waitpid(pids[i], &status, 0);//函式等待子進程結束並獲取其狀態。
