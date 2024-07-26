@@ -41,7 +41,6 @@ char *remove_quote(char *str, int len)
 			new_str[j++] = str[i];	
 		i++;
 	}
-	
 	return (new_str);	
 }
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
+/*   Updated: 2024/07/25 16:41:44 by yhsu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -43,9 +55,9 @@ typedef struct s_flags
 	int	in_double;
 }	t_flags;
 
-// int	g_signal = 0;
+//int g_signal = 0; //global variable
 
-typedef struct s_process_node
+typedef struct s_process_node//
 {
 	char **command;
 	char *node_line;// = input
@@ -133,6 +145,8 @@ int	ft_exit(t_shell *ms, char **cmd);
 int init_process_node(char *line, t_shell *ms);
 void execute_shell(t_shell *ms);
 int count_cmd(t_process_node *list);
+int ifisredirect(char c);
+void parse_process_node(t_process_node **list, t_shell *ms);
 
 
 /*expand*/
@@ -166,7 +180,7 @@ int check_cmd(char *str);
 int wait_children(t_shell *ms, int *pids, int count);
 
 /*Fd*/
-char *get_fd(char *input, t_process_node *process, t_shell *ms);
+int get_fd(char *input, t_process_node *process, t_shell *ms);
 
 /*Execution*/
 int do_process(t_process_node *process,t_shell *ms);
@@ -176,10 +190,10 @@ int	call_builtin(t_shell *ms, t_process_node *node);
 /*Redirects*/
 //int handle_redirects(t_process_node *process,t_shell *ms);
 char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
-void redir_in(char *redirectin,t_shell *ms);
-void redir_out(char *redirectout, t_shell *ms);
-void redir_append(char *redirectappend, t_shell *ms);
-char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
+int redir_in(char *redirectin,t_shell *ms);
+int redir_out(char *redirectout, t_shell *ms);
+int redir_append(char *redirectappend, t_shell *ms);
+int go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
 /*Handle exitcode*/
 int	set_exitcode(t_shell *ms, int exitcode);
@@ -188,4 +202,8 @@ int	set_exitcode(t_shell *ms, int exitcode);
 /*Utils*/
 int ifisspace(char c);
 
+
+/*Heredoc*/
+int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms);
+//int handle_heredocs(char *redirect, t_process_node *process);
 #endif

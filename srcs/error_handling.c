@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 09:32:45 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 10:40:22 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	error_handle(t_shell *ms)
 {
+	if (!ms->envp)//hsu added for <infile
+		return ;
 	if (ms->envp)
 	{
 		ft_free_strs(ms->envp, 0, 0);
@@ -74,7 +76,7 @@ void	error_msg(char *cmd, char *str, char *msg)
 
 void	only_print_error(char *name)
 {
-	if (ft_putstr_fd("lobster-shell 🦞: ", 2) == -1)
+	if (ft_putstr_fd("lobster-shell 🦞: in only print error", 2) == -1)
 	{
 		perror("pipex: write error");
 		exit(1);

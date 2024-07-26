@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:15:21 by alli              #+#    #+#             */
-/*   Updated: 2024/07/25 16:05:59 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 10:38:27 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 {
 	char cwd[1000];
 
-	printf("cmd[1]: %s\n", cmd[1]);
+	
+	printf("in cd cmd[1]: %s\n", cmd[1]);
 	if (getcwd(cwd, 1000) == NULL)//getting current working directory
 	{
 		return ;

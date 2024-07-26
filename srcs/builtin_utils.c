@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/26 10:40:11 by alli              #+#    #+#             */
+/*   Updated: 2024/07/26 10:40:12 by alli             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 
@@ -20,7 +32,8 @@ _Bool	check_case(char *cmd, char *builtin)
 
 _Bool	is_builtin(char *cmd)
 {
-	
+	if (cmd == NULL)
+		return (0);
 	if (ft_strncmp(cmd, "export\0", 7) == 0)
 		return (1);
 	if (ft_strncmp(cmd, "unset\0", 6) == 0)

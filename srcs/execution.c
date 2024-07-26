@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 15:48:26 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 10:43:17 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	init_envp_path(char **envp, t_shell *ms)
 {
 	char	**arr;
 
+	
+
 	if (*envp == NULL)
 	{
 		arr = ft_split("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin", ':');
@@ -88,8 +90,12 @@ int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
 	char	*str;
 	char	*command_path;
 
-    //dprintf(2, "in get path process->command[0]: %s\n", process->command[0]);
+    if (!process->command[0])
+		return (-1);
+	dprintf(2, "in get path process->command[0]: %s\n", process->command[0]);
+	dprintf(2, "in get path process->command[1]: %s\n", process->command[1]);
     init_envp_path(ms->envp, ms);
+	
     command_path = verify_path(process->command[0], ms);
     //dprintf(2, "command_path: %s\n", command_path);
 	if (command_path != NULL)
@@ -120,7 +126,7 @@ int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
 
 int	call_builtin(t_shell *ms, t_process_node *node)
 {
-	printf("ms->excode before in call builtin %d\n", ms->excode);
+	//printf("ms->excode before in call builtin %d\n", ms->excode);
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
 		ft_export(ms, node->command, 1); //added 1 for fd
 	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
@@ -145,9 +151,6 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 	}
     else if (ft_strncmp(node->command[0], "cd", 2) == 0)
 		cd(ms, node->command, 0, 0);
-	//else
-		//error_command();
-	// printf("ms->excode in after call builtin %d\n", ms->excode);
 	return (ms->excode);
 }
 
@@ -156,8 +159,8 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 void do_dups(t_shell *ms)
 {
     close(ms->read_end);
-    dup2(ms->fd[0], STDIN_FILENO);
-    dup2(ms->fd[1], STDOUT_FILENO);
+    dup2(ms->fd[0], 0);// stdinput
+    dup2(ms->fd[1], 1);//stdoutput
     close(ms->fd[0]);
     close(ms->fd[1]);
 }
@@ -170,7 +173,7 @@ int do_command(t_shell *ms, t_process_node *process)
         do_dups(ms);
     if (process->builtin)
     {
-        dprintf(2, "1 command:%s, builtin:%d\n", process->command[0],process->builtin);
+        //dprintf(2, "1 command:%s, builtin:%d\n", process->command[0],process->builtin);
 		// printf("ms->excode do_command %d\n", ms->excode);
         return (ms->excode = call_builtin (ms, process));
     }
@@ -186,10 +189,10 @@ int do_command(t_shell *ms, t_process_node *process)
     execve(process->cmd_path, process->command, ms->envp);
 	if (access(process->command[0], F_OK) == 0)
 	{
-		ft_printf("shell: %s: is a directory\n", process->command[0]);//need to fix error code
+		ft_printf("🦞shell: %s: is a directory\n", process->command[0]);//need to fix error code
 		return (set_exitcode(ms, 126));
 	}
-	ft_printf("shell: %s: haha Permission denied\n", process->command[0]);//need to fix error code
+	ft_printf("🦞shell: %s: Permission denied\n", process->command[0]);//need to fix error code
 	//dprintf(2, "do command3\n");
     return (set_exitcode(ms, 1));
 }
@@ -198,7 +201,7 @@ int do_command(t_shell *ms, t_process_node *process)
 int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流程，包括處理內建命令和創建子進程
 {
     
-	dprintf(2, "process->builtin:%d\n", process->builtin);
+	//dprintf(2, "process->builtin:%d\n", process->builtin);
     //dprintf(2, "ms->fork:%d\n", ms->fork_n);
     //dprintf(2, "ms->count:%d\n", ms->count);
     if (ms->fork_n == 1 && process->builtin )
@@ -212,24 +215,24 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
     }
     else //create child process
     {
-        dprintf(2, "in do prcess else \n");
+        //dprintf(2, "in do prcess else \n");
         ms->pids[ms->count] = fork();
-		dprintf(2, "in do prcess fork: %d, pids: %d \n",ms->count, ms->pids[ms->count]);
+		//dprintf(2, "in do prcess fork: %d, pids: %d \n",ms->count, ms->pids[ms->count]);
         if (ms->pids[ms->count] < 0)
         {
-            dprintf(2, "in do process 0\n");
+            //dprintf(2, "in do process 0\n");
             ft_putstr_fd("shell: error: fork failed\n", 2);
 			return (set_exitcode(ms, -1));
         }
         if (ms->pids[ms->count] == 0)
         {
-            dprintf(2,"in child\n");
+            //dprintf(2,"in child\n");
 			//data->sa.sa_handler = SIG_DFL;       signal
 			//sigaction(SIGQUIT, &data->sa, NULL);
-            dprintf(2, "in do process 1\n");
-            do_command(ms, process);
-            // if (ms->execute || do_command(ms, process))
-            //     return (-1);
+            //dprintf(2, "in do process 1\n");
+            //do_command(ms, process);
+            if (ms->execute || do_command(ms, process))
+            	return (-1);
         }
 		
     }

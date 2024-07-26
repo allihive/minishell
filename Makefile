@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: yhsu <student.hive.fi>                     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/07/25 13:33:14 by yhsu              #+#    #+#              #
+#    Updated: 2024/07/25 16:43:14 by yhsu             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
 #-fsanitize=address
 CFLAGS = -Wall -Wextra -Werror -I./include
@@ -21,7 +33,7 @@ else ifeq ($(UNAME_S), Linux)
     READLINE = -L /usr/lib/x86_64-linux-gnu -lreadline -lncurses
 endif
 
-SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c fd.c\
+SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c fd.c heredoc.c\
         ${addprefix builtin/, builtin.c export.c pwd.c env.c unset.c echo.c exit.c cd.c}}
 
 OBJ = ${SRCS:.c=.o}
@@ -39,12 +51,12 @@ ${LIBFT}:
 
 clean:
 	@rm -f ${OBJ} 
-	# infile1 infile outfile outfile1 outfile2
+    # infile1 infile outfile outfile1 outfile2
 	@make clean -C libft/
 fclean: clean
 	@rm -f ${NAME}
 	@make fclean -C ${LIBFT_DIR}
 
-re: fclean all
+re:	fclean all
 
 .PHONY: all clean fclean re

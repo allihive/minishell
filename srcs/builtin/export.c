@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/25 16:18:32 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 10:38:59 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void envp_add(t_shell *ms, char *name)
 	j = 0;
 	flag = 0;
 	ms->envp_size += 1;
-	printf("name: %s\n", name);
+	//printf("name: %s\n", name);
 	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
@@ -209,9 +209,9 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 			}
 			if (name_exists(ms, cmd[j]) == NULL)
 			{
-				printf("before add_envp\n"); //delete comment
+				//printf("before add_envp\n"); //delete comment
 				envp_add(ms, cmd[j]);
-				printf("added envp\n");//delete comment
+				//printf("added envp\n");//delete comment
 			}
 			if (flag == 0)
 				ms->excode = 0;

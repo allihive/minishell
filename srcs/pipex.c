@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 09:34:22 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 10:41:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,30 +79,27 @@ int check_cmd(char *str)
 int pipex(t_process_node *process, t_shell *ms)
 {
     
-    dprintf(2, "im here count:%d fork:%d\n\n", ms->count, ms->fork_n);
-	printf("ms->excode pipex %d\n", ms->excode);
+   // dprintf(2, "im here count:%d fork:%d\n\n", ms->count, ms->fork_n);
    // ms->count = 0;
-    
-    
     while(ms->count < ms->fork_n)   
     //while (process != NULL)
     {
-        dprintf(2, "im here 2 count:%d, fork:%d\n\n", ms->count, ms->fork_n);
-        dprintf(2, "2 command:%s\n", process->command[0]);
-    
-        //get_fd(process, ms);
+		//add data->execute = check_cmd
         while (ifisspace(*process->node_line))
 			(process->node_line)++;
-		get_fd(process->node_line, process, ms);//redirection
+		
+		dprintf(2, "in pipex process->node_line:%s\n", process->node_line);
+		
+		if (get_fd(process->node_line, process, ms) == -1)
+            return (close_and_free(ms));//redirection
 
         
         // if (do_process(process, ms) == -1)
         //     return (close_and_free(ms));
-        ms->excode = do_process(process, ms);
-        // if (ms->pids[ms->count] == 0)
-        //     exit(0);
+        do_process(process, ms);
+        if (ms->pids[ms->count] == 0)
+            exit(0);
 
-        
         close(ms->fd[0]);
         close(ms->fd[1]);
         //dprintf(2, "ms count pipex: %d\n", ms->count);

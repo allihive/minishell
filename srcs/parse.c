@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/24 13:36:18 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 10:41:30 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ static int	syntax_error(char *token, t_shell *ms)//error_occured need to revise 
 
 	c = *(token + 1);
 	if (c == '\'' || c == '\"')
-		ft_putstr_fd("unexpected EOF while looking for matching", 2);
+		ft_putstr_fd("shell: unexpected EOF while looking for matching", 2);
 	else
 		ft_putstr_fd("syntax error near unexpected token", 2);
 	ms->excode = 258;
@@ -328,21 +328,27 @@ int empty_prompt(char *input)
 int init_process_node(char *line, t_shell *ms)
 {
     t_process_node *new;
-    char *temp;
-
-    if (!line || !*line || check_syntax(ms->line, ms) || empty_prompt(line))
-        return (false);
-    while (*line)
+	char *temp;
+	
+    
+	if (!line || !*line || check_syntax(ms->line, ms) || empty_prompt(line))
+        return (set_exitcode(ms, -1));
+  
+	
+	while (*line)
     {
-        while (ifisspace(*line))
+        
+		while (ifisspace(*line))
             line++;
 
         //make temp point to the end of the
         temp = point_end(line); 
         //calloc for new 
         new = ft_calloc(1, sizeof(t_process_node));
-        // if (!new)
-        //     error_handle();
+        
+		if (!new)
+        	error_handle(ms);
+		
 		new->append = -1;
 		new->heredoc = -1;
 		new->expand = -1;
@@ -360,7 +366,7 @@ int init_process_node(char *line, t_shell *ms)
 		new->node_line = ft_substr(line, 0, (temp - line));
 		//dprintf(2, "new->node_line in init: %s\n",new->node_line );
         if (!new->node_line )
-            free(new->node_line );
+            free(new->node_line);
 
 			
 		append_process_node(&ms->list, new);// save every command in a node and append them to a list	
@@ -373,16 +379,18 @@ int init_process_node(char *line, t_shell *ms)
 		if(*line)
 			line++; //跳過pipe
     }
+	
 	ms->count = 0;
 	ms->read_end = -1;
-	ms->fd[0] = dup(STDIN_FILENO);//init as stdin
-    ms->fd[1] = dup(STDOUT_FILENO);
+	ms->fd[0] = dup(0);//init as stdin
+    ms->fd[1] = dup(1);
 	ms->execute = 0;
 	ms->fork_n = count_cmd(ms->list);
 	
 	ms->pids = ft_calloc((ms->fork_n + 1), sizeof(int));//data->cmds, sizeof(int)
-	if (ms->pids)
-		return (-1);//error handle close_and_free
+	
+	if (!ms->pids)
+		return (close_and_free(ms));
 	ms->pids[0] = -1;
 	return (0);
 }
@@ -437,7 +445,7 @@ char *check_if_quote(char *str)
 
 
 //檢查整句 input <>
-char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
+char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 {
 //redierect = > infile.txt
 	char *end;
@@ -448,12 +456,20 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 		
 	if (*(redirect + 1) == '<')//<<heredoc
 	{
-		mod->heredoc = 1;
-		redirect+= 2;
-		mod->here_doc = redirect;
-		//handdle_heredocs();
+		// mod->heredoc = 1;
+		// redirect+= 2;
+		// mod->here_doc = redirect;
+		// dprintf(2, "mod->here_doc: %s\n", mod->here_doc) ;
+		
+		
+		handle_heredocs(redirect, mod, ms);
+		// while (!ifisredirect(*(redirect + 2)))
+		// 	redirect++;
+		redirect = redirect + 2;
+		
+		//handle_heredocs(redirect, mod);
 	}
-	else if (*(redirect + 1) == '>')//>append
+	else if (*(redirect + 1) == '>')//>>append
 	{
 		mod->append = 1;
 		redirect = redirect + 2;
@@ -483,16 +499,19 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 		}
 		mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
 		
-		dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
+		//may need to free redirect
+		
+		
+		//dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
 		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
 		if (ifisspace(mod->redirect_in[j][k]))
 		 	k++;
 		redir_in(mod->redirect_in[j] + k, ms);
+
+		dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
 		while (mod->redirect_in[j])
 			j++;
-		
-		
-				
+			
 	}	
 	else if (*redirect == '>')//out
 	{
@@ -516,9 +535,6 @@ char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms)
 			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
 		}
 		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
-		//dprintf(2, "redirect in redirect: %s\n", redirect);
-		//dprintf(2, "end - redirect: %ld\n", end - redirect);
-		//dprintf(2, "1 mod->redirect_out[]:%s\n", mod->redirect_out[i]);
 		mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
 		//dprintf(2, "2 mod->redirect_out[i]:%s\n", mod->redirect_out[i]);
 		redir_out(mod->redirect_out[i], ms);
@@ -630,7 +646,7 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 	}
 }
 
-char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
+int go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 {
 	char *redirect;
 	//char *end;
@@ -653,7 +669,8 @@ char *go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 		redirect++;
 	}
 	
-	return (redirect);
+	//return (redirect);
+	return (0);
 }
 
 void parse_mod(char *input, t_process_node *mod, t_shell *ms)
@@ -682,6 +699,7 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 		
 		//get rid of ' '' save back to the string ; change mode
 		mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
+		free(command);
 		//command check
 		int p = 0;
 		while (mod->command[p])
@@ -728,20 +746,20 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 	
 }
 
+
 void execute_shell(t_shell *ms)
 {
 	
 	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
 	//parse_process_node(&ms->list);//for parse test
 
-	/* proper pipex
+	
 	if (!ms->list)
 		exit(free_env(ms));
 	else if (pipex(ms->list, ms) == -1)
-		exit(ms->exitcode);
-	*/
-	printf("ms->execute shell %d\n", ms->excode);
-	pipex(ms->list, ms);//execute_children(ms); + wait_children(ms);
+		exit(ms->excode);
 	
 }
+
+
 
