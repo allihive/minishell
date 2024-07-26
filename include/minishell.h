@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 16:41:44 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/26 16:36:40 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,15 @@ typedef struct s_process_node//
 {
 	char **command;
 	char *node_line;// = input
+	
+	char	**redirs;
+	
 	char **redirect_in;//< input
 	char **redirect_out;//> output
 	char *here_doc;//<<
 	char *append_s;//>>
+
+	
 	char	*cmd_path;
 	int pipe;
 	int sinquote;//when ==1 dont exapmd unless expand == 1;
@@ -168,6 +173,9 @@ void	only_print_error(char *name);
 void	free_single(char *str);
 void	free_double(char **arr);
 void free_node(t_process_node **lst);
+void free_shell(t_shell *ms);
+int close_and_free(t_shell *ms);
+int free_env(t_shell *ms);
 
 /*Builtin utils*/
 _Bool	is_builtin(char *cmd);
@@ -185,6 +193,8 @@ int get_fd(char *input, t_process_node *process, t_shell *ms);
 int do_process(t_process_node *process,t_shell *ms);
 int	call_builtin(t_shell *ms, t_process_node *node);
 
+/*get redirect*/
+void get_redirect_arr(char *input, t_process_node *mod, t_shell *ms);;
 
 /*Redirects*/
 //int handle_redirects(t_process_node *process,t_shell *ms);
@@ -194,9 +204,13 @@ int redir_out(char *redirectout, t_shell *ms);
 int redir_append(char *redirectappend, t_shell *ms);
 int go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
+
 /*Handle exitcode*/
 int	set_exitcode(t_shell *ms, int exitcode);
 
+
+/*parsing*/
+char *check_if_quote(char *str);
 
 /*Utils*/
 int ifisspace(char c);

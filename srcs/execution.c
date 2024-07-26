@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 16:41:53 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/26 14:55:18 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,18 +137,24 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 		ft_exit(ms, node->command);
 		// printf("ms->excode in call builtin after func %d\n", ms->excode);
 	}
-	else if (node->command[0][0] == 'p' || node->command[0][0] == 'P') //doesn't work on linux with capitals
-	{
-		if (check_case(node->command[0], "pwd"))//PWD pwD
-			pwd(ms, 0,  ms->fd[1]);
-	}
-	else if (node->command[0][0] == 'e' || node->command[0][0] == 'E') //shouldn't need the capital E doesn't work on linux
-	{
-		if (check_case(node->command[0], "env"))
-			env(ms, 1); //added 1 for fd
-		else if (check_case(node->command[0], "echo"))
-			echo(ms, node->command, 1);//added 1 for fd
-	}
+	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
+		pwd(ms, 0,  ms->fd[1]);
+	// else if (node->command[0][0] == 'p' || node->command[0][0] == 'P') //doesn't work on linux with capitals
+	// {
+	// 	if (check_case(node->command[0], "pwd"))//PWD pwD
+	// 		pwd(ms, 0,  ms->fd[1]);
+	// }
+	// else if (node->command[0][0] == 'e' || node->command[0][0] == 'E') //shouldn't need the capital E doesn't work on linux
+	// {
+	// 	if (check_case(node->command[0], "env"))
+	// 		env(ms, ms->fd[1]); //added 1 for fd
+	// 	else if (check_case(node->command[0], "echo"))
+	// 		echo(ms, node->command, ms->fd[1]);//added 1 for fd
+	// }
+	else if (ft_strncmp(node->command[0], "env", 3) == 0)
+		env(ms, ms->fd[1]);
+	else if (ft_strncmp(node->command[0], "echo", 4) == 0)
+		echo(ms, node->command, ms->fd[1]);
     else if (ft_strncmp(node->command[0], "cd", 2) == 0)
 		cd(ms, node->command, 0, 0);
 	return (ms->excode);

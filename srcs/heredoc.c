@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 13:25:04 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/26 10:56:55 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
         return(set_exitcode(ms, 1)); 
     }   
     close(ms->fd[0]);
-    heredoc_fd = open(heredoc_name, O_CREAT | O_RDWR | O_TRUNC, 0777);
+    heredoc_fd = open(heredoc_name, O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0777);
     
     if (heredoc_fd == -1)
     {
