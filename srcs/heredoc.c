@@ -6,20 +6,30 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/29 12:18:29 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/29 14:02:42 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
-// static void	signal_heredoc(int signum)
-// {
-// 	if (signum == SIGINT)
-// 		global_signal = 2;
-// 	return ;
-	
-// }
+void heredoc_init(void)
+{
+    struct sigaction sa;
+    struct sigaction sq;
+
+    memset(&sa, 0, sizeof(sa));
+    memset(&sq, 0, sizeof(sq));
+
+    sa.sa_handler = SIG_DFL; //use SIG_DFL doesn't interfere and quits when it's supposed to
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGINT, &sa, NULL);
+
+    sq.sa_handler = SIG_IGN;
+    sigemptyset(&sq.sa_mask);
+    sq.sa_flags = SA_RESTART;
+    sigaction(SIGQUIT, &sq, NULL);
+}
 
 void get_heredoc_input(int heredoc_fd, t_process_node *process)
 {
@@ -30,6 +40,7 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)
     // line = get_next_line(STDIN_FILENO);// 
 	// signal(SIGINT, sig_ctrl_c);
 	// line = readline(">");
+	heredoc_init();
     delimiter = (ft_strjoin( process->here_doc, "\n"));
 	if (!delimiter)
 		return ;
