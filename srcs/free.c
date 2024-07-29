@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 10:37:11 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 11:24:25 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ int close_and_free(t_shell *ms)
 	close(ms->read_end);
 	free_shell(ms);
 	free_env(ms);
-	return (-1);
+	exit (ms->excode);
+	// return (-1);
 }

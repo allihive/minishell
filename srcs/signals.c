@@ -3,36 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:02 by alli              #+#    #+#             */
-/*   Updated: 2024/07/15 19:02:16 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/29 11:32:25 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_signal = 0; //global variable
+// int g_signal = 0; //global variable
 
-void	set_termios(int mode)
+void	sig_ctrl_c(int sig)
 {
+	if (sig == SIGINT)
+	{
+		global_signal = sig;
+		write (1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+void	set_termios(int mode) // sets ^C
+{
+	// (void)mode;
 	struct termios	term;
 	
 	tcgetattr(STDIN_FILENO, &term);
-	if (mode != 2)
+	if (mode == 2)
 		term.c_lflag |= ECHOCTL;
 	else
 		term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
-void	sig_ctrl_c(int sig)
-{
-	g_signal = sig;
-	write (1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+
 
 void	set_signal(void)
 {

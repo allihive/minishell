@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 10:40:22 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/26 12:38:38 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	error_msg(char *cmd, char *str, char *msg)
 {
 	if (!ft_strncmp(cmd, "export", 6))
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": ", 2);
 		ft_putchar_fd('\'', 2);
@@ -44,7 +44,7 @@ void	error_msg(char *cmd, char *str, char *msg)
 	}
 	else
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(str, 2);
