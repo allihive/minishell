@@ -92,8 +92,8 @@ int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
 
     if (!process->command[0])
 		return (-1);
-	dprintf(2, "in get path process->command[0]: %s\n", process->command[0]);
-	dprintf(2, "in get path process->command[1]: %s\n", process->command[1]);
+	//dprintf(2, "in get path process->command[0]: %s\n", process->command[0]);
+	//dprintf(2, "in get path process->command[1]: %s\n", process->command[1]);
     init_envp_path(ms->envp, ms);
 	
     command_path = verify_path(process->command[0], ms);

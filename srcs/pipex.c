@@ -17,14 +17,16 @@ int wait_children(t_shell *ms, int *pids, int count)
 {
     int status;
     int i;
-	int tmp;
+	int tmp_code = 0;
 
     i = 0;
     // status = ms->excode;
 	status = 0;
-	tmp = ms->excode; //to store the old exit code?
+	
+
+    tmp_code = ms->excode; //to store the old exit code?
    //ignore_signal();
-//    printf("ms->excode in wait_children1 %d\n", ms->excode);
+    printf("tmp_code in wait_children1 %d\n", tmp_code);
    while(i < count - 1)
    {
         if (pids[i] == -1)
@@ -55,7 +57,6 @@ int wait_children(t_shell *ms, int *pids, int count)
             ft_putstr_fd("^C\n",2);
         i++;
    }
-//    printf("ms->excode in wait_children2 %d\n", ms->excode);
    return (ms->excode);
 }
 
@@ -88,7 +89,7 @@ int pipex(t_process_node *process, t_shell *ms)
         while (ifisspace(*process->node_line))
 			(process->node_line)++;
 		
-		dprintf(2, "in pipex process->node_line:%s\n", process->node_line);
+		//dprintf(2, "in pipex process->node_line:%s\n", process->node_line);
 		
 		if (get_fd(process->node_line, process, ms) == -1)
             return (close_and_free(ms));//redirection

@@ -37,25 +37,26 @@ int redir_append(char *redirectappend, t_shell *ms)
 	return (0);
 }
 
-int redir_out(char *redirectout, t_shell *ms)
+int redir_out(char *redirectout, t_shell *ms, int j)
 {
 	int		i;
 
 	i = 0;
-	//if (validate_redir(data, redir) == -1)
-		//return (-1);
-	dprintf(2, "redirectout in redir_out: %s\n", redirectout);
-	close(ms->fd[1]);
 	while (ifisspace(redirectout[i]) == 1)
-		i++;	
+		i++;
+	if (validate_redir_out(ms, redirectout + i, j) == -1)
+		return (-1);
+
+	close(ms->fd[1]);
+		
 	
-	dprintf(2, "redirectout 2 in redir_out: %s\n", redirectout + i);
+	//dprintf(2, "redirectout 2 in redir_out: %s\n", redirectout + i);
 	if (redirectout)//>>
-		ms->fd[1] = open(redirectout + i, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		ms->fd[1] = open(ms->list->redirect_out[j], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (ms->fd[1] < 0)
 	{
-		dprintf(2, "in redireout loop\n");
-		if (access(redirectout, F_OK) != 0)
+		//printf(2, "in redireout loop\n");
+		if (access(ms->list->redirect_out[j], F_OK) != 0)
 			ft_printf( "shell: %s: No such file or directory\n", redirectout);//need to fix fd 2
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectout );//need to fix fd 2
@@ -65,19 +66,18 @@ int redir_out(char *redirectout, t_shell *ms)
 	return (0);
 }
 
-
-
-int redir_in(char *redirectin,t_shell *ms)
+int redir_in(char *redirectin,t_shell *ms, int j)
 {
-    //if (validate_redir(data, redir) == -1)
-		//set_exitcode(data, -1);
+    if (validate_redir_in(ms, redirectin, j) == -1)
+		return (-1);
 	close(ms->fd[0]);
 	
-	dprintf(2, "redirectin: %s\n", redirectin);//outfile
-	ms->fd[0] = open(redirectin, O_RDONLY);
+	dprintf(2, "redirectin:%s|the lenth of redirectin %zu\n", redirectin, ft_strlen(redirectin));//outfile
+	ms->fd[0] = open(ms->list->redirect_in[j], O_RDONLY);
+	//ms->fd[0] = open(redirectin, O_RDONLY);
 	if (ms->fd[0] < 0)
 	{
-		if (access(redirectin, F_OK) != 0)
+		if (access(ms->list->redirect_in[j], F_OK) != 0)
 			ft_printf( "shell: %s: No such infile or directory\n",redirectin);// need to fix fd 2
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectin);// need to fix fd 2

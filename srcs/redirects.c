@@ -50,9 +50,11 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 		k = 0;
 		mod->redirectin = 1;
 		redirect++;
+		if (ifisspace(*redirect))//  remove space the the beginning
+		 	redirect++;
 		end = redirect;
 		
-		while (*end && !ifisredirect(*end))
+		while (*end && !ifisredirect(*end) && *end != ' ')
 			end++;
 		// Ensure mod->redirect_out is allocated and has enough space
 		if (mod->redirect_in == NULL) 
@@ -65,18 +67,21 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 			}
 			ft_memset(mod->redirect_in, 0, sizeof(char *) * 100); // Initialize to NULL
 		}
+		dprintf(2, "redirect:%s len: %zu\n",redirect, strlen(redirect));
 		mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
-		
+		dprintf(2, "1. mod->redirect_in[j]:%s len: %zu\n",mod->redirect_in[j], strlen(mod->redirect_in[j]));
 		//may need to free redirect
 		
 		
 		//dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
 		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
-		if (ifisspace(mod->redirect_in[j][k]))
+		dprintf(2, "2. mod->redirect_in[j]:%s len: %zu\n",mod->redirect_in[j], strlen(mod->redirect_in[j]));
+		//if (ifisspace(mod->redirect_in[j][k]) || mod->redirect_in[j][k] == 22 )//  remove space the the end
+		if (ifisspace(mod->redirect_in[j][k]) )
 		 	k++;
-		redir_in(mod->redirect_in[j] + k, ms);
+		redir_in(mod->redirect_in[j] + k, ms, j);
 
-		dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
+		dprintf(2, "3. mod->redirect_in[j]:%s len: %zu\n",mod->redirect_in[j], strlen(mod->redirect_in[j]));
 		while (mod->redirect_in[j])
 			j++;
 			
@@ -108,7 +113,7 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
 		mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
 		
-		redir_out(mod->redirect_out[i], ms);
+		redir_out(mod->redirect_out[i], ms, i);
 	
 		while (mod->redirect_out[i])
 			i++;
@@ -124,7 +129,7 @@ int go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 	char *redirect;
 	//char *end;
 	//< infile.txt < infile << end
-	
+	dprintf(2, "input in check_redirect:%s\n", input);
 	redirect = input;
 	while (*redirect)
 	{
@@ -134,7 +139,7 @@ int go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 			redirect++;
 		//end = redirect;
 		
-		dprintf(2, "reidrect in check_redirect: %s\n", redirect);
+		dprintf(2, "reidrect in check_redirect:%s\n", redirect);
 		
 		if (*redirect)
 			redirect = check_redirect(redirect, mod, ms);//檢查redirect  input 0 redirect 19 

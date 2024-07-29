@@ -199,11 +199,17 @@ void get_redirect_arr(char *input, t_process_node *mod, t_shell *ms);;
 /*Redirects*/
 //int handle_redirects(t_process_node *process,t_shell *ms);
 char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
-int redir_in(char *redirectin,t_shell *ms);
-int redir_out(char *redirectout, t_shell *ms);
+int redir_out(char *redirectout, t_shell *ms, int i);
+//int redir_out(char *redirectout, t_shell *ms);
 int redir_append(char *redirectappend, t_shell *ms);
 int go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
+/*Redirects utils*/
+int validate_redir_in(t_shell *ms, char *redirect, int j);
+//int redir_in(char *redirectin,t_shell *ms);
+int redir_in(char *redirectin,t_shell *ms, int j);
+int	print_redir_err(t_shell *ms, char *redir, char *copy);
+int validate_redir_out(t_shell *ms, char *redirect, int i);
 
 /*Handle exitcode*/
 int	set_exitcode(t_shell *ms, int exitcode);

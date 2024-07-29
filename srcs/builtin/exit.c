@@ -15,8 +15,8 @@
 static int	cmd_is_digit(char *cmd)
 {
 	int	i;
+	
 	// int	j;
-
 	i = 0;
 	// printf("cmd in cmd_is_digit %s\n", cmd);
 	if (!cmd)
@@ -37,9 +37,9 @@ static int	cmd_is_digit(char *cmd)
 
 int	ft_exit(t_shell *ms, char **cmd)
 {
-	int	i;
+	//int	i;
 
-	i = 0;
+	//i = 0;
 	// printf("cmd_is_digit(cmd[1]): %d\n", ft_atoi(cmd[1]));
 	printf("cmd[0]: %s\n", cmd[0]);
 	printf("cmd[1]: %s\n", cmd[1]);

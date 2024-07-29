@@ -91,11 +91,10 @@ int get_fd(char *input, t_process_node *process, t_shell *ms)
   
     if (ms->fork_n == 1)//command == 1
     { 
-         dprintf(2, "in if condition in get fd\n");
+        
 		return (go_check_redirect(input, process, ms));
     }
     //dprintf(2, "ms count: %d\n", ms->count);
-    dprintf(2, "get fd2\n") ;
 	if (ms->count == 0)
         return (first_child(input, process, ms));
     else if (ms->count == ms->fork_n -1)

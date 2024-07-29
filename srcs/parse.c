@@ -551,7 +551,6 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 }
 
 
-
 void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 //void parse_mod(char *input, t_process_node *mod)// for parse test
 {
@@ -559,38 +558,37 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 	//ls -la
 	
 	char *command;//input without redirection
-	char *start;// check the first redirect for cmd
+	char *start = input;// check the first redirect for cmd
 	
-		while ( *start && !ifisredirect(*start))
-				start++;
+	while (*start && !ifisredirect(*start))
+		start++;
+	
+	//input  變成 echo "hello $USER"
+	
+	
+	//get_redirect_arr(input, mod, ms);
 		
-		//input  變成 echo "hello $USER"
-		
-		
-		get_redirect_arr(input, mod, ms);
-		
-		command = ft_substr( input, 0 , (start - input));
-		
-		
-		
-		//get rid of ' '' save back to the string ; change mode
-		mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
-		free(command);
-		//command check
-		int p = 0;
-		while (mod->command[p])
-		{
-			//dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
-			p++;
-		}
-		if (is_builtin(mod->command[0]))
-			mod->builtin = 1;
-		/*
-		echo
-		hello $USER
-		*/
-		//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
-		check_dollor(mod->command, mod, ms);
+	command = ft_substr( input, 0 , (start - input));
+			
+	//get rid of ' '' save back to the string ; change mode
+	mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
+	free(command);
+	//command check
+	int p = 0;
+	while (mod->command[p])
+	{
+		//dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
+		p++;
+	}
+	if (is_builtin(mod->command[0]))
+		mod->builtin = 1;
+	/*
+	echo
+	hello $USER
+	*/
+	//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
+	
+	check_dollor(mod->command, mod, ms);
 }
 
 //dive line by '|' and save them in linked list
@@ -613,8 +611,10 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		
 		input = mod->node_line;
 		//parse_mod(input, mod, ms);
+		
 		parse_mod(input, mod, ms);//for parse test
 		//ms->count++;
+		
 		mod = mod->next;
 		// if (ms->list->next) //have to add this in order to also update the list to get the latest command
 		// 	ms->list = ms->list->next;
