@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:02 by alli              #+#    #+#             */
-/*   Updated: 2024/07/29 11:32:25 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 09:45:13 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void	set_signal(void)
 	struct sigaction sa;
 	struct sigaction sb;
 	
-	ft_bzero(&sa, sizeof(sa));
+	ft_memset(&sa, 0, sizeof(sa));
 	set_termios(2);
 	sa.sa_handler = sig_ctrl_c;
 	sigaction(SIGINT, &sa, NULL);
-	ft_bzero(&sb, sizeof(sb)); /*ctrl-\*/
+	ft_memset(&sb, 0, sizeof(sb)); /*ctrl-\*/
 	sb.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sb, NULL); 
 

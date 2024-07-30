@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 10:41:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 10:28:22 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,16 @@ int wait_children(t_shell *ms, int *pids, int count)
             i++;
             continue;
         }
-		if (pids[i] == 0)
-		{
-			// printf("exit code in waitchild1%d\n", ms->excode);
-			return(ms->excode); //added this so that it would exit 42 echo $? = 42
-		}
+		// if (pids[i] == 0)
+		// {
+		// 	// printf("exit code in waitchild1%d\n", ms->excode);
+		// 	return(ms->excode); //added this so that it would exit 42 echo $? = 42
+		// }
         waitpid(pids[i], &status, 0);//函式等待子進程結束並獲取其狀態。
         //dprintf(2, "wait_children\n");
         if (WIFEXITED(status))//如果子進程正常結束，設置 data->excode 為子進程的退出狀態。
 		{
             ms->excode = WEXITSTATUS(status); // this is making everything turun to 0. entered as 42 and after sets it to 0
-			// printf("ms->excode in wait_children1.5 %d\n", ms->excode);
 		}
         else if (WIFSIGNALED(status)) //when I write exit it goes into here maybe segfaulting somewhere so it calls this
 		{
