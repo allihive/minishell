@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 10:41:30 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 11:01:37 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,12 +356,18 @@ int init_process_node(char *line, t_shell *ms)
 		new->sinquote = -1;
 		new->redirectin = -1;
 		new->redirectout= -1;
+		
+		new->redirs = NULL;
 		new->command = NULL;
 		new->node_line= NULL;// = input
+		
+		
 		new->redirect_in= NULL;//< input
 		new->redirect_out= NULL;//> output
 		new->here_doc= NULL;//<<
 		new->append_s= NULL;//>>
+
+		
 		new->cmd_path = NULL;
 		new->node_line = ft_substr(line, 0, (temp - line));
 		//dprintf(2, "new->node_line in init: %s\n",new->node_line );
@@ -444,108 +450,6 @@ char *check_if_quote(char *str)
 }
 
 
-//檢查整句 input <>
-char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
-{
-//redierect = > infile.txt
-	char *end;
-	static int i = 0;
-	static int j = 0;
-	int k;	
-
-		
-	if (*(redirect + 1) == '<')//<<heredoc
-	{
-		// mod->heredoc = 1;
-		// redirect+= 2;
-		// mod->here_doc = redirect;
-		// dprintf(2, "mod->here_doc: %s\n", mod->here_doc) ;
-		
-		
-		handle_heredocs(redirect, mod, ms);
-		// while (!ifisredirect(*(redirect + 2)))
-		// 	redirect++;
-		redirect = redirect + 2;
-		
-		//handle_heredocs(redirect, mod);
-	}
-	else if (*(redirect + 1) == '>')//>>append
-	{
-		mod->append = 1;
-		redirect = redirect + 2;
-		mod->append_s = redirect;
-		
-		redir_append(redirect, ms);
-	}
-	else if (*redirect == '<')//in
-	{
-		k = 0;
-		mod->redirectin = 1;
-		redirect++;
-		end = redirect;
-		
-		while (*end && !ifisredirect(*end))
-			end++;
-		// Ensure mod->redirect_out is allocated and has enough space
-		if (mod->redirect_in == NULL) 
-		{
-			mod->redirect_in = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
-			if (mod->redirect_in == NULL) 
-			{
-				perror("redirect in malloc");
-				return NULL; // Handle error or return as appropriate
-			}
-			ft_memset(mod->redirect_in, 0, sizeof(char *) * 100); // Initialize to NULL
-		}
-		mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
-		
-		//may need to free redirect
-		
-		
-		//dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
-		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
-		if (ifisspace(mod->redirect_in[j][k]))
-		 	k++;
-		redir_in(mod->redirect_in[j] + k, ms);
-
-		dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
-		while (mod->redirect_in[j])
-			j++;
-			
-	}	
-	else if (*redirect == '>')//out
-	{
-		mod->redirectout = 1;
-		
-		redirect++;
-		end = redirect;
-		//dprintf(2, "end in redirect: %s\n", end);
-		while (*end && !ifisredirect(*end))
-			end++;
-		//dprintf(2, "end in redirect 2: %s\n", end);
-		// Ensure mod->redirect_out is allocated and has enough space
-		if (mod->redirect_out == NULL) 
-		{
-			mod->redirect_out = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
-			if (mod->redirect_out == NULL) 
-			{
-				perror("redirect out malloc");
-				return NULL; // Handle error or return as appropriate
-			}
-			ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
-		}
-		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
-		mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
-		//dprintf(2, "2 mod->redirect_out[i]:%s\n", mod->redirect_out[i]);
-		redir_out(mod->redirect_out[i], ms);
-		
-		while (mod->redirect_out[i])
-			i++;
-		//dprintf(2, "3 mod->redirect_out[i]: %s\n", mod->redirect_out[i]);
-		
-	}
-	return (redirect);
-}
 
 
 
@@ -646,75 +550,45 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 	}
 }
 
-int go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
-{
-	char *redirect;
-	//char *end;
-	//< infile.txt < infile << end
-	
-	redirect = input;
-	while (*redirect)
-	{
-		if (!*redirect)
-			break;
-		while ( *redirect && !ifisredirect(*redirect))
-			redirect++;
-		//end = redirect;
-		
-		if (*redirect)
-			redirect = check_redirect(redirect, mod, ms);//檢查redirect  input 0 redirect 19 
-		else
-			break;
-		
-		redirect++;
-	}
-	
-	//return (redirect);
-	return (0);
-}
 
 void parse_mod(char *input, t_process_node *mod, t_shell *ms)
 //void parse_mod(char *input, t_process_node *mod)// for parse test
 {
 	//echo "hello $USER" > infile.txt 
 	//ls -la
-	//char *redirect;
-	char *command;//input without redirection
-	char *start;// check the first redirect for cmd
 	
-		// while (ifisspace(*input) )
-		// 	input++;
-		// redirect  = get_fd(input, mod, ms);//redirection
-		//go_check_redirect(input, mod, ms);
-		start = input;
-		while ( *start && !ifisredirect(*start))
-				start++;
+	char *command;//input without redirection
+	char *start = input;// check the first redirect for cmd
+	
+	while (*start && !ifisredirect(*start))
+		start++;
+	
+	//input  變成 echo "hello $USER"
+	
+	
+	//get_redirect_arr(input, mod, ms);
 		
-		//input  變成 echo "hello $USER"
-		
-		
-		command = ft_substr( input, 0 , (start - input)); // may need free 
-		
-		//dprintf(2, "command:%s\n", command);
-		
-		//get rid of ' '' save back to the string ; change mode
-		mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
-		free(command);
-		//command check
-		int p = 0;
-		while (mod->command[p])
-		{
-			//dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
-			p++;
-		}
-		if (is_builtin(mod->command[0]))
-			mod->builtin = 1;
-		/*
-		echo
-		hello $USER
-		*/
-		//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
-		check_dollor(mod->command, mod, ms);
+	command = ft_substr( input, 0 , (start - input));
+			
+	//get rid of ' '' save back to the string ; change mode
+	mod->command = get_cmd_arr(command); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
+	free(command);
+	//command check
+	int p = 0;
+	while (mod->command[p])
+	{
+		//dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
+		p++;
+	}
+	if (is_builtin(mod->command[0]))
+		mod->builtin = 1;
+	/*
+	echo
+	hello $USER
+	*/
+	//check $  如果有＄ ---  mode 如果是雙引號 expand 把展開的內容存回 string
+	
+	check_dollor(mod->command, mod, ms);
 }
 
 //dive line by '|' and save them in linked list
@@ -737,8 +611,10 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		
 		input = mod->node_line;
 		//parse_mod(input, mod, ms);
+		
 		parse_mod(input, mod, ms);//for parse test
 		//ms->count++;
+		
 		mod = mod->next;
 		// if (ms->list->next) //have to add this in order to also update the list to get the latest command
 		// 	ms->list = ms->list->next;

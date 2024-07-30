@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/29 11:28:49 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 11:01:22 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int	main(int argc, char **argv, char **envp)
 			set_signal();
 			ms.line = readline("lobster-shell 🦞: ");
 			if (!ms.line)
+			{
 				error_handle(&ms);
 			// else if (ms.line[0] != '\0')
 			// {
@@ -129,6 +130,7 @@ int	main(int argc, char **argv, char **envp)
 			// 	execute_shell(&ms);
 			// 	//execute_builtin(&ms, ms.list);
 			// }
+			}
 			else if (ms.line[0] != 0)
 			{
 				add_history(ms.line);
@@ -136,24 +138,15 @@ int	main(int argc, char **argv, char **envp)
 			if (init_process_node(ms.line, &ms) == 0)
 			{
 				//execute_shell(&ms);
-				//printf("main0\n");
 				parse_process_node(&ms.list,&ms);
-				
 				//printf("main1\n");
 				if (!ms.list)
 					exit(free_env(&ms));
 				else if (pipex(ms.list, &ms) == -1)
 					exit(ms.excode);
-				
 				free_shell(&ms);
 				free_node(&ms.list);
-			
 			}
-			
-
-
-			
-			
 		}
 		return (ms.excode);
 	}

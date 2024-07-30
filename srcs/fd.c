@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:28 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 16:17:22 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/26 15:17:54 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,13 @@ int last_child(char *input,t_process_node *process, t_shell *ms)
 
 int get_fd(char *input, t_process_node *process, t_shell *ms)
 {
-    dprintf(2, "input in get_fd: %s\n", input);
-	dprintf(2, "fork_n in get_fd: %d\n", ms->fork_n);
+  
     if (ms->fork_n == 1)//command == 1
     { 
-         dprintf(2, "in if condition in get fd\n");
+        
 		return (go_check_redirect(input, process, ms));
     }
     //dprintf(2, "ms count: %d\n", ms->count);
-    dprintf(2, "get fd2\n") ;
 	if (ms->count == 0)
         return (first_child(input, process, ms));
     else if (ms->count == ms->fork_n -1)

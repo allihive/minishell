@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 11:00:04 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 11:02:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static int	cmd_is_digit(char *cmd)
 {
 	int	i;
+	
 	// int	j;
-
 	i = 0;
 	// printf("cmd in cmd_is_digit %s\n", cmd);
 	if (!cmd)
@@ -37,9 +37,9 @@ static int	cmd_is_digit(char *cmd)
 
 int	ft_exit(t_shell *ms, char **cmd)
 {
-	int	i;
+	//int	i;
 
-	i = 0;
+	//i = 0;
 	if ((!cmd[1] || !ft_strncmp(cmd[1], "0", 1)))
 	{
 		ft_putstr_fd("exit\n", 1);
