@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 15:20:16 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/30 09:54:07 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int redir_out(char *redirectout, t_shell *ms, int j)
 	int		i;
 
 	i = 0;
+
+	//dprintf(2, "redirectout:%s|the lenth of redirectout %zu\n", redirectout, ft_strlen(redirectout));
 	while (ifisspace(redirectout[i]) == 1)
 		i++;
 	if (validate_redir_out(ms, redirectout + i, j) == -1)
@@ -66,13 +68,15 @@ int redir_out(char *redirectout, t_shell *ms, int j)
 	return (0);
 }
 
-int redir_in(char *redirectin,t_shell *ms, int j)
+int redir_in(char *redirectin, t_shell *ms, int j)
 {
-    if (validate_redir_in(ms, redirectin, j) == -1)
+    //dprintf(2, "redirectin:%s|the lenth of redirectin %zu\n", redirectin, ft_strlen(redirectin));//outfile
+	
+	if (validate_redir_in(ms, redirectin, j) == -1)
 		return (-1);
 	close(ms->fd[0]);
 	
-	dprintf(2, "redirectin:%s|the lenth of redirectin %zu\n", redirectin, ft_strlen(redirectin));//outfile
+	
 	ms->fd[0] = open(ms->list->redirect_in[j], O_RDONLY);
 	//ms->fd[0] = open(redirectin, O_RDONLY);
 	if (ms->fd[0] < 0)

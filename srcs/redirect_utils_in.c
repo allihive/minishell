@@ -22,9 +22,12 @@ int	expand_redir_in(t_shell *ms, char *redirect, int j)
 
     i = 0;
     copy = ft_strdup(redirect);
-    if (!copy)
+    
+	if (!copy)
     	return (set_exitcode(ms, -1));
+
 	redirect = expand_it_out(redirect, ms->list, ms);
+   
     tmp = redirect;
     ms->list->redirect_in[j] = quote_remover(redirect);
     free (tmp);
