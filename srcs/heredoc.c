@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 13:43:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 14:49:58 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,9 @@ void heredoc_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		// global_signal = 2;
-		// rl_replace_line("", 0);
-		// rl_on_new_line();
-		// rl_redisplay();
 		write (1, "\n", 1);
-		// close(STDIN_FILENO);
-		global_signal = 1;
+		close (STDIN_FILENO);
+		global_signal = 2;
 	}
 }
 
@@ -34,7 +30,7 @@ void heredoc_init(void)
     ft_bzero(&sa, sizeof(sa));
     ft_bzero(&sq, sizeof(sq));
 
-    sa.sa_handler = SIG_DFL;//heredoc_handler; //SIG_DFL//use SIG_DFL doesn't interfere and quits when it's supposed to
+    sa.sa_handler = heredoc_handler;//heredoc_handler; //SIG_DFL//use SIG_DFL doesn't interfere and quits when it's supposed to
     sigaction(SIGINT, &sa, NULL);
     sq.sa_handler = SIG_IGN;
     sigaction(SIGQUIT, &sq, NULL);
@@ -42,32 +38,28 @@ void heredoc_init(void)
 
 void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
 {
-    char *line;
+    char *line = NULL;
     char *delimiter = NULL;
+	int stdin_backup;
 
+	stdin_backup = 	dup(STDIN_FILENO);
 	heredoc_init();
-	//delimiter = (ft_strjoin( process->here_doc, "\n"));
 	delimiter = process->here_doc;
 	if (!delimiter)
 		return ;
-    dprintf(2, "delimiter:%s|the length%zu\n", delimiter, strlen(delimiter));
-    // while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter) -2) != 0 )// need to fix this my delimiter has invisible char (ascii 22)
-    //while (global_signal != 2)
-	while (1)
+	line = readline("> ");
+	while (global_signal != 2)
     {
-		line = readline("> ");
-		//line = ft_strjoin(line, "\n");
-		//write (heredoc_fd, "\n", 1);
 		if (!line)
 		{
+			if (global_signal == 2)
+				return ;
 			error_msg("warning: ", "here-document at line 8 delimited by end-of-file (wanted ", delimiter);//error msg
+			global_signal = 0;
 			return ;
 		}
-        // dprintf(2, "get_heredoc_input line:%s\n", line);
-        // dprintf(2, "get_heredoc_input delimiter:%s\n", delimiter);
 		if (ft_strncmp(line, delimiter, (ft_strlen(delimiter) + 1) ) == 0)
 		{
-			// printf("exits here1\n");
 			free(line);
 			return ;
 		}
@@ -81,53 +73,13 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
         }
 		if (line)
         	free(line);
-		//line = readline("> ");
-		//line = ft_strjoin(line, "\n");//hsu
+		line = readline("> ");
 		write (heredoc_fd, "\n", 1);
     }
+	dup2(stdin_backup, STDIN_FILENO);
+	global_signal = 0;
+	return;
 }
-
-/*
-void get_heredoc_input(int heredoc_fd, t_process_node *process)//hsu
-{
-    char *line;
-    char *delimiter = NULL;
-    line = readline("> ");
-    line = ft_strjoin(line, "\n");
-	heredoc_init();
-    delimiter = (ft_strjoin( process->here_doc, "\n"));
-    if (!delimiter)
-        return ;
-    //dprintf(2, "get_heredoc_input line:%s\n", line);
-    //dprintf(2, "get_heredoc_input delimiter:%s\n", delimiter);
-    while (1)
-    {
-        if (!line)
-        {
-            error_msg("warning: ", "here-document at line 8 delimited by end-of-file (wanted ", delimiter);
-            // perror("here-document at line 8 delimited by end-of-file ");
-            return ;
-        }
-        if (ft_strncmp(line, delimiter, (ft_strlen(delimiter) - 1)) == 0)
-        {
-            free(line);
-            return ;
-        }
-        if (ft_putstr_fd(line, heredoc_fd) == -1)
-        {
-            if (line)
-                free(line);
-            line = NULL;
-            free(delimiter);
-            delimiter = NULL;
-        }
-        if (line)
-            free(line);
-        line = readline("> ");
-        line = ft_strjoin(line, "\n");
-    }
-}
-*/
 
 
 int right_delimiter(char *redirect,  t_process_node *process)// too many lines can remove tmp just use redirect 
@@ -178,6 +130,7 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
     redirect+= 2;
 	
     //process->here_doc = right_delimiter(redirect, process);//delimiter: end
+	
     if (right_delimiter(redirect, process))
     {
         perror("open .heredoc failed");
@@ -194,7 +147,6 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
 	
 	// signal_heredoc(1);
     get_heredoc_input(heredoc_fd, process);
-	printf("finished get_heredoc_input\n");
     if (close(heredoc_fd) == -1)
     {
         perror("open .heredoc failed");
