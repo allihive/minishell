@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 14:55:18 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/30 11:00:33 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,10 +195,10 @@ int do_command(t_shell *ms, t_process_node *process)
     execve(process->cmd_path, process->command, ms->envp);
 	if (access(process->command[0], F_OK) == 0)
 	{
-		ft_printf("🦞shell: %s: is a directory\n", process->command[0]);//need to fix error code
+		// ft_printf("🦞shell: %s: is a directory\n", process->command[0]);//need to fix error code
 		return (set_exitcode(ms, 126));
 	}
-	ft_printf("🦞shell: %s: Permission denied\n", process->command[0]);//need to fix error code
+	// ft_printf("🦞shell: %s: Permission denied\n", process->command[0]);//need to fix error code
 	//dprintf(2, "do command3\n");
     return (set_exitcode(ms, 1));
 }

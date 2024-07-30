@@ -6,38 +6,83 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 10:56:55 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/30 10:59:38 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
-/*
-void get_heredoc_input(int heredoc_fd, t_process_node *process)
+
+void heredoc_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		// global_signal = 2;
+		// rl_replace_line("", 0);
+		// rl_on_new_line();
+		// rl_redisplay();
+		write (1, "\n", 1);
+		close(STDIN_FILENO);
+		global_signal = 1;
+	}
+}
+
+void heredoc_init(void)
+{
+    struct sigaction sa;
+    struct sigaction sq;
+
+    ft_bzero(&sa, sizeof(sa));
+    ft_bzero(&sq, sizeof(sq));
+
+    sa.sa_handler = heredoc_handler; //SIG_DFL//use SIG_DFL doesn't interfere and quits when it's supposed to
+    sigaction(SIGINT, &sa, NULL);
+    sq.sa_handler = SIG_IGN;
+    sigaction(SIGQUIT, &sq, NULL);
+}
+
+void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
 {
     char *line;
     char *delimiter = NULL;
 
-    line = get_next_line(STDIN_FILENO);
+	heredoc_init();
     delimiter = (ft_strjoin( process->here_doc, "\n"));
-    dprintf(2, "delimiter:%s\n", delimiter);
-    while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter) -2) != 0 )// need to fix this my delimiter has invisible char (ascii 22)
-    //while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) != 0 )
+	if (!delimiter)
+		return ;
+    // dprintf(2, "delimiter:%s\n", delimiter);
+    // while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter) -2) != 0 )// need to fix this my delimiter has invisible char (ascii 22)
+    while (global_signal != 2)
     {
-        dprintf(2, "get_heredoc_input line:%s\n", line);
-        dprintf(2, "get_heredoc_input delimiter:%s\n", delimiter);
+		line = readline(">");
+		printf("global signal %d\n", global_signal);
+		if (!line)
+		{
+			error_msg("warning: ", "here-document at line 8 delimited by end-of-file (wanted ", delimiter);//error msg
+			return ;
+		}
+        // dprintf(2, "get_heredoc_input line:%s\n", line);
+        // dprintf(2, "get_heredoc_input delimiter:%s\n", delimiter);
+		if (ft_strncmp(line, delimiter, (ft_strlen(delimiter) - 1)) == 0)
+		{
+			// printf("exits here1\n");
+			free(line);
+			return ;
+		}
         if (ft_putstr_fd(line, heredoc_fd) == -1)
         {
-            free(line);
+			if (line)
+            	free(line);
             line = NULL;
             free(delimiter);
             delimiter = NULL;
         }
-        free(line);
-        line = get_next_line(STDIN_FILENO);
-        printf("line=%s(%zu), delimiter=%s(%zu)\n", line, ft_strlen(line), delimiter, ft_strlen(delimiter));
-        printf("%d\n", ft_strncmp(line, delimiter, 3));
+		if (line)
+        	free(line);
+		line = readline(STDIN_FILENO);
+        // printf("line=%s(%zu), delimiter=%s(%zu)\n", line, ft_strlen(line), delimiter, ft_strlen(delimiter));
+        // printf("%d\n", ft_strncmp(line, delimiter, 3));
     }
+	// set_signal();
     // while (1)//fix should change to g_signal != 1
     // {
     //     line = readline("> ");
@@ -55,7 +100,7 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)
     //dprintf(2, "process->here_doc:%s\n", process->here_doc);
 }
 */
-void get_heredoc_input(int heredoc_fd, t_process_node *process)
+void get_heredoc_input(int heredoc_fd, t_process_node *process)//hsu
 {
     char *line;
     char *delimiter = NULL;
@@ -142,6 +187,7 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
     i++;
     heredoc_name = ft_strjoin(".heredoc", ft_itoa(i));
     redirect+= 2;
+	
     //process->here_doc = right_delimiter(redirect, process);//delimiter: end
     if (right_delimiter(redirect, process))
     {
@@ -156,7 +202,10 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
         perror("open .heredoc failed");
         return(set_exitcode(ms, 1)); 
     }
+	
+	// signal_heredoc(1);
     get_heredoc_input(heredoc_fd, process);
+	printf("finished get_heredoc_input\n");
     if (close(heredoc_fd) == -1)
     {
         perror("open .heredoc failed");

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 16:36:40 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/30 11:00:17 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 
 # define true  1
 # define false 0
+
+extern volatile sig_atomic_t global_signal; 
 
 typedef enum e_syntax
 {
@@ -112,9 +114,14 @@ typedef struct s_shell //ms
 	// t_envp	*envp_list;
 }	t_shell;
 
+/*signals*/
 void	set_termios(int mode);
 void	set_signal(void);
 void	sig_ctrl_c(int sig);
+// void	signal_heredoc(int sig);
+void	ctrl_c_heredoc(int sig);
+
+/*Initialization*/
 void	init_envp(t_shell *ms, char **envp);
 void	initialize_shell(t_shell *ms, char **envp);
 int 	add_shlvl(t_shell *ms);
@@ -131,11 +138,8 @@ void 	envp_add(t_shell *ms, char *name);
 void	envp_print(t_shell *ms, int fd);
 void 	envp_update(t_shell *ms, char *name);
 char 	*env_exists(char *name, t_shell *ms);
-
-// char 	*name_exists(t_shell *ms, char *name);
 void	env(t_shell *ms, int fd);
 void	pwd(t_shell *ms, char **cmd, int fd);
-// void    envp_delete(t_shell *ms, char *name);
 void	envp_remove(t_shell *ms, char *content);
 void	unset(t_shell *ms, char **cmd);
 
@@ -154,7 +158,7 @@ int ifisredirect(char c);
 void parse_process_node(t_process_node **list, t_shell *ms);
 
 
-/*expand*/
+/*Expand*/
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
 char	*find_value(t_shell *ms, char *key);
 char 	*find_key_in_envp(t_shell *ms, char *key);
@@ -168,6 +172,7 @@ char *remove_quote(char *str, int len);
 /*error handling*/
 void	error_handle(t_shell *ms);
 void	only_print_error(char *name);
+void	error_msg(char *cmd, char *str, char *msg);
 
 /*free*/
 void	free_single(char *str);

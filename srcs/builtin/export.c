@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/25 13:50:16 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/26 12:32:16 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ void envp_add(t_shell *ms, char *name)
 	flag = 0;
 	ms->envp_size += 1;
 	//printf("name: %s\n", name);
+	if (!name)
+		close_and_free(ms); //should be some type of error close and free?
 	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
@@ -195,10 +197,7 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 			envp_print(ms, fd);
 		else if(export_str_check(cmd[j]) && ms->envp[i])
 		{
-			ft_putstr_fd(cmd[0], 2);
-			ft_putstr_fd(": ", 2);
-			ft_putstr_fd(cmd[j], 2); // where the command was not valid
-			ft_putstr_fd("not a valid identifier\n", 2);
+			error_msg(cmd[0], cmd[j], "not a valid identifier");
 			ms->excode = 1;
 			flag = 1;
 		}

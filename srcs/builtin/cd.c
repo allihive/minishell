@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:15:21 by alli              #+#    #+#             */
-/*   Updated: 2024/07/23 15:44:26 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/26 10:38:27 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 		char *home_value;
 		
 		home = env_exists("HOME", ms);
-		home_value = find_value(ms, "HOME");
-		printf("home: %s\n", home);
-		printf("home_value %s\n", home_value);
+		// printf("home: %s\n", home);
+		// printf("home_value %s\n", home_value);
 		if (!home)
 		{
 			ft_putstr_fd("bash: cd: HOME not set", 2);
@@ -39,6 +38,7 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 		}
 		// printf("pwd: %s\n", pwd);
 		// printf("env_exists: %s\n", env_exists(pwd, ms));
+		home_value = find_value(ms, "HOME");
 		if (chdir(home_value) == 0)
 		{
 			printf("chdir(home value) entered\n");
@@ -58,9 +58,7 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 		}
 		else if(chdir(home_value) != 0) //home has something that is not correct
 		{
-			ft_putstr_fd("bash: cd: ", 2);
-			ft_putstr_fd(home_value, 2);
-			ft_putstr_fd(": No such file or directory", 2);
+			error_msg(cmd[0], home_value, "No such file or directory");
 			ms->excode = 1;
 			return ;
 		}

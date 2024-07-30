@@ -6,11 +6,13 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 10:48:35 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/30 11:01:22 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+volatile sig_atomic_t global_signal = 0;
 
 void	init_envp(t_shell *ms, char **envp)
 {
@@ -52,8 +54,6 @@ int add_shlvl(t_shell *ms)//create the export function
 	if (!shlvl_str)
 		error_handle(ms);
 	envp_update(ms, shlvl_str);
-	// printf("shlvl: %d\n", shlvl);
-	// printf("before exiting %s\n", shlvl_str);
 	free(shlvl_str);
 	return (shlvl);
 }
