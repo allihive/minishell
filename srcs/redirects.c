@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 09:44:39 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/30 13:38:09 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 		
 		//dprintf(2, "mod->redirect_in[j];%s\n",mod->redirect_in[j]);
 		mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
-		//dprintf(2, "2. mod->redirect_in[j]:%s len: %zu\n",mod->redirect_in[j], strlen(mod->redirect_in[j]));
+		
 		//if (ifisspace(mod->redirect_in[j][k]) || mod->redirect_in[j][k] == 22 )//  remove space the the end
 		// if (ifisspace(mod->redirect_in[j][k]) )
 		//  	k++;
-		dprintf(2, "2.5 mod->redirect_in[j]:%s len: %zu\n",mod->redirect_in[j], strlen(mod->redirect_in[j] + k));
+		//dprintf(2, "2.5 mod->redirect_in[j]:%s len: %zu\n",mod->redirect_in[j], strlen(mod->redirect_in[j] + k));
 		redir_in(mod->redirect_in[j], ms, j);
 
-		dprintf(2, "3. mod->redirect_in[j]:%s len: %zu\n",mod->redirect_in[j], strlen(mod->redirect_in[j]));
+		//dprintf(2, "3. mod->redirect_in[j]:%s len: %zu\n",mod->redirect_in[j], strlen(mod->redirect_in[j]));
 		while (mod->redirect_in[j])
 			j++;
 			
@@ -93,7 +93,7 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 		while (*end && !ifisredirect(*end) && *end != ' ')
 			end++;
 		
-		dprintf(2, "end in redirect:%s the leng is %zu\n", end, strlen(end));
+		//dprintf(2, "end in redirect:%s the leng is %zu\n", end, strlen(end));
 		//dprintf(2, "end in redirect 2: %s\n", end);
 		// Ensure mod->redirect_out is allocated and has enough space
 		if (mod->redirect_out == NULL) 
@@ -110,7 +110,7 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 		mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
 		mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
 		
-		dprintf(2, "mod->redirect_out[i]:%s len: %zu\n",mod->redirect_out[i], strlen(mod->redirect_out[i]));
+		//dprintf(2, "mod->redirect_out[i]:%s len: %zu\n",mod->redirect_out[i], strlen(mod->redirect_out[i]));
 		
 		redir_out(mod->redirect_out[i], ms, i);
 	
