@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 10:55:11 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 11:31:03 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void heredoc_handler(int signum)
 		// rl_on_new_line();
 		// rl_redisplay();
 		write (1, "\n", 1);
-		close(STDIN_FILENO);
+		// close(STDIN_FILENO);
 		global_signal = 1;
 	}
 }
