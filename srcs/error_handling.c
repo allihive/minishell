@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 12:38:38 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 13:34:07 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,17 @@ void	error_msg(char *cmd, char *str, char *msg)
 	}
 }
 
+void	heredoc_input_msg(char *str)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("warning: ", 2);
+	ft_putstr_fd("here-document delimited by end-of-file ", 2);
+	ft_putstr_fd("(wanted '", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("')\n", 2);
+	global_signal = 0;
+}
+
 // void	free_everything(t_shell *ms, t_process_node *node)
 // {
 // 	if 
@@ -68,10 +79,6 @@ void	error_msg(char *cmd, char *str, char *msg)
 // 	// free_everything(ms, node);
 // 	return (ms->excode);
 // }
-
-
-
-
 
 
 void	only_print_error(char *name)

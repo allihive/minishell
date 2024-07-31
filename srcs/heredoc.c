@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 15:12:28 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 13:32:53 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void heredoc_init(void)
 
 void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
 {
-    char *line;
+    char *line = NULL;
     char *delimiter = NULL;
 	int stdin_backup;
 
@@ -48,14 +48,16 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
 	if (!delimiter)
 		return ;
 	line = readline("> ");
-	while (global_signal != 2)
+	while (1)
     {
-		if (!line)
+		if (line == NULL)
 		{
 			if (global_signal == 2)
+			{
+				dup2(stdin_backup, STDIN_FILENO);
 				return ;
-			error_msg("warning: ", "here-document at line 8 delimited by end-of-file (wanted ", delimiter);//error msg
-			global_signal = 0;
+			}
+			heredoc_input_msg(delimiter);
 			return ;
 		}
 		if (ft_strncmp(line, delimiter, (ft_strlen(delimiter) + 1) ) == 0)
