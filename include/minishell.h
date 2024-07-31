@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 11:00:17 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/31 15:30:37 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,11 @@ typedef struct s_process_node//
 {
 	char **command;
 	char *node_line;// = input
-	
-	char	**redirs;
-	
+//	char	**redirs;
 	char **redirect_in;//< input
 	char **redirect_out;//> output
 	char *here_doc;//<<
 	char *append_s;//>>
-
-	
 	char	*cmd_path;
 	int pipe;
 	int sinquote;//when ==1 dont exapmd unless expand == 1;
@@ -84,7 +80,6 @@ typedef struct s_process_node//
 	int		process_mode;
 	int			builtin;
 	int expand;
-	
 	struct 	s_process_node *next;
 }	t_process_node;
 
@@ -126,6 +121,18 @@ void	init_envp(t_shell *ms, char **envp);
 void	initialize_shell(t_shell *ms, char **envp);
 int 	add_shlvl(t_shell *ms);
 
+/*Init and utils*/
+int init_process_node(char *line, t_shell *ms);
+int init_shell(t_shell *ms);
+void init_node(t_process_node *new, char *line, char *temp);
+int check_syntax(char *line, t_shell *ms);
+int unclosed_quote(char *line);
+int empty_prompt(char *input);
+char *point_end(char *line);
+int count_cmd(t_process_node *list);
+int invalid_redirect( char *line, char redirect);
+char check_delimiter(char *line);
+
 /*Builtin*/
 void	execute_builtin(t_shell *ms, t_process_node *node);
 void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd);
@@ -157,6 +164,9 @@ int count_cmd(t_process_node *list);
 int ifisredirect(char c);
 void parse_process_node(t_process_node **list, t_shell *ms);
 
+/*Get cmd*/
+char	**get_cmd_arr(char *command);
+
 
 /*Expand*/
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
@@ -168,11 +178,13 @@ char *remove_quote(char *str, int len);
 
 
 
-
 /*error handling*/
 void	error_handle(t_shell *ms);
 void	only_print_error(char *name);
 void	error_msg(char *cmd, char *str, char *msg);
+int		syntax_error(char *token, t_shell *ms);
+void	cmd_not_found(char *str, t_shell *ms);
+
 
 /*free*/
 void	free_single(char *str);
@@ -205,6 +217,7 @@ void get_redirect_arr(char *input, t_process_node *mod, t_shell *ms);;
 //int handle_redirects(t_process_node *process,t_shell *ms);
 char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
 int redir_out(char *redirectout, t_shell *ms, int i);
+
 //int redir_out(char *redirectout, t_shell *ms);
 int redir_append(char *redirectappend, t_shell *ms);
 int go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
@@ -221,11 +234,15 @@ int	set_exitcode(t_shell *ms, int exitcode);
 
 
 /*parsing*/
-char *check_if_quote(char *str);
+char	*no_quote(char *cmd);
+void append_process_node(t_process_node **list, t_process_node *new);
 
-/*Utils*/
+/*Check Utils*/
 int ifisspace(char c);
-
+int ifisredirect(char c);
+int ifismeta (char c);
+int	is_sep(char *str, int i, char *charset);
+char *check_if_quote(char *str);
 
 /*Heredoc*/
 int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms);

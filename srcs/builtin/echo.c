@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/07/24 11:28:57 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 17:00:35 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static	int ft_charncmp(char *str)
 	int	i;
 
 	i = 0;
+	
 	if (str[0] == '-')
 		i++;
 	while (str[i])
@@ -43,7 +44,7 @@ void	echo(t_shell *ms, char **output, int fd) //char **output
 		i++;
 		j = 1;
 	}
-	while (output[i])
+	while (output[i] != NULL)
 	{
 		ft_putstr_fd(output[i], fd);
 		if (output[i + 1] == NULL && j == 0)
@@ -54,4 +55,3 @@ void	echo(t_shell *ms, char **output, int fd) //char **output
 	}
 	ms->excode  = 0;
 }
-

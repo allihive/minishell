@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 13:18:48 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/31 15:43:27 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,20 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
     char *delimiter = NULL;
 
 	heredoc_init();
-	//delimiter = (ft_strjoin( process->here_doc, "\n"));
 	delimiter = process->here_doc;
 	if (!delimiter)
 		return ;
-    dprintf(2, "delimiter:%s|the length%zu\n", delimiter, strlen(delimiter));
-    // while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter) -2) != 0 )// need to fix this my delimiter has invisible char (ascii 22)
-    //while (global_signal != 2)
+    //dprintf(2, "delimiter:%s|the length%zu\n", delimiter, strlen(delimiter));
 	while (1)
     {
 		line = readline("> ");
-		//line = ft_strjoin(line, "\n");
-		//write (heredoc_fd, "\n", 1);
 		if (!line)
 		{
 			error_msg("warning: ", "here-document at line 8 delimited by end-of-file (wanted ", delimiter);//error msg
 			return ;
 		}
-        // dprintf(2, "get_heredoc_input line:%s\n", line);
-        // dprintf(2, "get_heredoc_input delimiter:%s\n", delimiter);
 		if (ft_strncmp(line, delimiter, (ft_strlen(delimiter) + 1) ) == 0)
 		{
-			// printf("exits here1\n");
 			free(line);
 			return ;
 		}
@@ -81,8 +73,6 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
         }
 		if (line)
         	free(line);
-		//line = readline("> ");
-		//line = ft_strjoin(line, "\n");//hsu
 		write (heredoc_fd, "\n", 1);
     }
 }
@@ -194,7 +184,7 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
 	
 	// signal_heredoc(1);
     get_heredoc_input(heredoc_fd, process);
-	printf("finished get_heredoc_input\n");
+	//printf("finished get_heredoc_input\n");
     if (close(heredoc_fd) == -1)
     {
         perror("open .heredoc failed");

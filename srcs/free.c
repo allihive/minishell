@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 11:01:08 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/31 14:02:01 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,5 @@ int close_and_free(t_shell *ms)
 	free_shell(ms);
 	free_env(ms);
 	exit (ms->excode);
-	// return (-1);
+	return (-1);
 }

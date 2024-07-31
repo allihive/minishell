@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 12:22:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 16:23:36 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,58 +292,35 @@ char	*echo_exit_code(t_shell *ms)
 	ft_putstr_fd(exit_code, 1);
 	return (exit_code);
 }
-char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = key
+char *if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod ) // i = key
 {
 	char *result = NULL;
 	int start;
 	//int j;
-
 	start = i;//PATH
+
 	if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
 	{
+		dprintf(2, "1 in expandable\n");
 		while(ft_isalpha(cmd[i]) || cmd[i] == '_')//check this
 			i++;
-		//dprintf(2, "cmd in expandable: %s\n", cmd);
-		//result = cmd;
-		//dprintf(2, "0 result in expandable: %s\n", result);
-		// if (mod->doublequote == -1 && mod->sinquote == -1)//no quote
-		// {
-			
-		// 	result = get_value(start, i - start, cmd , ms); // need error handling
-		// 	dprintf(2, "1 result in expandable: %s\n", result);
-			
-		// }
-		// if (mod->doublequote != -1 && mod->sinquote != -1)//" '    ' "
-		// {
-		// 	if (mod->doublequote < mod->sinquote)
-		// 		result = get_value(start, i - start, cmd , ms); // need error handling
-		// }
-		// if (mod->doublequote != -1 && mod->sinquote == -1)//no quote
-		// {
-		// 	result = get_value(start, i - start, cmd , ms); // need error handling
-		// }
 		result = get_value(start, i - start, cmd , ms);	
 	}
 	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != DOUBLEQUOTE))
 	{
+		dprintf(2, "2 in expandable\n");
 		result = cmd + i; //echo $'USER'   reusult = 'USER' 
 	}
 	else if (cmd[i] == '?' ) //2nd letter ?->exit code
 	{
-		printf("ms->excode before %d\n", ms->excode);
+		dprintf(2, "3 in expandable\n");
 		result = echo_exit_code(ms);
-		printf("finished printing\n");
 	}
-	// else if (cmd[i] == '$')
-	// {
-	// 	//dprintf(2,"multi $\n");
-	// 	result = remove_dollar_sign(cmd, i-1, 1);
-		
-	// 	//dprintf(2,"result:%s\n", result);
-		
-	// }
-	
-	
+	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode == DOUBLEQUOTE))
+	{
+		dprintf(2, "4 in expandable\n");
+		result = cmd; //echo "$'HOME'"
+	}
 	return (result);
 }
 
@@ -355,31 +332,32 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 	
 	i = 0;
 	//result = cmd;//$USER
+	//dprintf(2, "cmd %s in expand it out\n", cmd);//"$'HOME'"
 	mod->process_mode = 0;
 	// printf("ms->excode in expand_it_out %d\n", ms->excode);
 	while (cmd[i])//"hello '$PATH'"
 	{
+		//dprintf(2, "1 expand it out\n");
 		check_quote(mod, cmd[i], i);
 
+	
 		if (cmd[i] == '$'  && ((mod->doublequote != -1 && mod->sinquote < mod->doublequote) || (mod->doublequote == -1 && mod->sinquote == -1))) //'" "'  ,  no quote
 		{
+			
 			if ( cmd[i + 1] == '$')
 			{
 				cmd = remove_dollar_sign(cmd, i, 1);
 				continue;
 			}
-
 			result = if_expandable(cmd, ms, i + 1, mod);	//$
-			
 			//result = quote_remover(result);
-			
 			break;
 		}
 		else
 			result = cmd;
 		i++;
 	}
-	//dprintf(2, "reuslt3:%s\n", result);
+	
 	return (result);
 }
 
