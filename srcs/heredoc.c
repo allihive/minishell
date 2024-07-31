@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 13:32:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 13:50:47 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,36 @@ void heredoc_init(void)
     sigaction(SIGQUIT, &sq, NULL);
 }
 
-void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
+int	output_heredoc(char *line, char *delimiter, int	stdin_backup, int heredoc_fd)
+{
+	if (line == NULL)
+	{
+		if (global_signal == 2)
+		{
+			dup2(stdin_backup, STDIN_FILENO);
+			global_signal = 0;
+			return (0);
+		}
+		heredoc_input_msg(delimiter);
+		return (0);
+	}
+	if (ft_strncmp(line, delimiter, (ft_strlen(delimiter) + 1) ) == 0)
+	{
+		free(line);
+		return (0);
+	}
+	if (ft_putstr_fd(line, heredoc_fd) == -1)
+	{
+		if (line)
+			free(line);
+		line = NULL;
+		free(delimiter);
+		delimiter = NULL;
+	}
+	return (1);
+}
+
+void get_heredoc_input(int heredoc_fd, t_process_node *process)
 {
     char *line = NULL;
     char *delimiter = NULL;
@@ -50,29 +79,8 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
 	line = readline("> ");
 	while (1)
     {
-		if (line == NULL)
-		{
-			if (global_signal == 2)
-			{
-				dup2(stdin_backup, STDIN_FILENO);
-				return ;
-			}
-			heredoc_input_msg(delimiter);
+		if (output_heredoc(line, delimiter, stdin_backup, heredoc_fd) == 0)
 			return ;
-		}
-		if (ft_strncmp(line, delimiter, (ft_strlen(delimiter) + 1) ) == 0)
-		{
-			free(line);
-			return ;
-		}
-        if (ft_putstr_fd(line, heredoc_fd) == -1)
-        {
-			if (line)
-            	free(line);
-            line = NULL;
-            free(delimiter);
-            delimiter = NULL;
-        }
 		if (line)
         	free(line);
 		line = readline("> ");
