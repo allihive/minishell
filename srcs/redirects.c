@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 13:38:09 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/31 09:29:00 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 			redirect++;
 		//end = redirect;
 		
-		dprintf(2, "reidrect in check_redirect:%s\n", redirect);
+		// dprintf(2, "reidrect in check_redirect:%s\n", redirect);
 		
 		if (*redirect)
 			redirect = check_redirect(redirect, mod, ms);//檢查redirect  input 0 redirect 19 

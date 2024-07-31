@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 11:00:33 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/07/31 09:31:25 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,10 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 	else if (ft_strncmp(node->command[0], "env", 3) == 0)
 		env(ms, ms->fd[1]);
 	else if (ft_strncmp(node->command[0], "echo", 4) == 0)
+	{
+		printf("echo called\n");
 		echo(ms, node->command, ms->fd[1]);
+	}
     else if (ft_strncmp(node->command[0], "cd", 2) == 0)
 		cd(ms, node->command, 0, 0);
 	return (ms->excode);

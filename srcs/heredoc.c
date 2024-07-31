@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 14:49:58 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/30 15:12:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void heredoc_init(void)
     ft_bzero(&sa, sizeof(sa));
     ft_bzero(&sq, sizeof(sq));
 
-    sa.sa_handler = heredoc_handler;//heredoc_handler; //SIG_DFL//use SIG_DFL doesn't interfere and quits when it's supposed to
+    sa.sa_handler = heredoc_handler;
     sigaction(SIGINT, &sa, NULL);
     sq.sa_handler = SIG_IGN;
     sigaction(SIGQUIT, &sq, NULL);
@@ -38,11 +38,11 @@ void heredoc_init(void)
 
 void get_heredoc_input(int heredoc_fd, t_process_node *process)//alice
 {
-    char *line = NULL;
+    char *line;
     char *delimiter = NULL;
 	int stdin_backup;
 
-	stdin_backup = 	dup(STDIN_FILENO);
+	stdin_backup =	dup(STDIN_FILENO);
 	heredoc_init();
 	delimiter = process->here_doc;
 	if (!delimiter)
@@ -144,8 +144,6 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
         perror("open .heredoc failed");
         return(set_exitcode(ms, 1)); 
     }
-	
-	// signal_heredoc(1);
     get_heredoc_input(heredoc_fd, process);
     if (close(heredoc_fd) == -1)
     {
