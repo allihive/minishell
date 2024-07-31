@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 13:56:56 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 14:59:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,8 @@ void	initialize_shell(t_shell *ms, char **envp);
 int 	add_shlvl(t_shell *ms);
 
 /*Builtin*/
-void	execute_builtin(t_shell *ms, t_process_node *node);
 void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd);
-int	cmd_counter(char **cmd);
+int		cmd_counter(char **cmd);
 
 /*Export Builtin Functions*/
 // int		export_str_check(char *str);

@@ -6,30 +6,46 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:15:21 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 10:38:27 by alli             ###   ########.fr       */
+// /*   Updated: 2024/07/31 15:31:59 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// void	set_pwd(t_shell *ms, char *pwd, char *oldpwd, char *cwd)
+// {
+// 	if (env_exists("PWD", ms))
+// 	{
+// 		oldpwd = ft_strjoin("OLDPWD=", find_value(ms, "PWD"));
+// 		if (!oldpwd)
+// 		{
+// 			printf("malloc failed\n");
+// 			return ;
+// 		}
+// 	}
+// 	pwd = ft_strjoin("PWD=", getcwd(cwd, 1000));
+// 	if (!pwd)
+// 		return ;
+// 	envp_update(ms, pwd);
+// 	envp_update(ms, oldpwd);
+// }
+
 void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 {
 	char cwd[1000];
-
 	
-	printf("in cd cmd[1]: %s\n", cmd[1]);
 	if (getcwd(cwd, 1000) == NULL)//getting current working directory
 	{
+		printf("getcwd failed\n");
 		return ;
 	}
 	if (cmd[1] == NULL) // checks if it's just cd
 	{
+		//ms->excode = cd_home(ms, env_exists("HOME", ms), find_value(ms, "HOME"));
 		char *home;
 		char *home_value;
 		
 		home = env_exists("HOME", ms);
-		// printf("home: %s\n", home);
-		// printf("home_value %s\n", home_value);
 		if (!home)
 		{
 			ft_putstr_fd("bash: cd: HOME not set", 2);
@@ -41,6 +57,7 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 		home_value = find_value(ms, "HOME");
 		if (chdir(home_value) == 0)
 		{
+			// set_pwd(ms, pwd, oldpwd, cwd);
 			printf("chdir(home value) entered\n");
 			if (env_exists("PWD", ms))
 			{
@@ -48,11 +65,11 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 				if (!oldpwd)
 					return ;
 			}
-			printf("oldpwd: %s\n", oldpwd);
+			// printf("oldpwd: %s\n", oldpwd);
 			pwd = ft_strjoin("PWD=", getcwd(cwd, 1000));
 			if (!pwd)
 				return ;
-			printf("new pwd: %s\n", pwd);
+			// printf("new pwd: %s\n", pwd);
 			envp_update(ms, pwd);
 			envp_update(ms, oldpwd);
 		}
@@ -66,7 +83,7 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 
 	else if (cmd[1] && chdir(cmd[1]) == 0) //checks if there's ../../ or Documents/minishell
 	{
-		// printf("env_exists %s\n", env_exists("PWD", ms));
+		printf("env_exists %s\n", env_exists("PWD", ms));
 		if (env_exists("PWD", ms)) //if PWD exists (make it the OLDPWD)
 		{
 			oldpwd = ft_strjoin("OLDPWD=", find_value(ms, "PWD"));// make the string for OLDPWD
@@ -80,8 +97,11 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 		pwd = ft_strjoin("PWD=", getcwd(cwd, 1000)); //create the string
 		if (!pwd)
 			return ; //error handle here? 
+		printf("pwd: %s\n", pwd);
+		printf("oldpwd %s\n", oldpwd);
 		envp_update(ms, pwd);
 		envp_update(ms, oldpwd);
+		// set_pwd(ms, pwd, oldpwd, cwd);
 		printf("finished updating\n");
 	}
 }

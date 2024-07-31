@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/07/31 14:57:22 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 14:59:22 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,24 +79,4 @@ void	envp_print(t_shell *ms, int fd)
 		}
 		i++;
 	}
-}
-
-void	execute_builtin(t_shell *ms, t_process_node *node)
-{
-	if (ft_strncmp(node->command[0], "export", 6) == 0)
-	{
-		ft_export(ms, node->command, 1);
-	}
-	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
-		pwd(ms, 0, 1);
-	else if (ft_strncmp(node->command[0], "env", 3) == 0)
-		env(ms, 1);
-	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
-		unset(ms, node->command);
-	else if(ft_strncmp(node->command[0], "echo", 4) == 0)
-		echo(ms, node->command, 1);
-	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
-		ft_exit(ms, node->command);
-	else if (ft_strncmp(node->command[0], "cd", 2) == 0)
-		cd(ms, node->command, 0, 0);
 }

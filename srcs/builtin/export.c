@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/31 14:54:20 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 16:54:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ void envp_update(t_shell *ms, char *name)
 
 	i = 0;
 	len = 0;
-	// printf("name in update: %s\n", name);
+	printf("name in update: %s\n", name);
 	while (name[len] != '=')
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
-		if (ft_strncmp(ms->envp[i], name, len) == 0) // returns 0 when it matches
+		if (ft_strncmp(ms->envp[i], name, len) == 0 && name_exists(ms, name)) // returns 0 when it matches
 		{
 			// printf("ms->envp[i] found: %s\n", name_exists(ms, name));
 			break ;
@@ -75,7 +75,7 @@ void envp_update(t_shell *ms, char *name)
 	}
 	// printf("i: %d\n", i);
 	// printf("len: %d\n", len);
-	// printf("ms->envp[i]: %s\n", ms->envp[i]);
+	printf("ms->envp[i]: %s\n", ms->envp[i]);
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
 		// printf("ft_strlen(name): %zu\n", ft_strlen(name));
@@ -191,10 +191,7 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 
 	cmd_args = cmd_counter(cmd);
 	if (cmd_args == 1)
-	{
-		// printf("entered envp print\n");
 		envp_print(ms, fd);
-	}
 	while (j < cmd_args)
 	{
 		if(export_str_check(cmd[j]) && ms->envp[i])
