@@ -6,35 +6,11 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 13:50:47 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 13:56:08 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void heredoc_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		write (1, "\n", 1);
-		close (STDIN_FILENO);
-		global_signal = 2;
-	}
-}
-
-void heredoc_init(void)
-{
-    struct sigaction sa;
-    struct sigaction sq;
-
-    ft_bzero(&sa, sizeof(sa));
-    ft_bzero(&sq, sizeof(sq));
-
-    sa.sa_handler = heredoc_handler;
-    sigaction(SIGINT, &sa, NULL);
-    sq.sa_handler = SIG_IGN;
-    sigaction(SIGQUIT, &sq, NULL);
-}
 
 int	output_heredoc(char *line, char *delimiter, int	stdin_backup, int heredoc_fd)
 {

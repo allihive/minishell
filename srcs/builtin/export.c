@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 12:32:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 14:54:20 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ int	cmd_counter(char **cmd)
 	return (cmd_args);
 }
 
-int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt a double pointer
+int	ft_export(t_shell *ms, char **cmd, int fd)
 {
 	int i;
 	int	j;
@@ -190,12 +190,14 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 	flag = 0;
 
 	cmd_args = cmd_counter(cmd);
+	if (cmd_args == 1)
+	{
+		// printf("entered envp print\n");
+		envp_print(ms, fd);
+	}
 	while (j < cmd_args)
 	{
-		printf("cmd_args %d\n", cmd_args);
-		if (cmd[j] == NULL)
-			envp_print(ms, fd);
-		else if(export_str_check(cmd[j]) && ms->envp[i])
+		if(export_str_check(cmd[j]) && ms->envp[i])
 		{
 			error_msg(cmd[0], cmd[j], "not a valid identifier");
 			ms->excode = 1;
@@ -203,18 +205,10 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 		}
 		if (!export_str_check(cmd[j]) && ms->envp[i])
 		{
-			// printf("cmd[1]: %s\n", cmd[1]);
 			if (name_exists(ms, cmd[j]))
-			{
-				// printf("before envp_update\n"); //delete comment
 				envp_update(ms, cmd[j]);
-			}
 			if (name_exists(ms, cmd[j]) == NULL)
-			{
-				//printf("before add_envp\n"); //delete comment
 				envp_add(ms, cmd[j]);
-				//printf("added envp\n");//delete comment
-			}
 			if (flag == 0)
 				ms->excode = 0;
 		}

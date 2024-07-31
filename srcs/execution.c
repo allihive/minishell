@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 13:26:11 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 14:10:56 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,10 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 {
 	//printf("ms->excode before in call builtin %d\n", ms->excode);
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
+	{
+		printf("entered in call builtin ft_export\n");
 		ft_export(ms, node->command, 1); //added 1 for fd
+	}
 	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
 		unset(ms, node->command);
 	else if(ft_strncmp(node->command[0], "exit", 4) == 0)

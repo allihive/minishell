@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/07/31 13:25:31 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 13:57:40 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	echo(t_shell *ms, char **output, int fd)
 			j = 1;
 			i++;
 		}
-		printf("j = %d\n", j);
 		if (!j)
 			j = 0;
 		ft_putstr_fd(output[i], fd);

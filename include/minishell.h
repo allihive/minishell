@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 13:33:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 13:56:56 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	set_signal(void);
 void	sig_ctrl_c(int sig);
 // void	signal_heredoc(int sig);
 void	ctrl_c_heredoc(int sig);
+void heredoc_init(void);
 
 /*Initialization*/
 void	init_envp(t_shell *ms, char **envp);
