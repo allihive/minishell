@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/01 12:43:41 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 15:20:24 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,11 @@ static int	key_exists(t_shell *ms, char *name)
 	{
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+			{
+				printf("key is found\n");
 				return (1);// key is found
+			}
+				
 		i++;
 	}
 	return (0);
@@ -212,20 +216,26 @@ char *get_value(int start, int len , char *cmd, t_shell *ms)
 	int value_start;
 
 	value_start = start;//after quotes and dollar signs
+	printf("cmd[start]: %c\n", cmd[start]);
 	key = ft_calloc(len + 1, sizeof(int));
 	if (!key)
 		return (NULL);
 	i = 0;
 	while (i < len)
 		key[i++]= cmd[start++];// copy key words from cmd to key
+	// printf("key: %s\n", key);
 	if (!find_key_in_envp(ms, key)) // when it's at the end of the list we should go into the shrink function
+	{
+		// printf("enters here\n");
 		cmd = shrink(cmd, value_start - 1); //error handle check?
+	}
 	if (key_exists(ms, key))
 	{
 		value =  find_value(ms, key);
 		cmd = add_value_back(value, value_start, len, cmd);//need to be protected //changed start to value start
 		//keep the single quote inside, double quote inside, don't need to expand, then keep double quote inside
 	}
+	printf("cmd at the end: %s\n", cmd);
 	free(key);
 	return (cmd);
 }
@@ -322,7 +332,8 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 	// printf("letter in cmd[start] %c\n", cmd[start]);
 	if (ft_isalpha(cmd[i]) || cmd[i] == '_' ) //why does this have to be alpha?
 	{
-		while(cmd[i] == '_' || cmd[i])//check this with yunchia ft_isalpha(cmd[i])
+		// printf("cmd: %s\n", cmd);
+		while(cmd[i] == '_' || ft_isalnum(cmd[i]))//check this with yunchia ft_isalpha(cmd[i])
 			i++;
 		//dprintf(2, "cmd in expandable: %s\n", cmd);
 		//result = cmd;
@@ -344,6 +355,7 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 		// 	result = get_value(start, i - start, cmd , ms); // need error handling
 		// }
 		result = get_value(start, i - start, cmd, ms);
+		printf("result %s\n", result);
 	}
 	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != DOUBLEQUOTE))
 	{

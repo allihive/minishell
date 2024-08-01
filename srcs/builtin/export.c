@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 10:15:59 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 14:32:12 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,35 +61,21 @@ void envp_update(t_shell *ms, char *name)
 
 	i = 0;
 	len = 0;
-	// printf("name in update: %s\n", name);
 	while (name[len] != '=')
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
 		if (name_exists_env(ms, name)) // ft_strncmp(ms->envp[i], name, len) == 0 && 
-		{
-			// printf("ms->envp[i] found: %s\n", name_exists(ms, name));
 			break ;
-		}
 		i++;
 	}
-	// printf("i: %d\n", i);
-	// printf("len: %d\n", len);
-	// printf("ms->envp[i]: %s\n", ms->envp[i]);
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
-		// printf("ft_strlen(name): %zu\n", ft_strlen(name));
 		ft_memset(ms->envp[i], 0, ft_strlen(name));//give it a null space in the string the length of the name
 		ms->envp[i] = ft_strjoin(ms->envp[i], name);//this should be nulled and replaced.
 		if (!ms->envp[i]) //malloc check
-		{
-			// printf("did not malloc");
-			// error_handle(ms);
 			close_and_free(ms);
-		}
-		// printf("ms->envp[i]: %s\n", ms->envp[i]);
 	}
-	// printf("finished name in update: %s\n", name);
 }
 
 static char	*latest_envp(char *name)
@@ -103,11 +89,34 @@ static char	*latest_envp(char *name)
 			return (NULL); //error message
 		return (new_str);
 	}
-	// printf("name in latest_envp: %s\n", name);
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
 		return (NULL); //error_message
  	return (new_str);
+}
+
+char *add_to_end_of_list(t_shell *ms, char *name, int i, int j)
+{
+	char *new;
+	
+	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
+	if (!new)
+		error_handle(ms);
+	if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
+	{
+		new = latest_envp(name);//it will be replaced when there is something else written
+		if (!new)
+			error_handle(ms);
+		ms->flag = 1;
+		return (new);
+	}
+	else
+	{
+		new = ft_strdup(ms->envp[j]);//add elements that are already in the list
+		if (!new)
+			return (NULL);// error_handle(ms);
+	}
+	return (new);
 }
 
 void envp_add(t_shell *ms, char *name)
@@ -115,13 +124,11 @@ void envp_add(t_shell *ms, char *name)
 	char	**new;
 	int		i;
 	int		j;
-	int		flag;
 	
 	i = 0;
 	j = 0;
-	flag = 0;
 	ms->envp_size += 1;
-	//printf("name: %s\n", name);
+	ms->flag = 0;
 	if (!name)
 		close_and_free(ms); //should be some type of error close and free?
 	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
@@ -129,23 +136,11 @@ void envp_add(t_shell *ms, char *name)
 		error_handle(ms);
 	while (i < ms->envp_size - 1 && ms->envp[i])
 	{
-		if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
-		{
-			new[i] = latest_envp(name);//it will be replaced when there is something else written
-			if (!new[i])
-				error_handle(ms);
-			flag = 1;
-		}
-		else
-		{
-			new[i] = ft_strdup(ms->envp[j]);//add elements that are already in the list
-			if (!new[i])
-				return ;// error_handle(ms);
-		}
+		new[i] = add_to_end_of_list(ms, name, i, j);
 		i++;
 		j++;
 	}
-	if (name && !flag)
+	if (name && !ms->flag)
 		new[i] = latest_envp(name);
 	ft_free_strs(ms->envp, 0, 0);
 	ms->envp = new;
