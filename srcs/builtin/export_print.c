@@ -1,21 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/07/15 09:53:31 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 09:33:17 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static	void write_env(char *str,  int fd)
+{
+	int j;
+	
+	j = 0;
+	ft_putstr_fd("declare -x ", fd);
+	while (str[j] != '=' && str[j] != '\0')
+	{
+		ft_putchar_fd(str[j], fd);
+		j++;
+	}
+	if (str[j] == '=')
+	{
+		j++;
+		ft_putstr_fd("=\"", fd);
+		while (str[j])
+		{
+			ft_putchar_fd(str[j], fd);
+			j++;
+		}
+	ft_putstr_fd("\"\n", fd);
+	}
+}
+
 static void	print_ascii_order(t_shell *ms, char letter, int fd)
 {
 	int		i;
-	int		j;
 	char **tmp;
 
 	i = 0;
@@ -24,32 +47,12 @@ static void	print_ascii_order(t_shell *ms, char letter, int fd)
 		return ;
 	while (i < ms->envp_size)
 	{
-		j = 0;
 		if (tmp[i] && tmp[i][0] == letter)
-		{
-			// printf("tmp[i][0]: %c\n", tmp[i][0]);
-			ft_putstr_fd("declare -x ", fd);
-			while (tmp[i][j] != '=' && tmp[i][j] != '\0')
-			{
-				ft_putchar_fd(tmp[i][j], fd);
-				j++;
-			}
-			if (tmp[i][j] == '=')
-			{
-				j++;
-				ft_putstr_fd("=\"", fd);
-				while (tmp[i][j])
-				{
-					ft_putchar_fd(tmp[i][j], fd);
-					j++;
-				}
-				ft_putstr_fd("\"\n", fd);
-			}
-			j++;
-		}
+			write_env(tmp[i], fd);
 		i++;
 	}
 }
+
 
 void	envp_print(t_shell *ms, int fd)
 {
@@ -75,22 +78,4 @@ void	envp_print(t_shell *ms, int fd)
 		}
 		i++;
 	}
-}
-
-void	execute_builtin(t_shell *ms, t_process_node *node)
-{
-	if (ft_strncmp(node->command[0], "export", 6) == 0)
-		ft_export(ms, node->command, 1);
-	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
-		pwd(ms, 0, 1);
-	else if (ft_strncmp(node->command[0], "env", 3) == 0)
-		env(ms, 1);
-	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
-		unset(ms, node->command);
-	else if(ft_strncmp(node->command[0], "echo", 4) == 0)
-		echo(ms, node->command, 1);
-	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
-		ft_exit(ms, node->command);
-	else if (ft_strncmp(node->command[0], "cd", 2) == 0)
-		cd(ms, node->command, 0, 0);
 }

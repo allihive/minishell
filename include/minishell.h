@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 15:30:37 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/01 11:12:57 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	set_signal(void);
 void	sig_ctrl_c(int sig);
 // void	signal_heredoc(int sig);
 void	ctrl_c_heredoc(int sig);
+void heredoc_init(void);
 
 /*Initialization*/
 void	init_envp(t_shell *ms, char **envp);
@@ -134,9 +135,8 @@ int invalid_redirect( char *line, char redirect);
 char check_delimiter(char *line);
 
 /*Builtin*/
-void	execute_builtin(t_shell *ms, t_process_node *node);
 void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd);
-int	cmd_counter(char **cmd);
+int		cmd_counter(char **cmd);
 
 /*Export Builtin Functions*/
 // int		export_str_check(char *str);
@@ -181,10 +181,10 @@ char *remove_quote(char *str, int len);
 /*error handling*/
 void	error_handle(t_shell *ms);
 void	only_print_error(char *name);
-void	error_msg(char *cmd, char *str, char *msg);
 int		syntax_error(char *token, t_shell *ms);
 void	cmd_not_found(char *str, t_shell *ms);
-
+void	error_msg(char *cmd, char *str, char *msg, int excode, t_shell *ms);
+void	heredoc_input_msg(char *str);
 
 /*free*/
 void	free_single(char *str);

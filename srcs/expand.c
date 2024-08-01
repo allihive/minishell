@@ -6,7 +6,11 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/07/30 16:23:36 by yhsu             ###   ########.fr       */
+=======
+/*   Updated: 2024/07/30 15:01:32 by alli             ###   ########.fr       */
+>>>>>>> origin/test
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +139,6 @@ char *shrink(char *cmd, int remove) //if something after $ is invalid still prin
 	//echo hello $USEroijg haha prints hello haha
 }
 
-//char *add_value_back(char *value, int start, int len , char *cmd, char *envp )//
 char *add_value_back( char *value, int start, int len , char *cmd)//expand
 {
 	char *new;
