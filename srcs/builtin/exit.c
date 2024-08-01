@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 09:26:55 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 09:48:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,25 @@ static int	cmd_is_digit(char *cmd)
 			return (0);
 	
 }
+void	exit_shell(t_shell *ms, char **cmd)
+{
+	if(!cmd_is_digit(cmd[1]) && cmd_counter(cmd) > 2)
+	{
+		error_msg(cmd[0], 0, "too many arguments", 2, ms);
+		close_and_free(ms);
+	}
+	else if (!cmd_is_digit(cmd[1]) && ft_atoi(cmd[1]) == 0)
+	{
+		error_msg(cmd[0], cmd[1], "numeric arguments required", 2, ms);
+		close_and_free(ms);
+	}
+	else if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
+	{
+		ft_putstr_fd("exit\n", 1);
+		ms->excode = ft_atoi(cmd[1]) % 256;
+		close_and_free(ms);
+	}
+}
 
 int	ft_exit(t_shell *ms, char **cmd)
 {
@@ -48,21 +67,11 @@ int	ft_exit(t_shell *ms, char **cmd)
 			return (ms->excode = 1);
 		}
 		else
-		{
-			error_msg(cmd[0], 0, "too many arguments", 2, ms);
-			close_and_free(ms);
-		}
+			exit_shell(ms, cmd);
 	}
 	else if (!cmd_is_digit(cmd[1]) && ft_atoi(cmd[1]) == 0)
-	{
-		error_msg(cmd[0], cmd[1], "numeric arguments required", 2, ms);
-		close_and_free(ms);
-	}
+		exit_shell(ms, cmd);
 	else if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
-	{
-		ft_putstr_fd("exit\n", 1);
-		ms->excode = ft_atoi(cmd[1]) % 256;
-		close_and_free(ms);
-	}
+		exit_shell(ms, cmd);
 	return (0);
 }

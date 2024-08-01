@@ -6,13 +6,13 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 09:34:51 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 10:15:59 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *name_exists(t_shell *ms, char *name)
+static char *name_exists_env(t_shell *ms, char *name)
 {
 	int		len;
 	int		i;
@@ -66,7 +66,7 @@ void envp_update(t_shell *ms, char *name)
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
-		if (name_exists(ms, name)) // ft_strncmp(ms->envp[i], name, len) == 0 && 
+		if (name_exists_env(ms, name)) // ft_strncmp(ms->envp[i], name, len) == 0 && 
 		{
 			// printf("ms->envp[i] found: %s\n", name_exists(ms, name));
 			break ;
@@ -79,12 +79,13 @@ void envp_update(t_shell *ms, char *name)
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
 		// printf("ft_strlen(name): %zu\n", ft_strlen(name));
-		ft_bzero(ms->envp[i], ft_strlen(name));//give it a null space in the string the length of the name
+		ft_memset(ms->envp[i], 0, ft_strlen(name));//give it a null space in the string the length of the name
 		ms->envp[i] = ft_strjoin(ms->envp[i], name);//this should be nulled and replaced.
 		if (!ms->envp[i]) //malloc check
 		{
 			// printf("did not malloc");
-			error_handle(ms);
+			// error_handle(ms);
+			close_and_free(ms);
 		}
 		// printf("ms->envp[i]: %s\n", ms->envp[i]);
 	}
@@ -156,10 +157,7 @@ static int	export_str_check(char *str)
 	
 	i = 0;
 	if (ft_isdigit(str[0]))
-	{
-		printf("enters here\n");
 		return (1);
-	}
 	while (str[i] && str[i] != '='  && 
 			(ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
@@ -176,6 +174,15 @@ int	cmd_counter(char **cmd)
 		cmd_args++;
 	}
 	return (cmd_args);
+}
+void	update_or_add_envp(t_shell *ms, char **cmd, int j, int flag)
+{
+	if (name_exists_env(ms, cmd[j]))
+		envp_update(ms, cmd[j]);
+	if (name_exists_env(ms, cmd[j]) == NULL)
+		envp_add(ms, cmd[j]);
+	if (flag == 0)
+		ms->excode = 0;
 }
 
 int	ft_export(t_shell *ms, char **cmd, int fd)
@@ -197,18 +204,10 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 		if(export_str_check(cmd[j]) && ms->envp[i])
 		{
 			error_msg(cmd[0], cmd[j], "not a valid identifier", 1, ms);
-			ms->excode = 1;
 			flag = 1;
 		}
 		if (!export_str_check(cmd[j]) && ms->envp[i])
-		{
-			if (name_exists(ms, cmd[j]))
-				envp_update(ms, cmd[j]);
-			if (name_exists(ms, cmd[j]) == NULL)
-				envp_add(ms, cmd[j]);
-			if (flag == 0)
-				ms->excode = 0;
-		}
+			update_or_add_envp(ms, cmd, j, flag);
 		j++;
 	}
 	return(ms->excode);

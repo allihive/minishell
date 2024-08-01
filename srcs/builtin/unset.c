@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/24 10:47:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 10:09:13 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char *name_exists(t_shell *ms, char *name)
+static char *name_exists_unset(t_shell *ms, char *name)
 {
 	int		len;
 	int		i;
@@ -73,11 +73,11 @@ void	unset(t_shell *ms, char **cmd)
     
     i = 0;
     // j = 0;
-	printf("unset\n");
+	// printf("unset\n");
     while (cmd[i])
     {
-		printf("name_exists %s\n", name_exists(ms, cmd[1]));
-        if (name_exists(ms, cmd[1])) //tmp should be a=1
+		// printf("name_exists %s\n", name_exists(ms, cmd[1]));
+        if (name_exists_unset(ms, cmd[1])) //tmp should be a=1
         {
             // printf("unset cmd[1] %s\n", cmd[1]);
             envp_delete(ms, cmd[1]);

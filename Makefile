@@ -6,7 +6,7 @@
 #    By: alli <alli@student.hive.fi>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/25 13:33:14 by yhsu              #+#    #+#              #
-#    Updated: 2024/07/31 15:00:19 by alli             ###   ########.fr        #
+#    Updated: 2024/08/01 10:04:10 by alli             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ else ifeq ($(UNAME_S), Linux)
     READLINE = -L /usr/lib/x86_64-linux-gnu -lreadline -lncurses
 endif
 
-SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c redirects_utils.c fd.c heredoc.c redirect_utils_in.c redirect_utils_out.c\
+SRCS = ${addprefix srcs/, error_msg.c minishell.c signals.c parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c redirects_utils.c fd.c heredoc.c redirect_utils_in.c redirect_utils_out.c\
         ${addprefix builtin/, export_print.c export.c pwd.c env.c unset.c echo.c exit.c cd.c}}
 
 OBJ = ${SRCS:.c=.o}
