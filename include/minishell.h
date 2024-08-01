@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 14:59:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 09:20:46 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ char *remove_quote(char *str, int len);
 /*error handling*/
 void	error_handle(t_shell *ms);
 void	only_print_error(char *name);
-void	error_msg(char *cmd, char *str, char *msg);
+void	error_msg(char *cmd, char *str, char *msg, int excode, t_shell *ms);
 void	heredoc_input_msg(char *str);
 
 /*free*/

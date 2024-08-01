@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/07/31 13:34:07 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 09:25:42 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	error_handle(t_shell *ms)
 	exit(ms->excode);
 }
 
-void	error_msg(char *cmd, char *str, char *msg)
+void	error_msg(char *cmd, char *str, char *msg, int excode, t_shell *ms)
 {
 	if (!ft_strncmp(cmd, "export", 6))
 	{
@@ -53,6 +53,7 @@ void	error_msg(char *cmd, char *str, char *msg)
 		ft_putstr_fd(msg, 2);
 		ft_putchar_fd('\n', 2);
 	}
+	ms->excode = excode; //changed the args to add exit code
 }
 
 void	heredoc_input_msg(char *str)

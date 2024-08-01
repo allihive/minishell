@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/07/31 14:59:22 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 09:33:17 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	envp_print(t_shell *ms, int fd)
 			i++;
 		while (letter < 127)
 		{
-			// printf("entered print ascii order\n");
 			print_ascii_order(ms, letter, fd);
 			letter++;
 		}
