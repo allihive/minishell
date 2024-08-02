@@ -6,13 +6,13 @@
 #    By: yhsu <student.hive.fi>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/25 13:33:14 by yhsu              #+#    #+#              #
-#    Updated: 2024/08/01 11:15:00 by yhsu             ###   ########.fr        #
+#    Updated: 2024/08/02 18:18:34 by yhsu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 #-g -fsanitize=address
-CFLAGS = -Wall -Wextra -Werror -I./include
+CFLAGS = -g -Wall -Wextra -Werror -I./include
 
 
 LIBFT_DIR = ./libft
@@ -33,10 +33,11 @@ else ifeq ($(UNAME_S), Linux)
     READLINE = -L /usr/lib/x86_64-linux-gnu -lreadline -lncurses
 endif
 
-SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c redirects_utils.c fd.c heredoc.c redirect_utils_in.c redirect_utils_out.c check_utils.c get_cmd.c init.c init_utils.c\
-        ${addprefix builtin/, builtin.c export.c pwd.c env.c unset.c echo.c exit.c cd.c}}
-SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c redirects_utils.c fd.c heredoc.c redirect_utils_in.c redirect_utils_out.c\
-        ${addprefix builtin/, export_print.c export.c pwd.c env.c unset.c echo.c exit.c cd.c}}
+SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c\
+	 		parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c\
+	 		redirects_utils.c fd.c heredoc.c redirect_utils_in.c redirect_utils_out.c check_utils.c\
+	 		get_cmd.c init.c init_utils.c get_path.c redirect_utils_append.c\
+    	${addprefix builtin/, export_print.c export.c pwd.c env.c unset.c echo.c exit.c cd.c}}
 
 OBJ = ${SRCS:.c=.o}
 

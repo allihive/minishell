@@ -6,11 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/07/31 17:33:53 by yhsu             ###   ########.fr       */
-=======
-/*   Updated: 2024/08/01 09:25:42 by alli             ###   ########.fr       */
->>>>>>> origin/test
+/*   Updated: 2024/08/01 18:50:49 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +80,6 @@ void	heredoc_input_msg(char *str)
 	global_signal = 0;
 }
 
-<<<<<<< HEAD
 void	cmd_not_found(char *str, t_shell *ms)
 {
 	ft_putstr_fd("Command ", 2);
@@ -94,30 +89,15 @@ void	cmd_not_found(char *str, t_shell *ms)
 	ft_putstr_fd(" not found\n", 2);
 	ms->excode = 127;
 }
-=======
-// void	free_everything(t_shell *ms, t_process_node *node)
-// {
-// 	if 
-// }
 
-// void	error_command(t_shell *ms, t_process_node *node)
-// {
-// 	// ft_putstr_fd("%s: command not found", node->command[0]);
-// 	ms->excode = 1;
-// 	//should free everything and exit
-// 	// free_everything(ms, node);
-// 	return (ms->excode);
-// }
-
->>>>>>> origin/test
-
-void	only_print_error(char *name)
+void	print_error_and_free(char *name, t_shell *ms)
 {
-	if (ft_putstr_fd("lobster-shell 🦞: in only print error", 2) == -1)
+	if (ft_putstr_fd("minishel: in only print error", 2) == -1)
 	{
 		perror("pipex: write error");
 		exit(1);
 	}
 	perror(name);
 	exit(1);
+	close_and_free(ms);
 }

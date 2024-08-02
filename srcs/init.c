@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:46:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 11:00:30 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/02 14:48:32 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void init_node(t_process_node *new, char *line, char *temp)
 	new->node_line= NULL;// = input
 	new->redirect_in= NULL;//< input
 	new->redirect_out= NULL;//> output
+	new->append_s= NULL;//>>append
 	new->here_doc= NULL;//<<
-	new->append_s= NULL;//>>
 	new->cmd_path = NULL;
 	new->node_line = ft_substr(line, 0, (temp - line));
 	if (!new->node_line )

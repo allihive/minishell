@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/31 10:08:44 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/02 18:34:50 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,10 @@ int	main(int argc, char **argv, char **envp)
 			if (init_process_node(ms.line, &ms) == 0)
 			{
 				execute_shell(&ms);
-				// parse_process_node(&ms.list,&ms);
-				// if (!ms.list)
-				// 	exit(free_env(&ms));
-				// else if (pipex(ms.list, &ms) == -1)
-				// 	exit(ms.excode);
 				free_shell(&ms);
+				dprintf(2,"free shell\n");
 				free_node(&ms.list);
+				dprintf(2,"free node\n");
 			}
 		}
 		return (ms.excode);

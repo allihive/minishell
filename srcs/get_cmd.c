@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:40:24 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 10:44:58 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/02 16:35:04 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,20 @@ static char	**ft_split_pipex(char *str, char *charset)
 }
 
 //char	**get_cmd_arr(char *command, t_process_node *mod)
-char	**get_cmd_arr(char *command)
+char	**get_cmd_arr(char *command, t_shell *ms)
 {
 	char	**cmd_arr;
-	//int		i;
+
 	
 	cmd_arr = ft_split_pipex(command, " ");
 	if (cmd_arr == NULL)
+	{
 		perror("maloc error");
+		close_and_free(ms);
+	}
 	
-
+	//ms->list->command = cmd_arr;
+	//free_double(cmd_arr);
 	return (cmd_arr);
+	//return (ms->list->command);
 }

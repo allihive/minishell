@@ -1,0 +1,15 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "vgdb",
+			"request": "launch",
+			"name": "vdbg minishell",
+			"debugger": "gdb",
+			"program": "${workspaceFolder}/minishell",
+			"args": [],
+			"preLaunchTask": "",
+			"cwd": "${workspaceFolder}",
+		}
+	]
+}

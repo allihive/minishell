@@ -6,11 +6,40 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/01 11:15:27 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/02 14:51:03 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char *check_redirect_append(char *redirect, t_process_node *mod, t_shell *ms)
+{
+	char *end;
+	static int i = 0;
+	
+	while (ifisredirect(*redirect) || ifisspace(*redirect))
+		redirect++;
+	end = redirect;
+	while (*end && !ifisredirect(*end) && *end != ' ')
+		end++;
+	if (mod->append_s == NULL) 
+	{
+		mod->append_s = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
+		if (mod->append_s == NULL) 
+		{
+			perror("redirect out malloc");
+			return NULL; // Handle error or return as appropriate
+		}
+		ft_memset(mod->append_s, 0, sizeof(char *) * 100); // Initialize to NULL
+	}
+	mod->append_s[i] = ft_substr(redirect, 0, end - redirect);
+	mod->append_s[i] = check_if_quote(mod->append_s[i]);
+	redir_append(mod->append_s[i], ms, i);
+	while (mod->append_s[i])
+		i++;
+	return (redirect);
+}
+
 
 char *check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 {
@@ -81,8 +110,8 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 	{
 		mod->append = 1;
 		redirect = redirect + 2;
-		mod->append_s = redirect;
-		redir_append(redirect, ms);
+		//redir_append(redirect, ms);
+		check_redirect_append(redirect, mod, ms);
 	}
 	else if (*redirect == '<')//in
 	{
