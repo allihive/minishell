@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 15:29:17 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 18:14:47 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ int wait_children(t_shell *ms, int *pids, int count)
 {
     int status;
     int i;
-	int tmp_code = 0;
+	
 
     i = 0;
     // status = ms->excode;
 	status = 0;
-	
-
-    tmp_code = ms->excode; //to store the old exit code?
+	//int tmp;
+	//tmp = ms->excode; //to store the old exit code?
    //ignore_signal();
+   
    while(i < count - 1)
    {
         if (pids[i] == -1)
@@ -93,11 +93,9 @@ int pipex(t_process_node *process, t_shell *ms)
             return (close_and_free(ms));//redirection
 
         
-        if (do_process(process, ms) == -1)
+        if (do_process(process, ms) == -1 || ms->pids[ms->count] == 0)
             return (close_and_free(ms));
-       //do_process(process, ms);
-        if (ms->pids[ms->count] == 0)
-            exit(0);
+
 
         close(ms->fd[0]);
         close(ms->fd[1]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 09:34:51 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/05 19:55:52 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void envp_update(t_shell *ms, char *name)
 	// printf("i: %d\n", i);
 	// printf("len: %d\n", len);
 	// printf("ms->envp[i]: %s\n", ms->envp[i]);
-	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
+	if (ms->envp[i][len] == '=') //check if say here= (len = )5
 	{
 		// printf("ft_strlen(name): %zu\n", ft_strlen(name));
 		ft_bzero(ms->envp[i], ft_strlen(name));//give it a null space in the string the length of the name

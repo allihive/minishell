@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/01 16:54:51 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 13:44:04 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int right_delimiter(char *redirect,  t_process_node *process)// too many lines c
 {
     char *end;
     char *tmp;
-
+	char *t_heredoc;
+	
     while (ifisspace(*redirect))
         redirect++;
     end = redirect;
@@ -85,11 +86,16 @@ int right_delimiter(char *redirect,  t_process_node *process)// too many lines c
             return (perror("heredoc in malloc"), 1); // Handle error or return as appropriate
     }
     tmp = ft_substr(redirect, 0, end - tmp);
-    if (!tmp)  
+    
+	if (!tmp)  
         return (perror("heredoc in malloc"), 1); // Handle error or return as appropriate
-    if (*tmp == '"' || *tmp == '\'')
+    
+	if (*tmp == '"' || *tmp == '\'')
         tmp = remove_quote(tmp, ft_strlen(tmp) - 1);
+	
+	t_heredoc = process->here_doc;
     process->here_doc = tmp;
+	free(t_heredoc);
     return (0);
 }
 

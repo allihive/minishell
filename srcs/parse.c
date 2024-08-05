@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/02 15:38:52 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 17:26:54 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,14 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)//echo "hello $USER
 	//get rid of ' '' save back to the string ; change mode
 	mod->command = get_cmd_arr(command, ms); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
 	free(command);
+	
 	int p = 0;
 	while (mod->command[p])
 	{
+		dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
 		p++;
 	}
+	
 	if (is_builtin(mod->command[0]))
 		mod->builtin = 1;
 	check_dollor(mod->command, mod, ms);
@@ -129,6 +132,7 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		input = mod->node_line;
 		parse_mod(input, mod, ms);//for parse test
 		mod = mod->next;
+		dprintf(2, "end of parse process\n");
 	}
 	
 }

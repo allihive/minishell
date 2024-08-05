@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/02 18:34:50 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 20:04:40 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ int add_shlvl(t_shell *ms)//create the export function
 	return (shlvl);
 }
 
+
+
+
 void	initialize_shell(t_shell *ms, char **envp)
 {
 	ft_bzero(ms, sizeof(*ms));
@@ -72,11 +75,27 @@ void execute_shell(t_shell *ms)
 {
 	
 	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
+	// printf("&ms->list == ms ? %d\n", &ms->list == ms->list);
 	if (!ms->list)
+	{
+		printf("!ms->list\n");
 		exit(free_env(ms));
+	}
 	else if (pipex(ms->list, ms) == -1)
+	{
+		printf("pipex(ms->list, ms) == -1\n");
 		exit(ms->excode);
+	}
+	printf("execute_shell::END\n");
+}
+void	quit(t_shell *ms)
+{
+	ft_putstr_fd("exit\n", 2);
 	
+	//free_env(ms);
+	close_and_free(ms);
+	//free(ms->list->command);
+	exit(0);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -92,18 +111,31 @@ int	main(int argc, char **argv, char **envp)
 			set_signal();
 			ms.line = readline("lobster-shell 🦞: ");
 			if (!ms.line)
-				error_handle(&ms);
+			{
+				dprintf(2,"in !ms.line\n");
+				//error_handle(&ms);
+				quit(&ms);
+			}
 			else if (ms.line[0] != 0)
 				add_history(ms.line);
 			if (init_process_node(ms.line, &ms) == 0)
 			{
 				execute_shell(&ms);
+				dprintf(2,"free node\n");				
+				int j = 0;
+				while (ms.list->command[j])
+				{
+					
+					dprintf(1, "command[%d]: %s\n", j, ms.list->command[j]);
+					j++;
+				}	
+				free_node(&ms.list);
 				free_shell(&ms);
 				dprintf(2,"free shell\n");
-				free_node(&ms.list);
-				dprintf(2,"free node\n");
 			}
 		}
+		close_and_free(&ms);
+		rl_clear_history();
 		return (ms.excode);
 	}
 }

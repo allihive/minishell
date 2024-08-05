@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/01 18:58:07 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 18:10:38 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void do_dups(t_shell *ms)
 
 int do_command(t_shell *ms, t_process_node *process)
 {
-    
     if (!process->builtin)//如果命令不是內建的，調用 do_dups 進行文件描述符的複製和關閉
         do_dups(ms);
     if (process->builtin)
@@ -39,7 +38,6 @@ int do_command(t_shell *ms, t_process_node *process)
 	}
 	ft_putstr_fd(process->command[0], 2);
 	ft_putstr_fd(" Permission denied\n", 2);
-
     return (set_exitcode(ms, 1));
 }
 
@@ -61,7 +59,7 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
         }
         if (ms->pids[ms->count] == 0)
         {
-            if (ms->execute || do_command(ms, process))
+            if (do_command(ms, process))
             	return (-1);
         }
     }

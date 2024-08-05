@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:40:24 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/02 16:35:04 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 20:15:33 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,11 @@ static char	**write_arr(char **arr, char *str, char *charset)
 				len++;
 			arr[word] = malloc(sizeof(char) * (len + 1));
 			if (arr[word] == NULL)
-				return (NULL);
+			{
+				while (--word)
+					free(arr[word]);
+;				return (NULL);
+			}
 			arr[word] = write_word(arr[word], str + i, charset);
 			i += len;
 			len = 0;
@@ -87,6 +91,7 @@ static char	**ft_split_pipex(char *str, char *charset)
 	int		word;
 
 	word = count_word(str, charset);
+	printf("word:%d\n", word);
 	arr = (char **)malloc((word + 1) * sizeof(char *));
 	if (arr == NULL)
 		return (NULL);
@@ -108,8 +113,10 @@ char	**get_cmd_arr(char *command, t_shell *ms)
 		close_and_free(ms);
 	}
 	
-	//ms->list->command = cmd_arr;
-	//free_double(cmd_arr);
+	// ms->list->command = cmd_arr;
+	// free_double(cmd_arr);
+	// return (ms->list->command);
+
+
 	return (cmd_arr);
-	//return (ms->list->command);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 09:26:55 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/05 17:38:17 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,15 @@ int	ft_exit(t_shell *ms, char **cmd)
 	{
 		ft_putstr_fd("exit\n", 1);
 		ms->excode = ft_atoi(cmd[1]) % 256;
+		
+		int j = 0;
+		while (ms->list->command[j])
+		{
+			
+			dprintf(1, "command[%d]: %s\n", j, ms->list->command[j]);
+			j++;
+		}
+		ft_putstr_fd("exit::before calling close_and_free(ms)\n", 1);		
 		close_and_free(ms);
 	}
 	return (0);

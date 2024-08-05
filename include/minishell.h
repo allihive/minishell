@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/02 16:06:47 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 18:47:09 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void	error_msg(char *cmd, char *str, char *msg, int excode, t_shell *ms);
 void	heredoc_input_msg(char *str);
 
 /*free*/
-void	free_single(char *str);
+void	free_single(char **str);
 void	free_double(char **arr);
 void free_node(t_process_node **lst);
 void free_shell(t_shell *ms);

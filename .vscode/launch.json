@@ -10,6 +10,7 @@
 			"args": [],
 			"preLaunchTask": "",
 			"cwd": "${workspaceFolder}",
+			// "startupCmds": ["-gdb-set follow-fork-mode child"]
 		}
 	]
 }
