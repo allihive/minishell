@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 14:32:12 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/05 09:45:02 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void envp_update(t_shell *ms, char *name)
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
-		if (name_exists_env(ms, name)) // ft_strncmp(ms->envp[i], name, len) == 0 && 
+		if (ft_strncmp(ms->envp[i], name, len) == 0 && name_exists_env(ms, name)) //very neccessary
 			break ;
 		i++;
 	}
@@ -95,13 +95,8 @@ static char	*latest_envp(char *name)
  	return (new_str);
 }
 
-char *add_to_end_of_list(t_shell *ms, char *name, int i, int j)
+char *add_to_end_of_list(t_shell *ms, char *new, char *name, int i, int j) //working but leaking
 {
-	char *new;
-	
-	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
-	if (!new)
-		error_handle(ms);
 	if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
 	{
 		new = latest_envp(name);//it will be replaced when there is something else written
@@ -119,7 +114,7 @@ char *add_to_end_of_list(t_shell *ms, char *name, int i, int j)
 	return (new);
 }
 
-void envp_add(t_shell *ms, char *name)
+void envp_add(t_shell *ms, char *name) //working but leaking
 {
 	char	**new;
 	int		i;
@@ -136,7 +131,7 @@ void envp_add(t_shell *ms, char *name)
 		error_handle(ms);
 	while (i < ms->envp_size - 1 && ms->envp[i])
 	{
-		new[i] = add_to_end_of_list(ms, name, i, j);
+		new[i] = add_to_end_of_list(ms, new[i], name, i, j);
 		i++;
 		j++;
 	}
@@ -144,6 +139,7 @@ void envp_add(t_shell *ms, char *name)
 		new[i] = latest_envp(name);
 	ft_free_strs(ms->envp, 0, 0);
 	ms->envp = new;
+	// ft_free_strs(new, 0, 0);
 }
 
 static int	export_str_check(char *str)

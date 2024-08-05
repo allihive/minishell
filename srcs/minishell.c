@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/07/30 11:01:22 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 09:15:14 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,36 @@
 
 volatile sig_atomic_t global_signal = 0;
 
-void	init_envp(t_shell *ms, char **envp)
+char	**init_envp(t_shell *ms, char **envp)
 {
 	int i;
+	char **new;
 	
 	ms->envp_size = 0;
 	while (envp[ms->envp_size])
 		ms->envp_size++;
-	ms->envp = ft_calloc(ms->envp_size + 1, sizeof(char *));
+	new = ft_calloc(ms->envp_size + 1, sizeof(char *));
 	if (!ms->envp)
 		error_handle(ms);
 	i = 0;
 	while (i < ms->envp_size)
 	{
-		ms->envp[i] = ft_strdup(envp[i]);
+		new[i] = ft_strdup(envp[i]);
 		// printf("ms->envp = %s\n", ms->envp[i]);
-		if (!ms->envp[i])
+		if (!new[i])
 			error_handle(ms);
 		i++;
 	}
+	new[ms->envp_size] = NULL;
+	return (new);
 }
 
 int add_shlvl(t_shell *ms)//create the export function
 {
 	int shlvl;
 	char *shlvl_str;
+	// char *tmp;
 	
-	// shlvl = 0;
 	shlvl_str = getenv("SHLVL");
 	if (shlvl_str == NULL || shlvl_str[0] == '\0')
 		envp_add(ms, ft_strdup(("SHLVL=1")));
@@ -61,7 +64,7 @@ int add_shlvl(t_shell *ms)//create the export function
 void	initialize_shell(t_shell *ms, char **envp)
 {
 	ft_bzero(ms, sizeof(*ms));
-	init_envp(ms, envp);
+	ms->envp = init_envp(ms, envp);
 	add_shlvl(ms);
 	//know the pwd somehow
 }
