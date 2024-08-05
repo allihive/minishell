@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:40:24 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/05 20:15:33 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 20:23:55 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ static char	**ft_split_pipex(char *str, char *charset)
 	if (arr == NULL)
 		return (NULL);
 	arr = write_arr(arr, str, charset);
+	if (arr == NULL)
+		return (NULL);
 	arr[word] = NULL;
 	return (arr);
 }
