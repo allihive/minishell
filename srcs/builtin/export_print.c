@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 09:33:17 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/05 12:28:01 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	print_ascii_order(t_shell *ms, char letter, int fd)
 
 void	envp_print(t_shell *ms, int fd)
 {
-	char	**new_list;
+	// char	**new_list;
 	int		i;
 	int		j;
 	int 	letter;
@@ -64,9 +64,9 @@ void	envp_print(t_shell *ms, int fd)
 	i = 0;
 	j = 0;
 	letter = ' ';
-	new_list = ft_calloc(ms->envp_size + 1, sizeof(char *));
-	if (!new_list)
-		return ;//some sort of error exit here
+	// new_list = ft_calloc(ms->envp_size + 1, sizeof(char *));
+	// if (!new_list)
+	// 	return ;//some sort of error exit here
 	while (i < ms->envp_size && ms->envp[i])
 	{
 		if (ms->envp[i][j] == '_' || ms->envp[i][j + 1] == '=')
@@ -78,4 +78,5 @@ void	envp_print(t_shell *ms, int fd)
 		}
 		i++;
 	}
+	
 }

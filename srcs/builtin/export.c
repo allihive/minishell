@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/05 09:45:02 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/05 15:24:36 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,23 @@ static char *name_exists_env(t_shell *ms, char *name)
 		i++;
 	key = ft_substr(name, 0, i + 1);
 	if (!key)
+	{
+		// free(key);
 		return (NULL); //should be error_handle
+	}
 	len = ft_strlen(key + 1);
 	i = 0;
 	while (i < ms->envp_size && ms->envp[i])
 	{
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+			{
+				free(key);
 				return (ms->envp[i] + len);
+			}
 		i++;
 	}
+	free(key);
 	return (NULL);
 }
 
@@ -65,17 +72,21 @@ void envp_update(t_shell *ms, char *name)
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
-		if (ft_strncmp(ms->envp[i], name, len) == 0 && name_exists_env(ms, name)) //very neccessary
+		// if (ft_strncmp(ms->envp[i], name, len) == 0 && name_exists_env(ms, name)) //very neccessary
+		if (ft_strncmp(ms->envp[i], name, len) == 0 && ms->envp[i][len] == '=') 
 			break ;
 		i++;
 	}
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
-		ft_memset(ms->envp[i], 0, ft_strlen(name));//give it a null space in the string the length of the name
-		ms->envp[i] = ft_strjoin(ms->envp[i], name);//this should be nulled and replaced.
+		free(ms->envp[i]);
+		// ft_memset(ms->envp[i], 0, ft_strlen(name));//give it a null space in the string the length of the name
+		ms->envp[i] = name;//this should be nulled and replaced.
+		// evyerhting that is passed through the second parameter should be freed
 		if (!ms->envp[i]) //malloc check
 			close_and_free(ms);
 	}
+	// free(name);
 }
 
 static char	*latest_envp(char *name)
@@ -92,6 +103,7 @@ static char	*latest_envp(char *name)
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
 		return (NULL); //error_message
+	free(name);
  	return (new_str);
 }
 
@@ -111,6 +123,8 @@ char *add_to_end_of_list(t_shell *ms, char *new, char *name, int i, int j) //wor
 		if (!new)
 			return (NULL);// error_handle(ms);
 	}
+	// free(name);
+	// ms->envp = 
 	return (new);
 }
 
@@ -129,15 +143,20 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
-	while (i < ms->envp_size - 1 && ms->envp[i])
+	// new = ms->envp;// ft_free_strs(ms->envp, 0, 0);
+	// free_env(ms);
+	// 	ft_free_strs(ms->envp, 0, 0);
+	// while (i < ms->envp_size - 1 && ms->envp[i])
+	while (ms->envp_size - 1 && ms->envp[i])
 	{
-		new[i] = add_to_end_of_list(ms, new[i], name, i, j);
+		// new[i] = add_to_end_of_list(ms, new[i], name, i, j);
+		new[i] = ms->envp[i];
 		i++;
-		j++;
+		// j++;
 	}
 	if (name && !ms->flag)
 		new[i] = latest_envp(name);
-	ft_free_strs(ms->envp, 0, 0);
+	free(ms->envp);
 	ms->envp = new;
 	// ft_free_strs(new, 0, 0);
 }
@@ -168,10 +187,22 @@ int	cmd_counter(char **cmd)
 }
 void	update_or_add_envp(t_shell *ms, char **cmd, int j, int flag)
 {
+	char *current_cmd;
+
+	current_cmd = ft_strdup(cmd[j]);
+	if (!current_cmd)
+	{
+		free(cmd[j]);
+		return ;
+	}
 	if (name_exists_env(ms, cmd[j]))
-		envp_update(ms, cmd[j]);
+	{
+		envp_update(ms, current_cmd);
+	}
 	if (name_exists_env(ms, cmd[j]) == NULL)
-		envp_add(ms, cmd[j]);
+	{
+		envp_add(ms, current_cmd);
+	}
 	if (flag == 0)
 		ms->excode = 0;
 }

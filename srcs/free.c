@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/30 11:01:08 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 14:48:59 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int close_and_free(t_shell *ms)
 	close(ms->fd[1]);
 	close(ms->read_end);
 	free_shell(ms);
-	free_env(ms);
+	if (ms->envp)
+		free_env(ms);
 	exit (ms->excode);
 	// return (-1);
 }
