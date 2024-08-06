@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 09:48:28 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/06 10:21:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,19 @@ int	ft_exit(t_shell *ms, char **cmd)
 		exit_shell(ms, cmd);
 	else if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
 		exit_shell(ms, cmd);
+	// { //yhsu checking
+	// 	ft_putstr_fd("exit\n", 1);
+	// 	ms->excode = ft_atoi(cmd[1]) % 256;
+		
+	// 	int j = 0;
+	// 	while (ms->list->command[j])
+	// 	{
+			
+	// 		dprintf(1, "command[%d]: %s\n", j, ms->list->command[j]);
+	// 		j++;
+	// 	}
+	// 	ft_putstr_fd("exit::before calling close_and_free(ms)\n", 1);		
+	// 	close_and_free(ms);
+	// }
 	return (0);
 }

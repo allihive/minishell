@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/05 15:24:36 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/06 10:22:20 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static char	*latest_envp(char *name)
  	return (new_str);
 }
 
-char *add_to_end_of_list(t_shell *ms, char *new, char *name, int i, int j) //working but leaking
+/*char *add_to_end_of_list(t_shell *ms, char *new, char *name, int i, int j) //working but leaking
 {
 	if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
 	{
@@ -126,7 +126,7 @@ char *add_to_end_of_list(t_shell *ms, char *new, char *name, int i, int j) //wor
 	// free(name);
 	// ms->envp = 
 	return (new);
-}
+}*/
 
 void envp_add(t_shell *ms, char *name) //working but leaking
 {

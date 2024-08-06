@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 13:56:08 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/05 20:43:47 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)
 	return;
 }
 
-
 int right_delimiter(char *redirect,  t_process_node *process)// too many lines can remove tmp just use redirect 
 {
     char *end;
-    char *tmp = redirect;
-
+    char *tmp;
+	char *t_heredoc;
+	
     while (ifisspace(*redirect))
         redirect++;
     end = redirect;
@@ -81,50 +81,30 @@ int right_delimiter(char *redirect,  t_process_node *process)// too many lines c
 		end++;
     if (process->here_doc == NULL) 
     {
-        //process->here_doc = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
         process->here_doc = calloc(100, sizeof(char *));
         if (process->here_doc== NULL) 
-        {
-            perror("heredoc in malloc");
-            return (1); // Handle error or return as appropriate
-        }
-        //ft_memset(process->here_doc, 0, sizeof(char *) * 100); // Initialize to NULL
+            return (perror("heredoc in malloc"), 1); // Handle error or return as appropriate
     }
     tmp = ft_substr(redirect, 0, end - tmp);
-    if (!tmp) 
-    {
-        perror("heredoc in malloc");
-        return (1); // Handle error or return as appropriate
-    }
-    if (*tmp == '"' || *tmp == '\'')
+    
+	if (!tmp)  
+        return (perror("heredoc in malloc"), 1); // Handle error or return as appropriate
+    
+	if (*tmp == '"' || *tmp == '\'')
         tmp = remove_quote(tmp, ft_strlen(tmp) - 1);
+	
+	t_heredoc = process->here_doc;
     process->here_doc = tmp;
+	free(t_heredoc);
     return (0);
 }
 
-int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
-//int handle_heredocs(char *redirect, t_process_node *process)
-{// << end
-    int heredoc_fd;
-    static int i;
-    char *heredoc_name;
 
-    i = 0;
-    process->heredoc = i;
-    i++;
-    heredoc_name = ft_strjoin(".heredoc", ft_itoa(i));
-    redirect+= 2;
-	
-    //process->here_doc = right_delimiter(redirect, process);//delimiter: end
-	
-    if (right_delimiter(redirect, process))
-    {
-        perror("open .heredoc failed");
-        return(set_exitcode(ms, 1)); 
-    }   
-    close(ms->fd[0]);
-    heredoc_fd = open(heredoc_name, O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0777);
-    
+int open__close_heredoc(char *heredoc_name, t_process_node *process,t_shell *ms)
+{
+	int heredoc_fd;
+
+	heredoc_fd = open(heredoc_name, O_CREAT | O_RDWR | O_TRUNC | O_APPEND, 0777);
     if (heredoc_fd == -1)
     {
         perror("open .heredoc failed");
@@ -141,8 +121,29 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
     {
         perror("open .heredoc failed");
         return(set_exitcode(ms, 1)); 
-    }
+	}
+	return (0);
+}
+
+int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
+{// << end
+    static int i;
+    char *heredoc_name;
+
+    i = 0;
+    process->heredoc = i;
+    i++;
+	heredoc_name = ".heredoc";
+    //heredoc_name = ft_strjoin(".heredoc", ft_itoa(i));
+    redirect+= 2;
+    if (right_delimiter(redirect, process))
+    {
+        perror("open .heredoc failed");
+        return(set_exitcode(ms, 1)); 
+    }   
+    close(ms->fd[0]);
+    open__close_heredoc(heredoc_name, process, ms);
     unlink(heredoc_name);
-    free(heredoc_name);
+    //free(heredoc_name);
     return (0);
 }

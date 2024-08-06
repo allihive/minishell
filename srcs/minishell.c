@@ -6,7 +6,11 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/08/05 15:07:08 by alli             ###   ########.fr       */
+=======
+/*   Updated: 2024/08/05 20:04:40 by yhsu             ###   ########.fr       */
+>>>>>>> origin/hsu
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +69,9 @@ int add_shlvl(t_shell *ms)//create the export function
 	return (shlvl);
 }
 
+
+
+
 void	initialize_shell(t_shell *ms, char **envp)
 {
 	ft_memset(ms, 0, sizeof(*ms));
@@ -75,47 +82,34 @@ void	initialize_shell(t_shell *ms, char **envp)
 	//know the pwd somehow
 }
 
-/*
-int	main(int argc, char **argv, char **envp)
-{
-	t_shell ms;
-	(void)argv;
-	// (void)argc;
 
-	if (argc == 1)
+
+void execute_shell(t_shell *ms)
+{
+	
+	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
+	// printf("&ms->list == ms ? %d\n", &ms->list == ms->list);
+	if (!ms->list)
 	{
-		initialize_shell(&ms, envp);
-		while (true)
-		{
-			set_signal();
-			ms.line = readline("lobster-shell 🦞: ");
-			//add_history(ms.line);
-			if (!ms.line)
-				error_handle(&ms);
-			else if (ms.line[0] != 0)
-			{
-				add_history(ms.line);
-			}
-			if (init_process_node(ms.line, &ms) == 0)
-			{
-				//execute_shell(&ms);
-				//printf("main0\n");
-				parse_process_node(&ms.list,&ms);
-				
-				//printf("main1\n");
-				if (!ms.list)
-					exit(free_env(&ms));
-				else if (pipex(ms.list, &ms) == -1)
-					exit(ms.excode);
-			}
-			//printf("main2\n");
-			free_shell(&ms);
-			free_node(&ms.list);
-		}
-		return (ms.excode);
+		printf("!ms->list\n");
+		exit(free_env(ms));
 	}
+	else if (pipex(ms->list, ms) == -1)
+	{
+		printf("pipex(ms->list, ms) == -1\n");
+		exit(ms->excode);
+	}
+	printf("execute_shell::END\n");
 }
-*/
+void	quit(t_shell *ms)
+{
+	ft_putstr_fd("exit\n", 2);
+	
+	//free_env(ms);
+	close_and_free(ms);
+	//free(ms->list->command);
+	exit(0);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -131,34 +125,32 @@ int	main(int argc, char **argv, char **envp)
 			ms.line = readline("lobster-shell 🦞: ");
 			if (!ms.line)
 			{
-				close_and_free(&ms);
-			// else if (ms.line[0] != '\0')
-			// {
-			// 	add_history(ms.line);
-			// 	init_process_node(ms.line, &ms);
-			// 	execute_shell(&ms);
-			// 	//execute_builtin(&ms, ms.list);
-			// }
+				dprintf(2,"in !ms.line\n");
+				//error_handle(&ms);
+				quit(&ms);
 			}
 			else if (ms.line[0] != 0)
-			{
 				add_history(ms.line);
-			}
 			if (init_process_node(ms.line, &ms) == 0)
 			{
-				//execute_shell(&ms);
-				parse_process_node(&ms.list,&ms);
-				//printf("main1\n");
-				if (!ms.list)
-					exit(free_env(&ms));
-				else if (pipex(ms.list, &ms) == -1)
-					exit(ms.excode);
-				free_shell(&ms);
+				execute_shell(&ms);
+				dprintf(2,"free node\n");				
+				int j = 0;
+				while (ms.list->command[j])
+				{
+					
+					dprintf(1, "command[%d]: %s\n", j, ms.list->command[j]);
+					j++;
+				}	
 				free_node(&ms.list);
+				free_shell(&ms);
+				dprintf(2,"free shell\n");
 			}
 			// if (ms.envp)
 			// 	free_env(&ms);
 		}
+		close_and_free(&ms);
+		rl_clear_history();
 		return (ms.excode);
 	}
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   expand_backup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 10:19:06 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/06 10:03:08 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char *remove_quote(char *str, int len)
 			new_str[j++] = str[i];	
 		i++;
 	}
+	free(str);
 	return (new_str);	
 }
 
@@ -91,7 +92,6 @@ static int	key_exists(t_shell *ms, char *name)
 
 	i = 0;
 	len = 0;
-	// printf("name: %s\n", name);
 	while(name[i] && name[i] != '=')
 		i++;
 	key = ft_substr(name, 0, i + 1);
@@ -99,15 +99,12 @@ static int	key_exists(t_shell *ms, char *name)
 		return (0); //should be error_handle
 	len = ft_strlen(key);
 	i = 0;
+
 	while (i < ms->envp_size && ms->envp[i])
 	{
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
-			{
-				printf("key is found\n");
 				return (1);// key is found
-			}
-				
 		i++;
 	}
 	return (0);
@@ -216,26 +213,20 @@ char *get_value(int start, int len , char *cmd, t_shell *ms)
 	int value_start;
 
 	value_start = start;//after quotes and dollar signs
-	printf("cmd[start]: %c\n", cmd[start]);
-	key = ft_calloc(len + 1, sizeof(int));
+	key = ft_calloc(len + 1, sizeof(char));
 	if (!key)
 		return (NULL);
 	i = 0;
 	while (i < len)
 		key[i++]= cmd[start++];// copy key words from cmd to key
-	// printf("key: %s\n", key);
 	if (!find_key_in_envp(ms, key)) // when it's at the end of the list we should go into the shrink function
-	{
-		// printf("enters here\n");
 		cmd = shrink(cmd, value_start - 1); //error handle check?
-	}
 	if (key_exists(ms, key))
 	{
 		value =  find_value(ms, key);
 		cmd = add_value_back(value, value_start, len, cmd);//need to be protected //changed start to value start
 		//keep the single quote inside, double quote inside, don't need to expand, then keep double quote inside
 	}
-	printf("cmd at the end: %s\n", cmd);
 	free(key);
 	return (cmd);
 }
@@ -301,40 +292,19 @@ char	*echo_exit_code(t_shell *ms)
 	ft_putstr_fd(exit_code, 1);
 	return (exit_code);
 }
-
-char *echo_digit(char *cmd, t_shell *ms, int i)
-{	
-	char *replace;
-	int	len;
-	int j;
-
-	j = 0;
-	// printf("cmd: %s\n", cmd);
-	len = ft_strlen(cmd) - 2;
-	// printf("len: %d\n", len);
-	replace = malloc((sizeof(char) * len) + 1);
-	if (!replace)
-		return (NULL);
-	i++;
-	while (cmd[i])
-		replace[j++] = cmd[i++];
-	ms->excode = 0;
-	return (replace);
-}
-
-char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = key
+char *if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod ) // i = key
 {
 	char *result = NULL;
 	int start;
 	//int j;
 	start = i;//PATH
-	// printf("letter in cmd[start] %c\n", cmd[start]);
-	if (ft_isalpha(cmd[i]) || cmd[i] == '_' ) //why does this have to be alpha?
+
+	if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
 	{
-		// printf("cmd: %s\n", cmd);
-		while(cmd[i] == '_' || ft_isalnum(cmd[i]))//check this with yunchia ft_isalpha(cmd[i])
+		dprintf(2, "1 in expandable\n");
+		while(ft_isalpha(cmd[i]) || cmd[i] == '_')//check this
 			i++;
-		result = get_value(start, i - start, cmd, ms);
+		result = get_value(start, i - start, cmd , ms);	
 	}
 	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != DOUBLEQUOTE))
 	{
@@ -346,8 +316,6 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 		dprintf(2, "3 in expandable\n");
 		result = echo_exit_code(ms);
 	}
-	else if (ft_isdigit(cmd[i]))
-		result = echo_digit(cmd, ms, i);
 	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode == DOUBLEQUOTE))
 	{
 		dprintf(2, "4 in expandable\n");
