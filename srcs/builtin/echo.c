@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/07/24 11:28:57 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/01 11:15:50 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static	int ft_charncmp(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '\0')
+		return (0);
 	if (str[0] == '-')
 		i++;
 	while (str[i])
@@ -29,22 +31,24 @@ static	int ft_charncmp(char *str)
 	return (1);
 }
 
-void	echo(t_shell *ms, char **output, int fd) //char **output
+void	echo(t_shell *ms, char **output, int fd)
 {
 	int	i;
 	int	j;
 
-	i = 0;
+	i = 1;
 	j = 0;
-	i++; // skip echo
-
-	while (output[i] && ft_charncmp(output[i]))
-	{
-		i++;
-		j = 1;
-	}
 	while (output[i])
 	{
+		while (ft_charncmp(output[i]))
+		{
+			if (output[i + 1] == NULL)
+				return;
+			j = 1;
+			i++;
+		}
+		if (!j)
+			j = 0;
 		ft_putstr_fd(output[i], fd);
 		if (output[i + 1] == NULL && j == 0)
 			ft_putchar_fd('\n', fd);
@@ -54,4 +58,3 @@ void	echo(t_shell *ms, char **output, int fd) //char **output
 	}
 	ms->excode  = 0;
 }
-

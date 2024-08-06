@@ -6,13 +6,37 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:02 by alli              #+#    #+#             */
-/*   Updated: 2024/07/29 11:32:25 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/31 13:56:12 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // int g_signal = 0; //global variable
+
+void heredoc_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		write (1, "\n", 1);
+		close (STDIN_FILENO);
+		global_signal = 2;
+	}
+}
+
+void heredoc_init(void)
+{
+    struct sigaction sa;
+    struct sigaction sq;
+
+    ft_bzero(&sa, sizeof(sa));
+    ft_bzero(&sq, sizeof(sq));
+
+    sa.sa_handler = heredoc_handler;
+    sigaction(SIGINT, &sa, NULL);
+    sq.sa_handler = SIG_IGN;
+    sigaction(SIGQUIT, &sq, NULL);
+}
 
 void	sig_ctrl_c(int sig)
 {
@@ -45,11 +69,11 @@ void	set_signal(void)
 	struct sigaction sa;
 	struct sigaction sb;
 	
-	ft_bzero(&sa, sizeof(sa));
+	ft_memset(&sa, 0, sizeof(sa));
 	set_termios(2);
 	sa.sa_handler = sig_ctrl_c;
 	sigaction(SIGINT, &sa, NULL);
-	ft_bzero(&sb, sizeof(sb)); /*ctrl-\*/
+	ft_memset(&sb, 0, sizeof(sb)); /*ctrl-\*/
 	sb.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sb, NULL); 
 

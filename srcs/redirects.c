@@ -5,112 +5,145 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/25 16:12:34 by yhsu             ###   ########.fr       */
+/*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
+/*   Updated: 2024/08/02 14:51:03 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-int redir_append(char *redirectappend, t_shell *ms)
+char *check_redirect_append(char *redirect, t_process_node *mod, t_shell *ms)
 {
-	//int		i;
-
-	//i = 1;
-	//if (validate_redir(data, redir) == -1)
-		//return (-1);
-	close(ms->fd[1]);
-	//if (redirectappend[1] == '>')//>>
-	if (ms->list->append == 1)
-		ms->fd[1] = open(redirectappend, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (ms->fd[1] < 0)
-	{
-		if (access(redirectappend, F_OK) != 0)
-			ft_printf( "shell: %s: No such file or directory\n", redirectappend);//need to fix fd 2
-		else
-			ft_printf( "shell: %s: Permission denied\n", redirectappend);//need to fix fd 2
-		ms->execute = 0;
-		return (set_exitcode(ms, -1));
-	}
-	return (0);
-}
-
-int redir_out(char *redirectout, t_shell *ms)
-{
-	//int		i;
-
-	//i = 1;
-	//if (validate_redir(data, redir) == -1)
-		//return (-1);
-	close(ms->fd[1]);
+	char *end;
+	static int i = 0;
 	
-	if (redirectout)//>>
-		ms->fd[1] = open(redirectout, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (ms->fd[1] < 0)
+	while (ifisredirect(*redirect) || ifisspace(*redirect))
+		redirect++;
+	end = redirect;
+	while (*end && !ifisredirect(*end) && *end != ' ')
+		end++;
+	if (mod->append_s == NULL) 
 	{
-		if (access(redirectout, F_OK) != 0)
-			ft_printf( "shell: %s: No such file or directory\n", redirectout);//need to fix fd 2
-		else
-			ft_printf( "shell: %s: Permission denied\n", redirectout );//need to fix fd 2
-		ms->execute = 0;
-		return (set_exitcode(ms, -1));
+		mod->append_s = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
+		if (mod->append_s == NULL) 
+		{
+			perror("redirect out malloc");
+			return NULL; // Handle error or return as appropriate
+		}
+		ft_memset(mod->append_s, 0, sizeof(char *) * 100); // Initialize to NULL
 	}
-	return (0);
+	mod->append_s[i] = ft_substr(redirect, 0, end - redirect);
+	mod->append_s[i] = check_if_quote(mod->append_s[i]);
+	redir_append(mod->append_s[i], ms, i);
+	while (mod->append_s[i])
+		i++;
+	return (redirect);
 }
 
 
-
-int redir_in(char *redirectin,t_shell *ms)
+char *check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 {
-    //if (validate_redir(data, redir) == -1)
-		//set_exitcode(data, -1);
-	close(ms->fd[0]);
+	char *end;
+	int j;
 	
-	dprintf(2, "redirectin: %s\n", redirectin);//outfile
-	ms->fd[0] = open(redirectin, O_RDONLY);
-	if (ms->fd[0] < 0)
+	j = 0;
+	if (ifisspace(*redirect))//  remove space the the beginning
+		redirect++;
+	end = redirect;
+	while (*end && !ifisredirect(*end) && *end != ' ')
+		end++;
+	if (mod->redirect_in == NULL) 
 	{
-		if (access(redirectin, F_OK) != 0)
-			ft_printf( "shell: %s: No such file or directory\n",redirectin);// need to fix fd 2
-		else
-			ft_printf( "shell: %s: Permission denied\n", redirectin);// need to fix fd 2
-		ms->execute = 0;
-		return (set_exitcode(ms, -1));// need to check
+		mod->redirect_in = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
+		if (mod->redirect_in == NULL) 
+		{
+			perror("redirect in malloc");
+			return NULL; // Handle error or return as appropriate
+		}
+		ft_memset(mod->redirect_in, 0, sizeof(char *) * 100); // Initialize to NULL
 	}
-	return (0);
+	mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
+	mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
+	redir_in(mod->redirect_in[j], ms, j);
+	while (mod->redirect_in[j])
+		j++;
+	return (redirect);
+}
+
+char *check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
+{
+	char *end;
+	static int i = 0;
 	
+	while (ifisredirect(*redirect) || ifisspace(*redirect))
+		redirect++;
+	end = redirect;
+	while (*end && !ifisredirect(*end) && *end != ' ')
+		end++;
+	if (mod->redirect_out == NULL) 
+	{
+		mod->redirect_out = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
+		if (mod->redirect_out == NULL) 
+		{
+			perror("redirect out malloc");
+			return NULL; // Handle error or return as appropriate
+		}
+		ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
+	}
+	mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
+	mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
+	redir_out(mod->redirect_out[i], ms, i);
+	while (mod->redirect_out[i])
+		i++;
+	return (redirect);
+}
+
+//檢查整句 input <>
+char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
+{
+	if (*(redirect + 1) == '<')//<<heredoc
+	{
+		handle_heredocs(redirect, mod, ms);
+		redirect = redirect + 2;
+	}
+	else if (*(redirect + 1) == '>')//>>append
+	{
+		mod->append = 1;
+		redirect = redirect + 2;
+		//redir_append(redirect, ms);
+		check_redirect_append(redirect, mod, ms);
+	}
+	else if (*redirect == '<')//in
+	{
+		mod->redirectin = 1;
+		redirect++;
+		check_redirect_in(redirect, mod, ms);		
+	}	
+	else if (*redirect == '>')//out
+	{
+		mod->redirectout = 1;
+		check_redirect_out(redirect, mod, ms);
+	}
+	return (redirect);
 }
 
 
-// int handle_redirects(t_process_node *process, t_shell *ms)
-// {
-//     int i;
-    
-//     i = 0;
-//     if (process->redirectin == 1)//<redirect in
-//     {
-//         while (process->redirect_in[i])
-//         {
-//             if (redir_in(process->redirect_in[i], ms) == -1)
-// 				return (ms->exitcode);
-//             i++
-//         }  
-//     }
-//     else if (process->append == 1)//>>append
-//     {
-//         if (process->append_s && redir_in(process->append_s, ms) == -1)
-//             return (ms->exitcode);
-//     }
-//     else if (process->redirectout == 1)//> redirect out
-//     {
-//         while (process->redirect_out[i])
-//         {
-//             if (redir_in(process->redirect_in[i], ms) == -1)
-// 				return (ms->exitcode);
-//             i++
-//         }
-//     } 
-// }
-
+int go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
+{
+	char *redirect;
+	
+	redirect = input;
+	while (*redirect)
+	{
+		if (!*redirect)
+			break;
+		while ( *redirect && !ifisredirect(*redirect))
+			redirect++;
+		if (*redirect)
+			redirect = check_redirect(redirect, mod, ms);//檢查redirect  input 0 redirect 19 
+		else
+			break;
+		redirect++;
+	}
+	return (0);
+}

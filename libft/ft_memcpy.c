@@ -6,11 +6,12 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 15:49:59 by alli              #+#    #+#             */
-/*   Updated: 2023/11/15 16:33:54 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/05 10:25:20 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
