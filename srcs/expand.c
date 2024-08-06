@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 12:59:48 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/06 16:32:43 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,13 @@ static int	key_exists(t_shell *ms, char *name)
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
 			{
-				printf("key is found\n");
+				//printf("key is found\n");
+				free(key);
 				return (1);// key is found
-			}
-				
+			}		
 		i++;
 	}
+	free(key);
 	return (0);
 }
 
@@ -217,7 +218,7 @@ char *get_value(int start, int len , char *cmd, t_shell *ms)
 	int value_start;
 
 	value_start = start;//after quotes and dollar signs
-	printf("cmd[start]: %c\n", cmd[start]);
+	//printf("cmd[start]: %c\n", cmd[start]);
 	key = ft_calloc(len + 1, sizeof(int));
 	if (!key)
 		return (NULL);
@@ -390,7 +391,7 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 			result = cmd;
 		i++;
 	}
-	
+	free (cmd);
 	return (result);
 }
 

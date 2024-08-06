@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 14:38:12 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/06 15:48:08 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	free_double(char **arr)
 	
 	while (arr[i])
 	{
-		dprintf(2, "free double arr[%d]:%s\n", i, arr[i]);		
+		//dprintf(2, "free double arr[%d]:%s\n", i, arr[i]);		
 		free(arr[i++]);
 	}
 	free(arr);
@@ -68,7 +68,7 @@ void free_node(t_process_node **lst)
 		temp = (*lst)->next;
 		if ((*lst)->command)
 		{
-			printf("entered free node\n");
+			//printf("entered free node\n");
 			free_double((*lst)->command);
 			(*lst)->command = NULL;
 		}
