@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/05 18:47:09 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/06 10:16:50 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_shell //ms
 	int 	shlvl;//? not sure if we need this
 	char	*line;// read from realine function
 	int		fork_n;//fork number
+	int		flag;
 	int fd[2];
 	int read_end;
 	char *cwd;

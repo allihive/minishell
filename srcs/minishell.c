@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2024/08/05 15:07:08 by alli             ###   ########.fr       */
+=======
 /*   Updated: 2024/08/05 20:04:40 by yhsu             ###   ########.fr       */
+>>>>>>> origin/hsu
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +21,7 @@ volatile sig_atomic_t global_signal = 0;
 void	init_envp(t_shell *ms, char **envp)
 {
 	int i;
-	
+	// char **new;
 	ms->envp_size = 0;
 	while (envp[ms->envp_size])
 		ms->envp_size++;
@@ -27,34 +31,41 @@ void	init_envp(t_shell *ms, char **envp)
 	i = 0;
 	while (i < ms->envp_size)
 	{
+		// printf("initialized shell1\n");
 		ms->envp[i] = ft_strdup(envp[i]);
 		// printf("ms->envp = %s\n", ms->envp[i]);
 		if (!ms->envp[i])
 			error_handle(ms);
 		i++;
 	}
+	// ms->envp[ms->envp_size] = NULL;
+	// return (ms->envp);
 }
 
 int add_shlvl(t_shell *ms)//create the export function
 {
 	int shlvl;
 	char *shlvl_str;
+	char *tmp;
 	
-	// shlvl = 0;
 	shlvl_str = getenv("SHLVL");
 	if (shlvl_str == NULL || shlvl_str[0] == '\0')
-		envp_add(ms, ft_strdup(("SHLVL=1")));
+		envp_add(ms, ft_strdup("SHLVL=1"));
 	shlvl = ft_atoi(shlvl_str);
 	if (shlvl < 0)
-		envp_update(ms, ft_strdup(("SHLVL=0")));
+		envp_update(ms, ft_strdup("SHLVL=0"));
 	shlvl_str = ft_itoa(shlvl + 1);
 	if (!shlvl_str)
 		return (1);// should be an error here
-	shlvl_str = ft_strjoin("SHLVL=", shlvl_str);
-	if (!shlvl_str)
-		error_handle(ms);
-	envp_update(ms, shlvl_str);
+	tmp = ft_strjoin("SHLVL=", shlvl_str);
 	free(shlvl_str);
+	if (!tmp)
+	{
+		free(shlvl_str);
+		error_handle(ms);	
+	}
+	envp_update(ms, tmp);
+	// free(tmp);
 	return (shlvl);
 }
 
@@ -63,9 +74,11 @@ int add_shlvl(t_shell *ms)//create the export function
 
 void	initialize_shell(t_shell *ms, char **envp)
 {
-	ft_bzero(ms, sizeof(*ms));
+	ft_memset(ms, 0, sizeof(*ms));
 	init_envp(ms, envp);
 	add_shlvl(ms);
+	// free_env(ms);
+	// return;
 	//know the pwd somehow
 }
 
@@ -133,6 +146,8 @@ int	main(int argc, char **argv, char **envp)
 				free_shell(&ms);
 				dprintf(2,"free shell\n");
 			}
+			// if (ms.envp)
+			// 	free_env(&ms);
 		}
 		close_and_free(&ms);
 		rl_clear_history();
