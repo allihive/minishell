@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/06 10:22:20 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/06 15:32:41 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ static char	*latest_envp(char *name)
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
 		return (NULL); //error_message
+	printf("name: %s\n", name);
 	free(name);
  	return (new_str);
 }
@@ -140,20 +141,21 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 	ms->flag = 0;
 	if (!name)
 		close_and_free(ms); //should be some type of error close and free?
-	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
+	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
 	// new = ms->envp;// ft_free_strs(ms->envp, 0, 0);
 	// free_env(ms);
 	// 	ft_free_strs(ms->envp, 0, 0);
-	// while (i < ms->envp_size - 1 && ms->envp[i])
-	while (ms->envp_size - 1 && ms->envp[i])
+	 while (i < ms->envp_size - 1 && ms->envp[i])
+	//while (i < ms->envp_size - 1) //&& ms->envp[i]
 	{
 		// new[i] = add_to_end_of_list(ms, new[i], name, i, j);
 		new[i] = ms->envp[i];
 		i++;
 		// j++;
 	}
+	new [i] = "\0";
 	if (name && !ms->flag)
 		new[i] = latest_envp(name);
 	free(ms->envp);
@@ -219,10 +221,12 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 	flag = 0;
 
 	cmd_args = cmd_counter(cmd);
+	printf("cmd_args %d\n", cmd_args);
 	if (cmd_args == 1)
 		envp_print(ms, fd);
 	while (j < cmd_args)
 	{
+		printf("cmd[%d] %s\n", j, cmd[j]);
 		if(export_str_check(cmd[j]) && ms->envp[i])
 		{
 			error_msg(cmd[0], cmd[j], "not a valid identifier", 1, ms);

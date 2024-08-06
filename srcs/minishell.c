@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/06 13:13:44 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/06 14:19:00 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ void	quit(t_shell *ms)
 {
 	ft_putstr_fd("exit\n", 2);
 	
-	//free_env(ms);
-	close_and_free(ms);
+	free_env(ms);
+	//close_and_free(ms);
 	//free(ms->list->command);
 	exit(0);
 }
@@ -131,7 +131,7 @@ int	main(int argc, char **argv, char **envp)
 			{
 				execute_shell(&ms);
 								
-				//int j = 0;
+				// int j = 0;
 				// while (ms.list->command[j])
 				// {
 					
@@ -145,8 +145,8 @@ int	main(int argc, char **argv, char **envp)
 			// if (ms.envp)
 			// 	free_env(&ms);
 		}
-		close_and_free(&ms);
-		rl_clear_history();
+		//close_and_free(&ms);
+		//rl_clear_history();
 		return (ms.excode);
 	}
 }

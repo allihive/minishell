@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 14:36:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/06 15:17:27 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void    envp_delete(t_shell *ms, char *name)
         else
             new[i++] = ft_strdup(ms->envp[j++]);
     }
-    ft_free_strs(ms->envp, 0, 0);
+	free(ms->envp);
+    //ft_free_strs(ms->envp, 0, 0);
     ms->envp = new;
 }
 

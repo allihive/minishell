@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 13:12:27 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/06 14:38:12 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	free_double(char **arr)
 	
 	while (arr[i])
 	{
-		//dprintf(2, "arr[%d]:%s\n", i, arr[i]);		
+		dprintf(2, "free double arr[%d]:%s\n", i, arr[i]);		
 		free(arr[i++]);
 	}
 	free(arr);
@@ -68,6 +68,7 @@ void free_node(t_process_node **lst)
 		temp = (*lst)->next;
 		if ((*lst)->command)
 		{
+			printf("entered free node\n");
 			free_double((*lst)->command);
 			(*lst)->command = NULL;
 		}
@@ -97,8 +98,9 @@ int free_env(t_shell *ms)
 	
 	// if (!ms->envp_paths)
 	// 	return ;
-	if (ms->envp)
+	if (ms->envp != NULL)
 	{	
+		printf("in free env\n");
 		free_double(ms->envp);	
 	}
 	if (ms->cwd)
@@ -115,7 +117,10 @@ void free_shell(t_shell *ms)//free ms
 	// 	free_double(ms->envp_paths);
 
 	if (ms->envp_paths)
+	{
+		printf("in free shell\n");
 		free_double(ms->envp_paths);
+	}
 	
 	if (ms->line)
 		free_single(&ms->line);
