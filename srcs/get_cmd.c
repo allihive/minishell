@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:40:24 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/05 20:23:55 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 20:38:59 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ static char	**write_arr(char **arr, char *str, char *charset)
 			arr[word] = malloc(sizeof(char) * (len + 1));
 			if (arr[word] == NULL)
 			{
-				while (--word)
-					free(arr[word]);
-;				return (NULL);
+				// while (--word)
+				// 	free(arr[word]);
+				return (NULL);
 			}
 			arr[word] = write_word(arr[word], str + i, charset);
 			i += len;
@@ -96,8 +96,8 @@ static char	**ft_split_pipex(char *str, char *charset)
 	if (arr == NULL)
 		return (NULL);
 	arr = write_arr(arr, str, charset);
-	if (arr == NULL)
-		return (NULL);
+	// if (arr == NULL)
+	// 	return (NULL);
 	arr[word] = NULL;
 	return (arr);
 }

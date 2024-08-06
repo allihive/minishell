@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/02 15:04:10 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 20:54:51 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int redir_append(char *redirectappend, t_shell *ms, int j)
 		else
 			ft_printf( "shell: %s: Permission denied\n", redirectappend);//need to fix fd 2
 		//ms->execute = 0;
+		close_and_free(ms);
 		return (set_exitcode(ms, -1));
 	}
 	return (0);

@@ -6,13 +6,13 @@
 #    By: yhsu <student.hive.fi>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/25 13:33:14 by yhsu              #+#    #+#              #
-#    Updated: 2024/08/05 19:50:02 by yhsu             ###   ########.fr        #
+#    Updated: 2024/08/06 10:03:34 by yhsu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 #-g -fsanitize=address
-CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror -I./include
+CFLAGS = -g -Wall -Wextra -Werror -I./include -g -fsanitize=address
 
 
 LIBFT_DIR = ./libft

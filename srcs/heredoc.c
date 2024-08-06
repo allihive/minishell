@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/05 13:44:04 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/05 20:43:47 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,8 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
     i = 0;
     process->heredoc = i;
     i++;
-    heredoc_name = ft_strjoin(".heredoc", ft_itoa(i));
+	heredoc_name = ".heredoc";
+    //heredoc_name = ft_strjoin(".heredoc", ft_itoa(i));
     redirect+= 2;
     if (right_delimiter(redirect, process))
     {
@@ -143,6 +144,6 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
     close(ms->fd[0]);
     open__close_heredoc(heredoc_name, process, ms);
     unlink(heredoc_name);
-    free(heredoc_name);
+    //free(heredoc_name);
     return (0);
 }
