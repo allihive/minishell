@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/08/05 14:48:59 by alli             ###   ########.fr       */
-=======
-/*   Updated: 2024/08/05 18:47:02 by yhsu             ###   ########.fr       */
->>>>>>> origin/hsu
+/*   Updated: 2024/08/06 13:12:27 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +63,11 @@ void free_node(t_process_node **lst)
 {
 	t_process_node *temp;
 	
-	dprintf(2, "FREE NODE\n");
 	while (*lst)
 	{
 		temp = (*lst)->next;
 		if ((*lst)->command)
 		{
-			dprintf(2, "FREE COMMAND\n");
 			free_double((*lst)->command);
 			(*lst)->command = NULL;
 		}

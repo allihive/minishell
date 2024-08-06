@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/05 17:26:54 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/06 13:14:14 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,12 @@ void parse_mod(char *input, t_process_node *mod, t_shell *ms)//echo "hello $USER
 	mod->command = get_cmd_arr(command, ms); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
 	free(command);
 	
-	int p = 0;
-	while (mod->command[p])
-	{
-		dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
-		p++;
-	}
+	// int p = 0;
+	// while (mod->command[p])
+	// {
+	// 	dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
+	// 	p++;
+	// }
 	
 	if (is_builtin(mod->command[0]))
 		mod->builtin = 1;

@@ -42,7 +42,7 @@ int validate_redir_append(t_shell *ms, char *redirect, int j)//$USER
     {
         tmp = redirect;
         ms->list->append_s[j] = quote_remover(redirect);
-        free(tmp);
+        //free(tmp);
         if (!redirect)
             return (set_exitcode(ms, -1));
     }

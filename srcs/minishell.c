@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/08/05 15:07:08 by alli             ###   ########.fr       */
-=======
-/*   Updated: 2024/08/05 20:04:40 by yhsu             ###   ########.fr       */
->>>>>>> origin/hsu
+/*   Updated: 2024/08/06 13:13:44 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +95,7 @@ void execute_shell(t_shell *ms)
 		printf("pipex(ms->list, ms) == -1\n");
 		exit(ms->excode);
 	}
-	printf("execute_shell::END\n");
+	//printf("execute_shell::END\n");
 }
 void	quit(t_shell *ms)
 {
@@ -134,17 +130,17 @@ int	main(int argc, char **argv, char **envp)
 			if (init_process_node(ms.line, &ms) == 0)
 			{
 				execute_shell(&ms);
-				dprintf(2,"free node\n");				
-				int j = 0;
-				while (ms.list->command[j])
-				{
+								
+				//int j = 0;
+				// while (ms.list->command[j])
+				// {
 					
-					dprintf(1, "command[%d]: %s\n", j, ms.list->command[j]);
-					j++;
-				}	
+				// 	dprintf(1, "command[%d]: %s\n", j, ms.list->command[j]);
+				// 	j++;
+				// }	
 				free_node(&ms.list);
 				free_shell(&ms);
-				dprintf(2,"free shell\n");
+				
 			}
 			// if (ms.envp)
 			// 	free_env(&ms);
