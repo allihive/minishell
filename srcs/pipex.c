@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/26 10:41:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/29 14:45:22 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int wait_children(t_shell *ms, int *pids, int count)
 {
     int status;
     int i;
-	int tmp;
+	// int tmp;
 
     i = 0;
     // status = ms->excode;
 	status = 0;
-	tmp = ms->excode; //to store the old exit code?
+	// tmp = ms->excode; //to store the old exit code?
    //ignore_signal();
 //    printf("ms->excode in wait_children1 %d\n", ms->excode);
    while(i < count - 1)

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/29 14:02:42 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/29 14:58:26 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,33 @@
 void heredoc_init(void)
 {
     struct sigaction sa;
-    struct sigaction sq;
+    struct sigaction sq; //used to hold the signals
 
-    memset(&sa, 0, sizeof(sa));
-    memset(&sq, 0, sizeof(sq));
+    ft_bzero(&sa, sizeof(sa));
+    ft_bzero(&sq, sizeof(sq));
 
-    sa.sa_handler = SIG_DFL; //use SIG_DFL doesn't interfere and quits when it's supposed to
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
-    sigaction(SIGINT, &sa, NULL);
+    sa.sa_handler = SIG_DFL; //sets signal handler to SIGINT sets it to default handler which quits when ctrl+c is called
+    sigemptyset(&sa.sa_mask);//initializes signal mask to exclude all signals
+    sa.sa_flags = SA_RESTART;//interrupted system calls are automatically restarted
+    sigaction(SIGINT, &sa, NULL); //applies sa to handle SIGINT
 
-    sq.sa_handler = SIG_IGN;
-    sigemptyset(&sq.sa_mask);
-    sq.sa_flags = SA_RESTART;
-    sigaction(SIGQUIT, &sq, NULL);
+//this second part might not be necessary
+    sq.sa_handler = SIG_IGN;//have it ignore sigquit
+    sigemptyset(&sq.sa_mask);//exclude all signals
+    sq.sa_flags = SA_RESTART;//makes sure that everything will be restarted
+    sigaction(SIGQUIT, &sq, NULL); //applies the action to sigquit
 }
+
+// SIGINT = set back to its default behavior of ctrl+c
+// SIGQUIT quit signal ignored when ctrl+\ is pressed
+// ctrl+c is quitting the whole program on mac...not sure if this is the case on linux
 
 void get_heredoc_input(int heredoc_fd, t_process_node *process)
 {
     char *line;
     char *delimiter = NULL;
 
-	// signal_heredoc(1);
     // line = get_next_line(STDIN_FILENO);// 
-	// signal(SIGINT, sig_ctrl_c);
 	// line = readline(">");
 	heredoc_init();
     delimiter = (ft_strjoin( process->here_doc, "\n"));
@@ -50,11 +53,6 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)
     {
 		line = readline(">");
 		printf("global signal %d\n", global_signal);
-		// if (global_signal == 2)
-		// {
-		// 	printf("exits here0\n");
-		// 	return ;
-		// }
 		if (!line)
 		{
 			error_msg("warning: ", "here-document at line 8 delimited by end-of-file (wanted ", delimiter);//error msg
@@ -70,7 +68,6 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)
 		}
         if (ft_putstr_fd(line, heredoc_fd) == -1)
         {
-
 			if (line)
             	free(line);
             line = NULL;

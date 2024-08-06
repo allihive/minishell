@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 11:00:04 by alli             ###   ########.fr       */
+/*   Updated: 2024/07/29 14:46:54 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static int	cmd_is_digit(char *cmd)
 
 int	ft_exit(t_shell *ms, char **cmd)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	if ((!cmd[1] || !ft_strncmp(cmd[1], "0", 1)))
 	{
 		ft_putstr_fd("exit\n", 1);
