@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handling.c                                   :+:      :+:    :+:   */
+/*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 18:50:49 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/07 11:38:08 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	syntax_error(char *token, t_shell *ms)//error_occured need to revise only fo
 	if (c == '\'' || c == '\"')
 		ft_putstr_fd("shell: unexpected EOF while looking for matching", 2);
 	else
-		ft_putstr_fd("syntax error near unexpected token", 2);
+		ft_putstr_fd("syntax error near unexpected token\n", 2);
 	ms->excode = 258;
 	return (1);
 }

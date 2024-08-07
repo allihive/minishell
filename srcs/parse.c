@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 16:07:00 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/07 13:38:56 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,21 @@ void check_dollor(char **command, t_process_node *mod, t_shell *ms)
 {
 	int i, j;
 	i = 0;
-	
-	while (command[i])//'hello $USER'
+	char **tmp;
+
+	tmp = command;
+	while (command[i])//'hello $USER' "$'HOME'"
 	{
 		j = 0;
 		while (command[i][j])
 		{
-			if (command[i][j] == '$')
+			if (command[i][j] == '$' )
 			{
-				dprintf(2,"check dollor command[i]: %s\n", command[i]);
-				command[i] = expand_it_out(command[i], mod, ms);
 				dprintf(2,"after expand it out command[i]: %s\n", command[i]);
+				command[i] = expand_it_out(tmp[i], mod, ms);
+				//dprintf(2,"after expand it out command[i]: %s\n", command[i]);
+				//if (command[i][j + 1] == '$');
+					
 			}	
 			j++;
 		}

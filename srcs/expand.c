@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 10:11:44 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 14:46:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ char *add_value_back( char *value, int start, int len , char *cmd)//expand
 	while(cmd[rest_of_str])
 		new[i++] = cmd[rest_of_str++];
 	
-	
+	free(cmd);
 	//temp = cmd;
 	cmd = new;
 	//free(temp); // don't free causes double free
@@ -316,7 +316,12 @@ char *echo_digit(char *cmd, t_shell *ms, int i)
 		return (NULL);
 	i++;
 	while (cmd[i])
-		replace[j++] = cmd[i++];
+	{
+		replace[j] = cmd[i];
+		j++;
+		i++;
+	}
+	free(cmd);
 	ms->excode = 0;
 	return (replace);
 }
@@ -327,10 +332,17 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 	int start;
 	//int j;
 	start = i;//PATH
-	// printf("letter in cmd[start] %c\n", cmd[start]);
+	printf("letter in cmd[start] %c\n", cmd[start]);
+	// if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
+	// {
+	// 	dprintf(2, "0 in expandable\n");
+	// 	while(ft_isalpha(cmd[i]) || cmd[i] == '_')//check this
+	// 		i++;
+	// 	result = get_value(start, i - start, cmd , ms);	
+	// }
 	if (ft_isalpha(cmd[i]) || cmd[i] == '_' ) //why does this have to be alpha?
 	{
-		// printf("cmd: %s\n", cmd);
+		dprintf(2, "1 in expandable\n");
 		while(cmd[i] == '_' || ft_isalnum(cmd[i]))//check this with yunchia ft_isalpha(cmd[i])
 			i++;
 		result = get_value(start, i - start, cmd, ms);
@@ -360,35 +372,32 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 	//int j ;
 	int i;
 	char *result;
+	//char *tmp;
 	
 	i = 0;
-	//result = cmd;//$USER
-	//dprintf(2, "cmd %s in expand it out\n", cmd);//"$'HOME'"
 	mod->process_mode = 0;
-	// printf("ms->excode in expand_it_out %d\n", ms->excode);
 	while (cmd[i])//"hello '$PATH'"
 	{
-		//dprintf(2, "1 expand it out\n");
 		check_quote(mod, cmd[i], i);
 
-	
 		if (cmd[i] == '$'  && ((mod->doublequote != -1 && mod->sinquote < mod->doublequote) || (mod->doublequote == -1 && mod->sinquote == -1))) //'" "'  ,  no quote
 		{
-			
 			if ( cmd[i + 1] == '$')
 			{
-				cmd = remove_dollar_sign(cmd, i, 1);
+				result = remove_dollar_sign(cmd, i, 1);
+				// tmp = remove_dollar_sign(cmd, i, 1);
+				// free(cmd);
+				// cmd = tmp;
 				continue;
 			}
 			result = if_expandable(cmd, ms, i + 1, mod);	//$
-			//result = quote_remover(result);
+			
 			break;
 		}
 		else
 			result = cmd;
 		i++;
 	}
-	free (cmd);
 	return (result);
 }
 
