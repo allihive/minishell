@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 11:11:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 14:38:37 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,13 +135,11 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 {
 	char	**new;
 	int		i;
-	int		j;
 	
 	i = 0;
-	j = 0;
 	ms->envp_size += 1;
 	ms->flag = 0;
-	if (!name)
+	if (!name) //check if strdup has worked, then it will close and free
 		close_and_free(ms); //should be some type of error close and free?
 	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
@@ -156,6 +154,7 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 		new[i] = ms->envp[i];
 		i++;
 		// j++;
+		//printf("new[%d]: %p\n", i, new[i]);
 	}
 	if (name && !ms->flag)
 		new[i] = latest_envp(name);
@@ -227,7 +226,6 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 		envp_print(ms, fd);
 	while (j < cmd_args)
 	{
-		printf("cmd[%d] %s\n", j, cmd[j]);
 		if(export_str_check(cmd[j]) && ms->envp[i])
 		{
 			error_msg(cmd[0], cmd[j], "not a valid identifier", 1, ms);
