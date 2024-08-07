@@ -14,6 +14,32 @@ int	print_redir_err(t_shell *ms, char *redir, char *copy)
 }
 
 
+// int	expand_redir_in(t_shell *ms, char *redirect, int j)
+// {
+//     int i;
+//     char *tmp;
+//     char *copy;
+
+//     i = 0;
+//     copy = ft_strdup(redirect);
+// 	if (!copy)
+//     	return (set_exitcode(ms, -1));
+// 	redirect = expand_it_out(redirect, ms->list, ms);
+//     tmp = redirect;
+//     ms->list->redirect_in[j] = quote_remover(redirect);
+//     while (redirect[i] == '<' || redirect[i] == '>')
+//         i++;
+//     if (!redirect[i] || redirect[i] == '/')
+//     {
+//         print_redir_err(ms, redirect + 1, &copy[i]);
+//         free(copy);
+//         return (-1);
+//     }
+//     free (tmp);
+// 	free(copy);
+//     return (0);
+// }
+
 int	expand_redir_in(t_shell *ms, char *redirect, int j)
 {
     int i;
@@ -25,17 +51,19 @@ int	expand_redir_in(t_shell *ms, char *redirect, int j)
 	if (!copy)
     	return (set_exitcode(ms, -1));
 	redirect = expand_it_out(redirect, ms->list, ms);
-    tmp = redirect;
+    
     ms->list->redirect_in[j] = quote_remover(redirect);
-    while (redirect[i] == '<' || redirect[i] == '>')
+	tmp = ms->list->redirect_in[j];
+    while (tmp[i] == '<' || tmp[i] == '>')
         i++;
-    if (!redirect[i] || redirect[i] == '/')
+    if (!tmp[i] || tmp[i] == '/')
     {
-        print_redir_err(ms, redirect + 1, &copy[i]);
+        print_redir_err(ms, tmp + 1, &copy[i]);
         free(copy);
         return (-1);
     }
-    free (tmp);
+    ms->list->redirect_in[j] = tmp;;
+	//free (tmp);
 	free(copy);
     return (0);
 }
