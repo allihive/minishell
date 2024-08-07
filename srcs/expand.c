@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 09:48:07 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 09:52:16 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char *remove_quote(char *str, int len)
 			new_str[j++] = str[i];	
 		i++;
 	}
+	free(str);
 	return (new_str);	
 }
 
@@ -106,8 +107,7 @@ static int	key_exists(t_shell *ms, char *name)
 			{
 				free(key);
 				return (1);// key is found
-			}
-				
+			}		
 		i++;
 	}
 	free(key);
@@ -217,7 +217,7 @@ char *get_value(int start, int len , char *cmd, t_shell *ms)
 	int value_start;
 
 	value_start = start;//after quotes and dollar signs
-	printf("cmd[start]: %c\n", cmd[start]);
+	//printf("cmd[start]: %c\n", cmd[start]);
 	key = ft_calloc(len + 1, sizeof(int));
 	if (!key)
 		return (NULL);
@@ -390,7 +390,7 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 			result = cmd;
 		i++;
 	}
-	
+	free (cmd);
 	return (result);
 }
 
