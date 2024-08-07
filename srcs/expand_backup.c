@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 10:03:08 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/07 12:21:01 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static int	key_exists(t_shell *ms, char *name)
 				return (1);// key is found
 		i++;
 	}
+	free(key);
 	return (0);
 }
 
@@ -299,6 +300,13 @@ char *if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod ) // i = 
 	//int j;
 	start = i;//PATH
 
+	if (ft_isalpha(cmd[i]) || cmd[i] == '_' ) //why does this have to be alpha?
+	{
+		dprintf(2, "0 in expandable\n");
+		while(cmd[i] == '_' || ft_isalnum(cmd[i]))//check this with yunchia ft_isalpha(cmd[i])
+			i++;
+		result = get_value(start, i - start, cmd, ms);
+	}
 	if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
 	{
 		dprintf(2, "1 in expandable\n");

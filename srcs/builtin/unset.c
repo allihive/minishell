@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/08/06 15:17:27 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/07 13:55:12 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,17 @@ static char *name_exists_unset(t_shell *ms, char *name)
 		
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+			{
+				free(key);
 				return (ms->envp[i] + len);
+			}
 		i++;
 	}
+	free(key);
 	return (NULL);
 }
 
-void    envp_delete(t_shell *ms, char *name)
+/*void    envp_delete(t_shell *ms, char *name)
 {
     char    **new;
     int     i;
@@ -63,6 +67,39 @@ void    envp_delete(t_shell *ms, char *name)
     }
 	free(ms->envp);
     //ft_free_strs(ms->envp, 0, 0);
+    ms->envp = new;
+}*/
+
+void    envp_delete(t_shell *ms, char *name)
+{
+    char    **new;
+    int     i;
+    int     j;
+    int     len;
+
+    i = 0;
+    j = 0;
+    ms->envp_size -= 1;
+    len = ft_strlen(name);
+    new = ft_calloc((ms->envp_size + 1), sizeof(char *));
+    if (!new)
+        return ;//error handle
+    while(j < ms->envp_size + 1 && ms->envp[i]) // && ms->envp[i]
+    {
+        if (!ft_strncmp(ms->envp[j], name, len) && 
+            ((ms->envp[j][len] == '=') || (ms->envp[j][len] == '\0')))//what happened to ft_strncmp?
+           {
+                free(ms->envp[j]);
+                j++;
+           } 
+        else
+        {
+            new[i] = ms->envp[j];
+            i++;
+            j++;
+        }
+    }
+    free(ms->envp);
     ms->envp = new;
 }
 
