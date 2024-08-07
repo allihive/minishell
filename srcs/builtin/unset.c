@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 14:36:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 13:53:25 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,24 @@ static char *name_exists_unset(t_shell *ms, char *name)
 	char	*key;
 
 	i = 0;
-	// printf("name: %s\n", name);
 	while(name[i] && name[i] != '=')
 		i++;
 	key = ft_substr(name, 0, i);
 	if (!key)
 		return (NULL); //should be error_handle
-	// printf("key: %s\n", key);
 	len = ft_strlen(key);
 	i = 0;
 	while (i < ms->envp_size && ms->envp[i])
 	{
-		
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+            {
+                free(key);
 				return (ms->envp[i] + len);
+            }
 		i++;
 	}
+    free(key);
 	return (NULL);
 }
 
@@ -50,18 +51,26 @@ void    envp_delete(t_shell *ms, char *name)
     j = 0;
 	ms->envp_size -= 1;
     len = ft_strlen(name);
-    new = ft_calloc((ms->envp_size), sizeof(char *));
+    new = ft_calloc((ms->envp_size + 1), sizeof(char *));
     if (!new)
         return ;//error handle
-    while(j < ms->envp_size && ms->envp[i]) //i < ms->envp_size && 
+    while(j < ms->envp_size + 1 && ms->envp[i]) // && ms->envp[i]
     {
         if (!ft_strncmp(ms->envp[j], name, len) && 
             ((ms->envp[j][len] == '=') || (ms->envp[j][len] == '\0')))//what happened to ft_strncmp?
-            j++;
+           {
+                printf("ms->envp[j]: %s\n", ms->envp[j]);
+                free(ms->envp[j]);
+                j++;
+           } 
         else
-            new[i++] = ft_strdup(ms->envp[j++]);
+        {
+            new[i] = ms->envp[j];
+            i++;
+            j++;
+        }
     }
-    ft_free_strs(ms->envp, 0, 0);
+    free(ms->envp);
     ms->envp = new;
 }
 

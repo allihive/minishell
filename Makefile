@@ -6,13 +6,13 @@
 #    By: alli <alli@student.hive.fi>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/25 13:33:14 by yhsu              #+#    #+#              #
-#    Updated: 2024/08/06 10:16:39 by alli             ###   ########.fr        #
+#    Updated: 2024/08/07 13:13:31 by alli             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 #-g -fsanitize=address
-CFLAGS = -g -Wall -Wextra -Werror -I./include -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I./include
 
 
 LIBFT_DIR = ./libft
@@ -33,7 +33,7 @@ else ifeq ($(UNAME_S), Linux)
     READLINE = -L /usr/lib/x86_64-linux-gnu -lreadline -lncurses
 endif
 
-SRCS = ${addprefix srcs/, error_handling.c minishell.c signals.c\
+SRCS = ${addprefix srcs/, error_msg.c minishell.c signals.c\
 	 		parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c\
 	 		redirects_utils.c fd.c heredoc.c redirect_utils_in.c redirect_utils_out.c check_utils.c\
 	 		get_cmd.c init.c init_utils.c get_path.c redirect_utils_append.c\

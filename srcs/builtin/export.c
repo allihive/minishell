@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/06 10:22:20 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 13:35:22 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,15 +132,13 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 {
 	char	**new;
 	int		i;
-	int		j;
 	
 	i = 0;
-	j = 0;
 	ms->envp_size += 1;
 	ms->flag = 0;
 	if (!name)
 		close_and_free(ms); //should be some type of error close and free?
-	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
+	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
 	// new = ms->envp;// ft_free_strs(ms->envp, 0, 0);
@@ -153,7 +151,9 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 		new[i] = ms->envp[i];
 		i++;
 		// j++;
+		//printf("new[%d]: %p\n", i, new[i]);
 	}
+	new[i] = "\0";
 	if (name && !ms->flag)
 		new[i] = latest_envp(name);
 	free(ms->envp);

@@ -6,11 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/08/05 15:07:08 by alli             ###   ########.fr       */
-=======
-/*   Updated: 2024/08/05 20:04:40 by yhsu             ###   ########.fr       */
->>>>>>> origin/hsu
+/*   Updated: 2024/08/07 13:20:05 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +38,7 @@ void	init_envp(t_shell *ms, char **envp)
 	// return (ms->envp);
 }
 
-int add_shlvl(t_shell *ms)//create the export function
+int add_shlvl(t_shell *ms)
 {
 	int shlvl;
 	char *shlvl_str;
@@ -68,9 +64,6 @@ int add_shlvl(t_shell *ms)//create the export function
 	// free(tmp);
 	return (shlvl);
 }
-
-
-
 
 void	initialize_shell(t_shell *ms, char **envp)
 {
