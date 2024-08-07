@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 13:38:56 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/07 15:21:43 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void parse_process_node(t_process_node **list, t_shell *ms)
 		input = mod->node_line;
 		parse_mod(input, mod, ms);//for parse test
 		mod = mod->next;
-		dprintf(2, "end of parse process\n");
+		//dprintf(2, "end of parse process\n");
 	}
 	
 }

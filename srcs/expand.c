@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 14:27:58 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/07 16:24:19 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ char *remove_quote(char *str, int len)
 			new_str[j++] = str[i];	
 		i++;
 	}
-	free(str);
+	if (str != NULL)
+		free(str);
 	return (new_str);	
 }
 
@@ -169,7 +170,7 @@ char *add_value_back( char *value, int start, int len , char *cmd)//expand
 		new[i++] = cmd[rest_of_str++];
 	
 	free(cmd);
-	//temp = cmd;
+	
 	cmd = new;
 	//free(temp); // don't free causes double free
 	//dprintf(2, "cmd in add_value_back: %s\n", cmd);
@@ -295,12 +296,12 @@ char	*echo_exit_code(t_shell *ms)
 {
 	char *exit_code;
 
-	printf("in echo_exit %d\n", ms->excode);
+	//printf("in echo_exit %d\n", ms->excode);
 	exit_code = ft_itoa(ms->excode);
 	if (!exit_code)
 		return (NULL);
-	printf("in echo_exit str %s\n", exit_code);
-	ft_putstr_fd(exit_code, 1);
+	//printf("in echo_exit str %s\n", exit_code);
+	//ft_putstr_fd(exit_code, 1);
 	return (exit_code);
 }
 
@@ -335,7 +336,7 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 	int start;
 	//int j;
 	start = i;//PATH
-	printf("letter in cmd[start] %c\n", cmd[start]);
+	//printf("letter in cmd[start] %c\n", cmd[start]);
 	// if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
 	// {
 	// 	dprintf(2, "0 in expandable\n");
@@ -353,12 +354,15 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 	else if(cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != DOUBLEQUOTE))
 	{
 		dprintf(2, "2 in expandable\n");
-		result = cmd + i; //echo $'USER'   reusult = 'USER' 
+		result = ft_strdup(cmd + i); //echo $'USER'   reusult = 'USER' 
+		free (cmd);
+		//return (cmd + i);
 	}
 	else if (cmd[i] == '?' ) //2nd letter ?->exit code
 	{
 		dprintf(2, "3 in expandable\n");
 		result = echo_exit_code(ms);
+		free (cmd);
 	}
 	else if (ft_isdigit(cmd[i]))
 		result = echo_digit(cmd, ms, i);
@@ -394,7 +398,7 @@ char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)//send the whole
 				continue;
 			}
 			result = if_expandable(cmd, ms, i + 1, mod);	//$
-			
+			//free (cmd);
 			break;
 		}
 		else
