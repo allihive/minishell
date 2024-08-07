@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/06/24 10:47:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 13:55:12 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char *name_exists(t_shell *ms, char *name)
+static char *name_exists_unset(t_shell *ms, char *name)
 {
 	int		len;
 	int		i;
@@ -33,13 +33,17 @@ static char *name_exists(t_shell *ms, char *name)
 		
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+			{
+				free(key);
 				return (ms->envp[i] + len);
+			}
 		i++;
 	}
+	free(key);
 	return (NULL);
 }
 
-void    envp_delete(t_shell *ms, char *name)
+/*void    envp_delete(t_shell *ms, char *name)
 {
     char    **new;
     int     i;
@@ -61,7 +65,41 @@ void    envp_delete(t_shell *ms, char *name)
         else
             new[i++] = ft_strdup(ms->envp[j++]);
     }
-    ft_free_strs(ms->envp, 0, 0);
+	free(ms->envp);
+    //ft_free_strs(ms->envp, 0, 0);
+    ms->envp = new;
+}*/
+
+void    envp_delete(t_shell *ms, char *name)
+{
+    char    **new;
+    int     i;
+    int     j;
+    int     len;
+
+    i = 0;
+    j = 0;
+    ms->envp_size -= 1;
+    len = ft_strlen(name);
+    new = ft_calloc((ms->envp_size + 1), sizeof(char *));
+    if (!new)
+        return ;//error handle
+    while(j < ms->envp_size + 1 && ms->envp[i]) // && ms->envp[i]
+    {
+        if (!ft_strncmp(ms->envp[j], name, len) && 
+            ((ms->envp[j][len] == '=') || (ms->envp[j][len] == '\0')))//what happened to ft_strncmp?
+           {
+                free(ms->envp[j]);
+                j++;
+           } 
+        else
+        {
+            new[i] = ms->envp[j];
+            i++;
+            j++;
+        }
+    }
+    free(ms->envp);
     ms->envp = new;
 }
 
@@ -73,16 +111,13 @@ void	unset(t_shell *ms, char **cmd)
     
     i = 0;
     // j = 0;
-	printf("unset\n");
+	// printf("unset\n");
     while (cmd[i])
     {
-		printf("name_exists %s\n", name_exists(ms, cmd[1]));
-        if (name_exists(ms, cmd[1])) //tmp should be a=1
+        if (name_exists_unset(ms, cmd[i])) //tmp should be a=1
         {
-            // printf("unset cmd[1] %s\n", cmd[1]);
-            envp_delete(ms, cmd[1]);
-			// printf("deleted cmd[1]\n");
-            return ;
+            envp_delete(ms, cmd[i]);
+            // return ;
         }
         i++;
     }

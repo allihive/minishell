@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/07/26 12:32:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/06 15:32:41 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *name_exists(t_shell *ms, char *name)
+static char *name_exists_env(t_shell *ms, char *name)
 {
 	int		len;
 	int		i;
@@ -23,16 +23,23 @@ static char *name_exists(t_shell *ms, char *name)
 		i++;
 	key = ft_substr(name, 0, i + 1);
 	if (!key)
+	{
+		// free(key);
 		return (NULL); //should be error_handle
+	}
 	len = ft_strlen(key + 1);
 	i = 0;
 	while (i < ms->envp_size && ms->envp[i])
 	{
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+			{
+				free(key);
 				return (ms->envp[i] + len);
+			}
 		i++;
 	}
+	free(key);
 	return (NULL);
 }
 
@@ -61,34 +68,25 @@ void envp_update(t_shell *ms, char *name)
 
 	i = 0;
 	len = 0;
-	// printf("name in update: %s\n", name);
 	while (name[len] != '=')
 		len++;
 	while (ms->envp[i]) //checking the whole envp size
 	{
-		if (ft_strncmp(ms->envp[i], name, len) == 0) // returns 0 when it matches
-		{
-			// printf("ms->envp[i] found: %s\n", name_exists(ms, name));
+		// if (ft_strncmp(ms->envp[i], name, len) == 0 && name_exists_env(ms, name)) //very neccessary
+		if (ft_strncmp(ms->envp[i], name, len) == 0 && ms->envp[i][len] == '=') 
 			break ;
-		}
 		i++;
 	}
-	// printf("i: %d\n", i);
-	// printf("len: %d\n", len);
-	// printf("ms->envp[i]: %s\n", ms->envp[i]);
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
-		// printf("ft_strlen(name): %zu\n", ft_strlen(name));
-		ft_bzero(ms->envp[i], ft_strlen(name));//give it a null space in the string the length of the name
-		ms->envp[i] = ft_strjoin(ms->envp[i], name);//this should be nulled and replaced.
+		free(ms->envp[i]);
+		// ft_memset(ms->envp[i], 0, ft_strlen(name));//give it a null space in the string the length of the name
+		ms->envp[i] = name;//this should be nulled and replaced.
+		// evyerhting that is passed through the second parameter should be freed
 		if (!ms->envp[i]) //malloc check
-		{
-			// printf("did not malloc");
-			error_handle(ms);
-		}
-		// printf("ms->envp[i]: %s\n", ms->envp[i]);
+			close_and_free(ms);
 	}
-	// printf("finished name in update: %s\n", name);
+	// free(name);
 }
 
 static char	*latest_envp(char *name)
@@ -102,52 +100,67 @@ static char	*latest_envp(char *name)
 			return (NULL); //error message
 		return (new_str);
 	}
-	// printf("name in latest_envp: %s\n", name);
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
 		return (NULL); //error_message
+	printf("name: %s\n", name);
+	free(name);
  	return (new_str);
 }
 
-void envp_add(t_shell *ms, char *name)
+/*char *add_to_end_of_list(t_shell *ms, char *new, char *name, int i, int j) //working but leaking
+{
+	if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
+	{
+		new = latest_envp(name);//it will be replaced when there is something else written
+		if (!new)
+			error_handle(ms);
+		ms->flag = 1;
+		return (new);
+	}
+	else
+	{
+		new = ft_strdup(ms->envp[j]);//add elements that are already in the list
+		if (!new)
+			return (NULL);// error_handle(ms);
+	}
+	// free(name);
+	// ms->envp = 
+	return (new);
+}*/
+
+void envp_add(t_shell *ms, char *name) //working but leaking
 {
 	char	**new;
 	int		i;
 	int		j;
-	int		flag;
 	
 	i = 0;
 	j = 0;
-	flag = 0;
 	ms->envp_size += 1;
-	//printf("name: %s\n", name);
+	ms->flag = 0;
 	if (!name)
 		close_and_free(ms); //should be some type of error close and free?
-	new = ft_calloc((ms->envp_size), sizeof(char *));//check how big this should be
+	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
 		error_handle(ms);
-	while (i < ms->envp_size - 1 && ms->envp[i])
+	// new = ms->envp;// ft_free_strs(ms->envp, 0, 0);
+	// free_env(ms);
+	// 	ft_free_strs(ms->envp, 0, 0);
+	 while (i < ms->envp_size - 1 && ms->envp[i])
+	//while (i < ms->envp_size - 1) //&& ms->envp[i]
 	{
-		if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
-		{
-			new[i] = latest_envp(name);//it will be replaced when there is something else written
-			if (!new[i])
-				error_handle(ms);
-			flag = 1;
-		}
-		else
-		{
-			new[i] = ft_strdup(ms->envp[j]);//add elements that are already in the list
-			if (!new[i])
-				return ;// error_handle(ms);
-		}
+		// new[i] = add_to_end_of_list(ms, new[i], name, i, j);
+		new[i] = ms->envp[i];
 		i++;
-		j++;
+		// j++;
 	}
-	if (name && !flag)
+	new [i] = "\0";
+	if (name && !ms->flag)
 		new[i] = latest_envp(name);
-	ft_free_strs(ms->envp, 0, 0);
+	free(ms->envp);
 	ms->envp = new;
+	// ft_free_strs(new, 0, 0);
 }
 
 static int	export_str_check(char *str)
@@ -156,10 +169,7 @@ static int	export_str_check(char *str)
 	
 	i = 0;
 	if (ft_isdigit(str[0]))
-	{
-		printf("enters here\n");
 		return (1);
-	}
 	while (str[i] && str[i] != '='  && 
 			(ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
@@ -177,8 +187,29 @@ int	cmd_counter(char **cmd)
 	}
 	return (cmd_args);
 }
+void	update_or_add_envp(t_shell *ms, char **cmd, int j, int flag)
+{
+	char *current_cmd;
 
-int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt a double pointer
+	current_cmd = ft_strdup(cmd[j]);
+	if (!current_cmd)
+	{
+		free(cmd[j]);
+		return ;
+	}
+	if (name_exists_env(ms, cmd[j]))
+	{
+		envp_update(ms, current_cmd);
+	}
+	if (name_exists_env(ms, cmd[j]) == NULL)
+	{
+		envp_add(ms, current_cmd);
+	}
+	if (flag == 0)
+		ms->excode = 0;
+}
+
+int	ft_export(t_shell *ms, char **cmd, int fd)
 {
 	int i;
 	int	j;
@@ -190,34 +221,19 @@ int	ft_export(t_shell *ms, char **cmd, int fd)//works with single pointer but nt
 	flag = 0;
 
 	cmd_args = cmd_counter(cmd);
+	printf("cmd_args %d\n", cmd_args);
+	if (cmd_args == 1)
+		envp_print(ms, fd);
 	while (j < cmd_args)
 	{
-		printf("cmd_args %d\n", cmd_args);
-		if (cmd[j] == NULL)
-			envp_print(ms, fd);
-		else if(export_str_check(cmd[j]) && ms->envp[i])
+		printf("cmd[%d] %s\n", j, cmd[j]);
+		if(export_str_check(cmd[j]) && ms->envp[i])
 		{
-			error_msg(cmd[0], cmd[j], "not a valid identifier");
-			ms->excode = 1;
+			error_msg(cmd[0], cmd[j], "not a valid identifier", 1, ms);
 			flag = 1;
 		}
 		if (!export_str_check(cmd[j]) && ms->envp[i])
-		{
-			// printf("cmd[1]: %s\n", cmd[1]);
-			if (name_exists(ms, cmd[j]))
-			{
-				// printf("before envp_update\n"); //delete comment
-				envp_update(ms, cmd[j]);
-			}
-			if (name_exists(ms, cmd[j]) == NULL)
-			{
-				//printf("before add_envp\n"); //delete comment
-				envp_add(ms, cmd[j]);
-				//printf("added envp\n");//delete comment
-			}
-			if (flag == 0)
-				ms->excode = 0;
-		}
+			update_or_add_envp(ms, cmd, j, flag);
 		j++;
 	}
 	return(ms->excode);

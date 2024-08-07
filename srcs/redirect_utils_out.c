@@ -1,9 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect_utils_out.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/02 13:33:41 by yhsu              #+#    #+#             */
+/*   Updated: 2024/08/06 13:27:31 by yhsu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-int	expand_redir_out(t_shell *ms, char *redirect, int j)
+static int	expand_redir_out(t_shell *ms, char *redirect, int j)
 {
     int i;
     char *tmp;
@@ -18,7 +27,7 @@ int	expand_redir_out(t_shell *ms, char *redirect, int j)
 	redirect = expand_it_out(redirect, ms->list, ms);
     tmp = redirect;
     ms->list->redirect_out[j] = quote_remover(redirect);
-    free (tmp);
+    
     while (redirect[i] == '<' || redirect[i] == '>')
         i++;
     if (!redirect[i] || redirect[i] == '/')
@@ -27,6 +36,7 @@ int	expand_redir_out(t_shell *ms, char *redirect, int j)
         free(copy);
         return (-1);
     }
+	free (tmp);
     free(copy);
     return (0);
 }
@@ -45,7 +55,7 @@ int validate_redir_out(t_shell *ms, char *redirect, int j)//$USER
     {
         tmp = redirect;
         ms->list->redirect_out[j] = quote_remover(redirect);
-        free(tmp);
+        //free(tmp);
         if (!redirect)
             return (set_exitcode(ms, -1));
     }
