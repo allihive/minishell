@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 10:19:06 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 09:48:07 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,13 @@ static int	key_exists(t_shell *ms, char *name)
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
 			{
-				printf("key is found\n");
+				free(key);
 				return (1);// key is found
 			}
 				
 		i++;
 	}
+	free(key);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/08/01 14:36:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 09:49:32 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char *name_exists_unset(t_shell *ms, char *name)
 	char	*key;
 
 	i = 0;
-	// printf("name: %s\n", name);
+	printf("name: %s\n", name);
 	while(name[i] && name[i] != '=')
 		i++;
 	key = ft_substr(name, 0, i);
@@ -33,9 +33,14 @@ static char *name_exists_unset(t_shell *ms, char *name)
 		
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
+			{
+				// printf("key found %s\n", key);
+				free(key);
 				return (ms->envp[i] + len);
+			}
 		i++;
 	}
+	free(key);
 	return (NULL);
 }
 
@@ -50,18 +55,19 @@ void    envp_delete(t_shell *ms, char *name)
     j = 0;
 	ms->envp_size -= 1;
     len = ft_strlen(name);
-    new = ft_calloc((ms->envp_size), sizeof(char *));
+    new = ft_calloc((ms->envp_size + 1), sizeof(char *));
     if (!new)
         return ;//error handle
     while(j < ms->envp_size && ms->envp[i]) //i < ms->envp_size && 
     {
         if (!ft_strncmp(ms->envp[j], name, len) && 
-            ((ms->envp[j][len] == '=') || (ms->envp[j][len] == '\0')))//what happened to ft_strncmp?
+            ((ms->envp[j][len] == '=') || (ms->envp[j][len] == '\0')))
             j++;
         else
-            new[i++] = ft_strdup(ms->envp[j++]);
+            new[i++] = ms->envp[j++]; //new[i++] = ft_strdup(ms->envp[j++]);
     }
-    ft_free_strs(ms->envp, 0, 0);
+	new[i] = "\0";
+    free(ms->envp);
     ms->envp = new;
 }
 
@@ -83,4 +89,5 @@ void	unset(t_shell *ms, char **cmd)
         }
         i++;
     }
+	ms->excode = 0;
 }

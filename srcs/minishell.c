@@ -6,11 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/08/05 15:07:08 by alli             ###   ########.fr       */
-=======
-/*   Updated: 2024/08/05 20:04:40 by yhsu             ###   ########.fr       */
->>>>>>> origin/hsu
+/*   Updated: 2024/08/07 09:23:03 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +23,7 @@ void	init_envp(t_shell *ms, char **envp)
 		ms->envp_size++;
 	ms->envp = ft_calloc(ms->envp_size + 1, sizeof(char *));
 	if (!ms->envp)
-		error_handle(ms);
+		close_and_free(ms);
 	i = 0;
 	while (i < ms->envp_size)
 	{
