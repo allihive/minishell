@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 13:20:05 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 14:00:31 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_envp(t_shell *ms, char **envp)
 		ms->envp_size++;
 	ms->envp = ft_calloc(ms->envp_size + 1, sizeof(char *));
 	if (!ms->envp)
-		error_handle(ms);
+		close_and_free(ms);
 	i = 0;
 	while (i < ms->envp_size)
 	{
@@ -92,14 +92,14 @@ void execute_shell(t_shell *ms)
 		printf("pipex(ms->list, ms) == -1\n");
 		exit(ms->excode);
 	}
-	printf("execute_shell::END\n");
+	//printf("execute_shell::END\n");
 }
 void	quit(t_shell *ms)
 {
 	ft_putstr_fd("exit\n", 2);
 	
-	//free_env(ms);
-	close_and_free(ms);
+	free_env(ms);
+	//close_and_free(ms);
 	//free(ms->list->command);
 	exit(0);
 }
@@ -127,23 +127,23 @@ int	main(int argc, char **argv, char **envp)
 			if (init_process_node(ms.line, &ms) == 0)
 			{
 				execute_shell(&ms);
-				dprintf(2,"free node\n");				
-				int j = 0;
-				while (ms.list->command[j])
-				{
+								
+				// int j = 0;
+				// while (ms.list->command[j])
+				// {
 					
-					dprintf(1, "command[%d]: %s\n", j, ms.list->command[j]);
-					j++;
-				}	
+				// 	dprintf(1, "command[%d]: %s\n", j, ms.list->command[j]);
+				// 	j++;
+				// }	
 				free_node(&ms.list);
 				free_shell(&ms);
-				dprintf(2,"free shell\n");
+				
 			}
 			// if (ms.envp)
 			// 	free_env(&ms);
 		}
-		close_and_free(&ms);
-		rl_clear_history();
+		//close_and_free(&ms);
+		//rl_clear_history();
 		return (ms.excode);
 	}
 }

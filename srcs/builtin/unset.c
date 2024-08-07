@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 13:53:25 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 14:11:11 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ static char *name_exists_unset(t_shell *ms, char *name)
 	{
 		if ((ft_strncmp(key, ms->envp[i], len) == 0) 
 			&& (ms->envp[i][len] == '\0' || ms->envp[i][len] == '='))
-            {
-                free(key);
+			{
+				// printf("key found %s\n", key);
+				free(key);
 				return (ms->envp[i] + len);
-            }
+			}
 		i++;
 	}
-    free(key);
+	free(key);
 	return (NULL);
 }
 
@@ -70,6 +71,7 @@ void    envp_delete(t_shell *ms, char *name)
             j++;
         }
     }
+    new[i] = "\0";
     free(ms->envp);
     ms->envp = new;
 }
@@ -92,4 +94,5 @@ void	unset(t_shell *ms, char **cmd)
         }
         i++;
     }
+	ms->excode = 0;
 }

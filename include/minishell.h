@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 10:16:50 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/06 12:04:50 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void parse_process_node(t_process_node **list, t_shell *ms);
 
 /*Get cmd*/
 char	**get_cmd_arr(char *command, t_shell *ms);
-
+//void get_cmd_arr(char *command, t_shell *ms);
 
 /*Expand*/
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);

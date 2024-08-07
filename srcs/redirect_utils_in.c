@@ -54,7 +54,7 @@ int validate_redir_in(t_shell *ms, char *redirect, int j)//$USER
     {
         tmp = redirect;
         ms->list->redirect_in[j] = quote_remover(redirect);
-        free(tmp);
+        //free(tmp);
         if (!redirect)
             return (set_exitcode(ms, -1));
     }
