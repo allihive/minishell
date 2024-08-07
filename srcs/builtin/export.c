@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 09:53:00 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 11:11:53 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ char *env_exists(char *name, t_shell *ms)
 	while (ms->envp[i] && !ft_strnstr(ms->envp[i], tmp, len))//make sure the string is not there.
 		i++;
 	if (ms->envp[i] != NULL)
+	{
+		free(tmp);
 		return (ms->envp[i] + len);
+	}
+	free(tmp);
 	return (NULL);
 }
 
@@ -80,7 +84,6 @@ void envp_update(t_shell *ms, char *name)
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
 		free(ms->envp[i]);
-		// ft_memset(ms->envp[i], 0, ft_strlen(name));//give it a null space in the string the length of the name
 		ms->envp[i] = name;//this should be nulled and replaced.
 		// evyerhting that is passed through the second parameter should be freed
 		if (!ms->envp[i]) //malloc check
@@ -103,7 +106,6 @@ static char	*latest_envp(char *name)
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
 		return (NULL); //error_message
-	printf("name: %s\n", name);
 	free(name);
  	return (new_str);
 }
@@ -155,9 +157,9 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 		i++;
 		// j++;
 	}
-	new [i] = "\0";
 	if (name && !ms->flag)
 		new[i] = latest_envp(name);
+	new [i] = "\0";
 	free(ms->envp);
 	ms->envp = new;
 	// ft_free_strs(new, 0, 0);
@@ -221,7 +223,6 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 	flag = 0;
 
 	cmd_args = cmd_counter(cmd);
-	printf("cmd_args %d\n", cmd_args);
 	if (cmd_args == 1)
 		envp_print(ms, fd);
 	while (j < cmd_args)

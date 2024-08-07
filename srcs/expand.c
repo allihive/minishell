@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 09:52:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 10:11:44 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ char *quote_remover(char *str)
 	len = ft_strlen(str) - remove_q + 1;
 	return (remove_quote(str, len));
 }
-
-
 
 static int	key_exists(t_shell *ms, char *name)
 {

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 09:52:39 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 10:09:32 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ int add_shlvl(t_shell *ms)//create the export function
 	// free(tmp);
 	return (shlvl);
 }
-
-
-
 
 void	initialize_shell(t_shell *ms, char **envp)
 {

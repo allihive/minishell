@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 09:53:02 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 14:33:32 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,29 @@ void    envp_delete(t_shell *ms, char *name)
 
     i = 0;
     j = 0;
+	printf("before ms->envp_size %d\n", ms->envp_size);
 	ms->envp_size -= 1;
+	printf("after ms->envp_size %d\n", ms->envp_size);
     len = ft_strlen(name);
-    new = ft_calloc((ms->envp_size + 1), sizeof(char *));
+    new = ft_calloc((ms->envp_size), sizeof(char *));
     if (!new)
-        return ;//error handle
-    while(j < ms->envp_size && ms->envp[i]) //i < ms->envp_size && 
+        return ;
+    while(j < ms->envp_size && ms->envp[j]) //j < ms->envp_size &&  
     {
         if (!ft_strncmp(ms->envp[j], name, len) && 
             ((ms->envp[j][len] == '=') || (ms->envp[j][len] == '\0')))
+		{
+		
             j++;
+		}
         else
-            new[i++] = ms->envp[j++]; //new[i++] = ft_strdup(ms->envp[j++]);
+		{
+            new[i] = ms->envp[j]; 
+			i++;
+			j++;
+			printf("new[i] = %s\n", new[i]);
+			printf("ms->envp[%d] %s\n", j, ms->envp[i]);
+		}
     }
 	new[i] = "\0";
     free(ms->envp);
@@ -85,7 +96,6 @@ void	unset(t_shell *ms, char **cmd)
         if (name_exists_unset(ms, cmd[i])) //tmp should be a=1
         {
             envp_delete(ms, cmd[i]);
-            // return ;
         }
         i++;
     }
