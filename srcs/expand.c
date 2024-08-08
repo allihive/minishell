@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 15:30:29 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/07 16:24:03 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,12 +295,10 @@ char	*echo_exit_code(t_shell *ms)
 {
 	char *exit_code;
 
-	printf("in echo_exit %d\n", ms->excode);
 	exit_code = ft_itoa(ms->excode);
 	if (!exit_code)
 		return (NULL);
-	printf("in echo_exit str %s\n", exit_code);
-	ft_putstr_fd(exit_code, 1);
+	// ft_putstr_fd(exit_code, 1);
 	return (exit_code);
 }
 
@@ -357,8 +355,9 @@ char *if_expandable(char *cmd, t_shell *ms, int i,t_process_node *mod ) // i = k
 	}
 	else if (cmd[i] == '?' ) //2nd letter ?->exit code
 	{
-		dprintf(2, "3 in expandable\n");
+		// dprintf(2, "3 in expandable\n");
 		result = echo_exit_code(ms);
+		free(cmd);
 	}
 	else if (ft_isdigit(cmd[i]))
 		result = echo_digit(cmd, ms, i);
