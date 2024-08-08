@@ -35,11 +35,11 @@ void	set_pwd(t_shell *ms, char *pwd, char *oldpwd, char *cwd)
 
 void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 {
-	char cwd[1000];
+	char	cwd[1000];
 	
-	if (getcwd(cwd, 1000) == NULL)//getting current working directory
+	if (getcwd(cwd, 1000) == NULL)
 		return ;
-	if (cmd[1] == NULL) // checks if it's just cd
+	if (cmd[1] == NULL)
 	{
 		char *home;
 		char *home_value;
@@ -52,21 +52,12 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 		home_value = find_value(ms, "HOME");
 		if (chdir(home_value) == 0)
 			set_pwd(ms, pwd, oldpwd, cwd);
-		else if(chdir(home_value) != 0) //home has something that is not correct
+		else if(chdir(home_value) != 0)
 		{
 			error_msg(cmd[0], home_value, "No such file or directory", 1, ms);
 			return ;
 		}
 	}
-	else if (cmd[1] && chdir(cmd[1]) == 0) //checks if there's ../../ or Documents/minishell
+	else if (cmd[1] && chdir(cmd[1]) == 0)
 		set_pwd(ms, pwd, oldpwd, cwd);
 }
-
-
-/*some error functiion tests*/
-//ln -s /path/that/does/not/exist broken_link -> bash: cd: broken_link: No such file or directory
-//cd /path/that/does/not/exist ->bash: cd: /path/that/does/not/exist: No such file or directory
-
-//unset HOME -> bash: cd: HOME not set
-//export HOME=<invalid location> -> bash: cd: str value: No such file or directory
-//
