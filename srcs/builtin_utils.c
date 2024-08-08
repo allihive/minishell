@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:40:11 by alli              #+#    #+#             */
-/*   Updated: 2024/07/31 13:18:09 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:29:59 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	call_builtin(t_shell *ms, t_process_node *node)
 		unset(ms, node->command);
 	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
 	{
-		printf("goes into ft_exit\n");
+		// printf("goes into ft_exit\n");
 		ft_exit(ms, node->command);
 		// printf("ms->excode in call builtin after func %d\n", ms->excode);
 	}

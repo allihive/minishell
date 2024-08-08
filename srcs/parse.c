@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 17:26:24 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:28:46 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void check_dollar(char **command, t_process_node *mod, t_shell *ms)
 		{
 			if (command[i][j] == '$' )
 			{
-				dprintf(2,"after expand it out command[i]: %s\n", command[i]);
+				//dprintf(2,"after expand it out command[i]: %s\n", command[i]);
 				command[i] = expand_it_out(tmp[i], mod, ms);	
 			}	
 			j++;

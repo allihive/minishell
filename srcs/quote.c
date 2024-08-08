@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:49:02 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 17:58:31 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:31:03 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ char *remove_quote(char *str, int len)
 
 	i = 0;
 	j = 0;
+	if (str == NULL)
+		return NULL;
 	init_flag(&f);
 	new_str = ft_calloc(len, sizeof(char));
 	if (!new_str)
@@ -41,8 +43,11 @@ char *remove_quote(char *str, int len)
 			new_str[j++] = str[i];	
 		i++;
 	}
-	if (str != NULL)
-		free(str);
+	// printf("str: %s\n", str);
+	// if (str != NULL)
+	// 	free(str);
+	//dprintf(2, "str:%s address: %p\n",str, str);
+	free(str);
 	return (new_str);	
 }
 

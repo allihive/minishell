@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 13:00:36 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:34:25 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,14 @@ int pipex(t_process_node *process, t_shell *ms)
     
         if (do_process(process, ms) == -1 || ms->pids[ms->count] == 0)
             return (close_and_free(ms));
+
+		// int i = 0;
+			
+		// while (process->redirect_out[i])
+		// {
+		// 	dprintf(2, "in pipex process->redirect_out[%d]: %s\n", i, process->redirect_out[i]);
+		// 	i++;
+		// }
 
         close(ms->fd[0]);
 		ms->fd[0] = -1;

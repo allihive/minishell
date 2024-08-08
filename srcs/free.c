@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 12:56:01 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:30:28 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,16 @@ void free_node(t_process_node **lst)
 		if ((*lst)->redirect_in != NULL)//char **cmd;
 			free_double((*lst)->redirect_in );
 		if ((*lst)->redirect_out != NULL)//char **cmd;
+		{
+			// int i = 0;
+			
+			// while ((*lst)->redirect_out[i])
+			// {
+			// 	dprintf(2, "free node redirect_out[%d]: %s\n", i, (*lst)->redirect_out[i]);
+			// 	i++;
+			// }
 			free_double((*lst)->redirect_out);
+		}
 		if ((*lst)->here_doc != NULL)//char	*input;
 			free_single(&(*lst)->here_doc);
 		if ((*lst)->append_s != NULL)//char	*input;
@@ -100,7 +109,7 @@ int free_env(t_shell *ms)
 	// 	return ;
 	if (ms->envp != NULL)
 	{	
-		printf("in free env\n");
+		// printf("in free env\n");
 		free_double(ms->envp);	
 	}
 	if (ms->cwd)
@@ -118,7 +127,7 @@ void free_shell(t_shell *ms)//free ms
 
 	if (ms->envp_paths)
 	{
-		printf("in free shell\n");
+		// printf("in free shell\n");
 		free_double(ms->envp_paths);
 	}
 	

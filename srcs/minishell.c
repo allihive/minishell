@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 16:49:43 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:30:54 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void execute_shell(t_shell *ms)
 	// printf("&ms->list == ms ? %d\n", &ms->list == ms->list);
 	if (!ms->list)
 	{
-		printf("!ms->list\n");
+		// printf("!ms->list\n");
 		exit(free_env(ms));
 	}
 	else if (pipex(ms->list, ms) == -1)

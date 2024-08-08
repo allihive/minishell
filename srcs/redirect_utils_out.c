@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:33:41 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 18:31:19 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:01:30 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int validate_redir_out(t_shell *ms, char *redirect, int j)//$USER
     {
         tmp = redirect;
         ms->list->redirect_out[j] = quote_remover(redirect);
-        //free(tmp);
+       //dprintf(2, "ms->list->redirect_out[j]:%s\n", ms->list->redirect_out[j]);
         if (!redirect)
             return (set_exitcode(ms, -1));
     }
