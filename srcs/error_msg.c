@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 11:38:08 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:30:06 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	error_handle(t_shell *ms)
 			free(ms->line);
 		exit(ms->excode);
 	}
-	ft_printf("Readline unable to read");
+	// ft_printf("Readline unable to read");
 	exit(ms->excode);
 }
 

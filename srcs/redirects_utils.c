@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/05 20:54:51 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:02:52 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int redir_out(char *redirectout, t_shell *ms, int j)
 	if (validate_redir_out(ms, redirectout + i, j) == -1)
 		return (-1);
 	close(ms->fd[1]);
+	//dprintf(2, "in redir out ms->list->redirect_out[j]:%s\n", ms->list->redirect_out[j]);
 	if (redirectout)//>>
 		ms->fd[1] = open(ms->list->redirect_out[j], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (ms->fd[1] < 0)
@@ -59,6 +60,7 @@ int redir_out(char *redirectout, t_shell *ms, int j)
 			ft_printf( "shell: %s: Permission denied\n", redirectout );//need to fix fd 2
 		return (set_exitcode(ms, -1));
 	}
+	//dprintf(2, "2 in redir out ms->list->redirect_out[j]:%s\n", ms->list->redirect_out[j]);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 08:11:19 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/08 15:58:10 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ static char	*latest_envp(char *name)
 	}
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
-		return (NULL);
-	printf("name: %s\n", name);
+		return (NULL); //error_message
+	// printf("name: %s\n", name);
 	free(name);
  	return (new_str);
 }
@@ -166,6 +166,8 @@ void	update_or_add_envp(t_shell *ms, char **cmd, int j, int flag)
 		envp_update(ms, current_cmd);
 	if (name_exists_env(ms, cmd[j]) == NULL)
 		envp_add(ms, current_cmd);
+	
+	free(current_cmd);
 	if (flag == 0)
 		ms->excode = 0;
 }
@@ -182,10 +184,12 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 	flag = 0;
 
 	cmd_args = cmd_counter(cmd);
+	// printf("cmd_args %d\n", cmd_args);
 	if (cmd_args == 1)
 		envp_print(ms, fd);
 	while (j < cmd_args)
 	{
+		// printf("cmd[%d] %s\n", j, cmd[j]);
 		if(export_str_check(cmd[j]) && ms->envp[i])
 		{
 			error_msg(cmd[0], cmd[j], "not a valid identifier", 1, ms);

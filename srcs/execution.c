@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/05 18:10:38 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 12:56:55 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 void do_dups(t_shell *ms)
 {
     close(ms->read_end);
+	ms->read_end = -1;
     dup2(ms->fd[0], 0);// stdinput
     dup2(ms->fd[1], 1);//stdoutput
     close(ms->fd[0]);
+	ms->fd[0] = -1;
     close(ms->fd[1]);
+	ms->fd[1] = -1;
 }
 
 
