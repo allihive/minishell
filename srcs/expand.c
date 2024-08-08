@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 15:57:17 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:01:46 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,16 @@ char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 	cmd[dollar + i] = '\0';
 	return (cmd);
 }
+char	*echo_exit_code(t_shell *ms)
+{
+	char *exit_code;
+
+	exit_code = ft_itoa(ms->excode);
+	if (!exit_code)
+		return (NULL);
+	// ft_putstr_fd(exit_code, 1);
+	return (exit_code);
+}
 
 char *echo_digit(char *cmd, t_shell *ms, int i)
 {	
@@ -102,8 +112,9 @@ char *if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod ) // i = 
 	}
 	else if (cmd[i] == '?' ) //2nd letter ?->exit code
 	{
+		// dprintf(2, "3 in expandable\n");
 		result = echo_exit_code(ms);
-		free (cmd);
+		free(cmd);
 	}
 	else if (ft_isdigit(cmd[i]))
 		result = echo_digit(cmd, ms, i);

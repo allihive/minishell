@@ -6,9 +6,10 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 15:58:10 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:01:02 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -101,6 +102,30 @@ static char	*latest_envp(char *name)
  	return (new_str);
 }
 
+<<<<<<< HEAD
+/*char *add_to_end_of_list(t_shell *ms, char *new, char *name, int i, int j) //working but leaking
+{
+	if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
+	{
+		new = latest_envp(name);//it will be replaced when there is something else written
+		if (!new)
+			error_handle(ms);
+		ms->flag = 1;
+		return (new);
+	}
+	else
+	{
+		new = ft_strdup(ms->envp[j]);//add elements that are already in the list
+		if (!new)
+			return (NULL);// error_handle(ms);
+	}
+	// free(name);
+	// ms->envp = 
+	return (new);
+}*/
+
+=======
+>>>>>>> fa9720939554a2e7d8da0c856101503b74015fe1
 void envp_add(t_shell *ms, char *name)
 {
 	char	**new;
@@ -166,7 +191,10 @@ void	update_or_add_envp(t_shell *ms, char **cmd, int j, int flag)
 		envp_update(ms, current_cmd);
 	if (name_exists_env(ms, cmd[j]) == NULL)
 		envp_add(ms, current_cmd);
+<<<<<<< HEAD
 	
+=======
+>>>>>>> c40c18a2d7d64ee90fe740441a9b7227ed018b5b
 	free(current_cmd);
 	if (flag == 0)
 		ms->excode = 0;
