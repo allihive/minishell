@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 14:30:54 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:44:26 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,32 +76,23 @@ void	initialize_shell(t_shell *ms, char **envp)
 	//know the pwd somehow
 }
 
-
-
 void execute_shell(t_shell *ms)
 {
-	
 	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
-	// printf("&ms->list == ms ? %d\n", &ms->list == ms->list);
 	if (!ms->list)
 	{
-		// printf("!ms->list\n");
 		exit(free_env(ms));
 	}
 	else if (pipex(ms->list, ms) == -1)
 	{
-		printf("pipex(ms->list, ms) == -1\n");
 		exit(ms->excode);
 	}
-	//printf("execute_shell::END\n");
 }
+
 void	quit(t_shell *ms)
 {
 	ft_putstr_fd("exit\n", 2);
-	
 	free_env(ms);
-	//close_and_free(ms);
-	//free(ms->list->command);
 	exit(0);
 }
 
@@ -118,33 +109,16 @@ int	main(int argc, char **argv, char **envp)
 			set_signal();
 			ms.line = readline("lobster-shell 🦞: ");
 			if (!ms.line)
-			{
-				dprintf(2,"in !ms.line\n");
-				//error_handle(&ms);
 				quit(&ms);
-			}
 			else if (ms.line[0] != 0)
 				add_history(ms.line);
 			if (init_process_node(ms.line, &ms) == 0)
 			{
-				execute_shell(&ms);
-								
-				// int j = 0;
-				// while (ms.list->command[j])
-				// {
-					
-				// 	dprintf(1, "command[%d]: %s\n", j, ms.list->command[j]);
-				// 	j++;
-				// }	
+				execute_shell(&ms);	
 				free_node(&ms.list);
 				free_shell(&ms);
-				
 			}
-			// if (ms.envp)
-			// 	free_env(&ms);
 		}
-		//close_and_free(&ms);
-		//rl_clear_history();
 		return (ms.excode);
 	}
 }

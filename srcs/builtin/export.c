@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 14:31:48 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 17:32:30 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void	update_or_add_envp(t_shell *ms, char **cmd, int j, int flag)
 	{
 		envp_add(ms, current_cmd);
 	}
-	free(current_cmd);
+	//free(current_cmd);
 	if (flag == 0)
 		ms->excode = 0;
 }

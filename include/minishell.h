@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 17:53:17 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 17:21:26 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,4 +266,5 @@ int count_quote(char *str);
 
 /*Utils*/
 char	*echo_exit_code(t_shell *ms);
+char	*remove_dollar_sign(char *cmd, int dollar, int amount);
 #endif
