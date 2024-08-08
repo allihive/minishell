@@ -6,13 +6,17 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/08/08 12:58:13 by alli             ###   ########.fr       */
+=======
+/*   Updated: 2024/08/08 08:11:19 by alli             ###   ########.fr       */
+>>>>>>> fa9720939554a2e7d8da0c856101503b74015fe1
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *name_exists_env(t_shell *ms, char *name)
+static	char	*name_exists_env(t_shell *ms, char *name)
 {
 	int		len;
 	int		i;
@@ -23,10 +27,7 @@ static char *name_exists_env(t_shell *ms, char *name)
 		i++;
 	key = ft_substr(name, 0, i + 1);
 	if (!key)
-	{
-		// free(key);
 		return (NULL); //should be error_handle
-	}
 	len = ft_strlen(key + 1);
 	i = 0;
 	while (i < ms->envp_size && ms->envp[i])
@@ -43,18 +44,18 @@ static char *name_exists_env(t_shell *ms, char *name)
 	return (NULL);
 }
 
-char *env_exists(char *name, t_shell *ms)
+char	*env_exists(char *name, t_shell *ms)
 {
 	char	*tmp;
 	int		len;
-	int 	i;
+	int		i;
 	
 	i = 0;
 	tmp = ft_strjoin(name, "=");
 	if (!tmp)
 		error_handle(ms);
 	len = ft_strlen(tmp);
-	while (ms->envp[i] && !ft_strnstr(ms->envp[i], tmp, len))//make sure the string is not there.
+	while (ms->envp[i] && !ft_strnstr(ms->envp[i], tmp, len))
 		i++;
 	if (ms->envp[i] != NULL)
 		return (ms->envp[i] + len);
@@ -70,9 +71,8 @@ void envp_update(t_shell *ms, char *name)
 	len = 0;
 	while (name[len] != '=')
 		len++;
-	while (ms->envp[i]) //checking the whole envp size
+	while (ms->envp[i])
 	{
-		// if (ft_strncmp(ms->envp[i], name, len) == 0 && name_exists_env(ms, name)) //very neccessary
 		if (ft_strncmp(ms->envp[i], name, len) == 0 && ms->envp[i][len] == '=') 
 			break ;
 		i++;
@@ -80,13 +80,10 @@ void envp_update(t_shell *ms, char *name)
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
 		free(ms->envp[i]);
-		// ft_memset(ms->envp[i], 0, ft_strlen(name));//give it a null space in the string the length of the name
-		ms->envp[i] = name;//this should be nulled and replaced.
-		// evyerhting that is passed through the second parameter should be freed
-		if (!ms->envp[i]) //malloc check
+		ms->envp[i] = name;
+		if (!ms->envp[i])
 			close_and_free(ms);
 	}
-	// free(name);
 }
 
 static char	*latest_envp(char *name)
@@ -97,17 +94,18 @@ static char	*latest_envp(char *name)
 	{
 		new_str = ft_strdup(name);
 		if (!new_str)
-			return (NULL); //error message
+			return (NULL);
 		return (new_str);
 	}
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
-		return (NULL); //error_message
+		return (NULL);
 	printf("name: %s\n", name);
 	free(name);
  	return (new_str);
 }
 
+<<<<<<< HEAD
 /*char *add_to_end_of_list(t_shell *ms, char *new, char *name, int i, int j) //working but leaking
 {
 	if (ft_strncmp(ms->envp[i], "_=", 2) == 0)//when shell is initally opened, there is _=bin/bash
@@ -129,6 +127,8 @@ static char	*latest_envp(char *name)
 	return (new);
 }*/
 
+=======
+>>>>>>> fa9720939554a2e7d8da0c856101503b74015fe1
 void envp_add(t_shell *ms, char *name)
 {
 	char	**new;
@@ -140,8 +140,8 @@ void envp_add(t_shell *ms, char *name)
 	ms->envp_size += 1;
 	ms->flag = 0;
 	if (!name)
-		close_and_free(ms); //should be some type of error close and free?
-	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
+		close_and_free(ms);
+	new = ft_calloc((ms->envp_size + 1), sizeof(char *));
 	if (!new)
 		error_handle(ms);
 	 while (i < ms->envp_size - 1 && ms->envp[i])
@@ -158,7 +158,7 @@ void envp_add(t_shell *ms, char *name)
 
 static int	export_str_check(char *str)
 {
-	int i;
+	int	i;
 	
 	i = 0;
 	if (ft_isdigit(str[0]))
@@ -191,9 +191,7 @@ void	update_or_add_envp(t_shell *ms, char **cmd, int j, int flag)
 		return ;
 	}
 	if (name_exists_env(ms, cmd[j]))
-	{
 		envp_update(ms, current_cmd);
-	}
 	if (name_exists_env(ms, cmd[j]) == NULL)
 		envp_add(ms, current_cmd);
 	free(current_cmd);
