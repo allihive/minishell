@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/05 18:14:47 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 13:00:36 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,6 @@ int check_cmd(char *str)
 
 int pipex(t_process_node *process, t_shell *ms)
 {
-    
-   // dprintf(2, "im here count:%d fork:%d\n\n", ms->count, ms->fork_n);
-   // ms->count = 0;
     while(ms->count < ms->fork_n)   
     //while (process != NULL)
     {
@@ -92,13 +89,14 @@ int pipex(t_process_node *process, t_shell *ms)
 		if (get_fd(process->node_line, process, ms) == -1)
             return (close_and_free(ms));//redirection
 
-        
+    
         if (do_process(process, ms) == -1 || ms->pids[ms->count] == 0)
             return (close_and_free(ms));
 
-
         close(ms->fd[0]);
+		ms->fd[0] = -1;
         close(ms->fd[1]);
+		ms->fd[1] = -1;
         //dprintf(2, "ms count pipex: %d\n", ms->count);
         ms->count++;
         if (process->next)
@@ -111,5 +109,4 @@ int pipex(t_process_node *process, t_shell *ms)
     //singal
 	// printf("ms->excode in pipex2 %d\n", ms->excode);
     return (ms->excode);
-
 }
