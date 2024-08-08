@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: alli <alli@student.hive.fi>                +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/07/25 13:33:14 by yhsu              #+#    #+#              #
-#    Updated: 2024/08/07 14:46:24 by alli             ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
 #-g -fsanitize=address
 CFLAGS = -g -Wall -Wextra -Werror -I./include
@@ -36,7 +24,8 @@ endif
 SRCS = ${addprefix srcs/, error_msg.c minishell.c signals.c\
 	 		parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c\
 	 		redirects_utils.c fd.c heredoc.c redirect_utils_in.c redirect_utils_out.c check_utils.c\
-	 		get_cmd.c init.c init_utils.c get_path.c redirect_utils_append.c\
+	 		get_cmd.c init.c init_utils.c get_path.c redirect_utils_append.c quote.c expand_utils.c\
+			utils.c\
     	${addprefix builtin/, export_print.c export.c pwd.c env.c unset.c echo.c exit.c cd.c}}
 
 OBJ = ${SRCS:.c=.o}

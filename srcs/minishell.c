@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/07 14:36:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:05:39 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void	init_envp(t_shell *ms, char **envp)
 			error_handle(ms);
 		i++;
 	}
-	// ms->envp[ms->envp_size] = NULL;
-	// return (ms->envp);
 }
 
 int add_shlvl(t_shell *ms)
@@ -84,7 +82,7 @@ void execute_shell(t_shell *ms)
 	// printf("&ms->list == ms ? %d\n", &ms->list == ms->list);
 	if (!ms->list)
 	{
-		printf("!ms->list\n");
+		// printf("!ms->list\n");
 		exit(free_env(ms));
 	}
 	else if (pipex(ms->list, ms) == -1)

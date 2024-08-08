@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 12:04:50 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/07 17:53:17 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,13 +171,15 @@ char	**get_cmd_arr(char *command, t_shell *ms);
 
 /*Expand*/
 char *expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
-char	*find_value(t_shell *ms, char *key);
 char 	*find_key_in_envp(t_shell *ms, char *key);
-char *quote_remover(char *str);
-int count_quote(char *str);
-char *remove_quote(char *str, int len);
 
 
+/*Expand utils*/
+int	key_exists(t_shell *ms, char *name);
+char *shrink(char *cmd, int remove);
+char *add_value_back( char *value, int start, int len , char *cmd);
+char	*find_value(t_shell *ms, char *key);
+char	*find_key_in_envp(t_shell *ms, char *key);
 
 /*error handling*/
 void	error_handle(t_shell *ms);
@@ -254,4 +256,14 @@ char *check_if_quote(char *str);
 /*Heredoc*/
 int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms);
 //int handle_heredocs(char *redirect, t_process_node *process);
+
+/*Quote*/
+void init_flag(t_flags *f);
+char *remove_quote(char *str, int len);
+void	check_quote(t_process_node *mod, char c, int i);
+char *quote_remover(char *str);
+int count_quote(char *str);
+
+/*Utils*/
+char	*echo_exit_code(t_shell *ms);
 #endif

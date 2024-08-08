@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 11:59:34 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 08:06:17 by alli             ###   ########.fr       */
+/*   Created: 2024/08/07 17:52:02 by yhsu              #+#    #+#             */
+/*   Updated: 2024/08/07 17:52:24 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "minishell.h"
 
-void	env(t_shell *ms, int fd)
+char	*echo_exit_code(t_shell *ms)
 {
-	int		i;
-	char	**tmp;
+	char *exit_code;
 
-	i = 0;
-	tmp = ms->envp;
-	while (*tmp && i < ms->envp_size)
-	{
-		ft_putstr_fd(tmp[i], fd);
-		ft_putchar_fd('\n', fd);
-		i++;
-	}
+	//printf("in echo_exit %d\n", ms->excode);
+	exit_code = ft_itoa(ms->excode);
+	if (!exit_code)
+		return (NULL);
+	return (exit_code);
 }

@@ -6,13 +6,13 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/08/06 15:41:45 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:05:49 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	cmd_is_digit(char *cmd)
+static	int	cmd_is_digit(char *cmd)
 {
 	int	i;
 	
@@ -31,9 +31,10 @@ static int	cmd_is_digit(char *cmd)
 			return (0);
 	
 }
+
 void	exit_shell(t_shell *ms, char **cmd)
 {
-	if(!cmd_is_digit(cmd[1]) && cmd_counter(cmd) > 2)
+	if (!cmd_is_digit(cmd[1]) && cmd_counter(cmd) > 2)
 	{
 		error_msg(cmd[0], 0, "too many arguments", 2, ms);
 		close_and_free(ms);
@@ -73,19 +74,5 @@ int	ft_exit(t_shell *ms, char **cmd)
 		exit_shell(ms, cmd);
 	else if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
 		exit_shell(ms, cmd);
-	// { //yhsu checking
-	// 	ft_putstr_fd("exit\n", 1);
-	// 	ms->excode = ft_atoi(cmd[1]) % 256;
-		
-	// 	int j = 0;
-	// 	while (ms->list->command[j])
-	// 	{
-			
-	// 		dprintf(1, "command[%d]: %s\n", j, ms->list->command[j]);
-	// 		j++;
-	// 	}
-	// 	ft_putstr_fd("exit::before calling close_and_free(ms)\n", 1);		
-	// 	close_and_free(ms);
-	// }
 	return (0);
 }

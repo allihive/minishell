@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/02 14:51:03 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:36:13 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 char *check_redirect_append(char *redirect, t_process_node *mod, t_shell *ms)
 {
 	char *end;
-	static int i = 0;
+	//static int i = 0;
+	int i = 0;
 	
 	while (ifisredirect(*redirect) || ifisspace(*redirect))
 		redirect++;
@@ -73,15 +74,18 @@ char *check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 char *check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 {
 	char *end;
-	static int i = 0;
+	// static int i = 0;
+	int i = 0;
 	
 	while (ifisredirect(*redirect) || ifisspace(*redirect))
 		redirect++;
 	end = redirect;
 	while (*end && !ifisredirect(*end) && *end != ' ')
 		end++;
+	
 	if (mod->redirect_out == NULL) 
 	{
+		// dprintf(2, "in check redir out\n");
 		mod->redirect_out = malloc(sizeof(char *) * 100); // Define MAX_REDIRECTS appropriately
 		if (mod->redirect_out == NULL) 
 		{
@@ -91,10 +95,25 @@ char *check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 		ft_memset(mod->redirect_out, 0, sizeof(char *) * 100); // Initialize to NULL
 	}
 	mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
+	//dprintf(2, "mod->redirect_out[i]:%s address: %p\n",mod->redirect_out[i], mod->redirect_out[i]);
 	mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
+	//dprintf(2, "mod->redirect_out[i]:%s address: %p\n",mod->redirect_out[i], mod->redirect_out[i]);
 	redir_out(mod->redirect_out[i], ms, i);
+	// dprintf(2, "1 in chek redir mod->redirect_out[%d]:%s address: %p\n",i, mod->redirect_out[i], mod->redirect_out[i]);
 	while (mod->redirect_out[i])
 		i++;
+	
+	// int j = 0;
+	// while (mod->redirect_out[j])
+	// {
+	// 	// dprintf(2, "in check_redirect_out mod->redirect_out[%d]: %s\n", j, mod->redirect_out[j]);
+	// 	j++;
+	// }
+
+
+
+
+	
 	return (redirect);
 }
 
@@ -123,6 +142,16 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 	{
 		mod->redirectout = 1;
 		check_redirect_out(redirect, mod, ms);
+		//dprintf(2, "in check redirect- redirect:%s address: %p\n", redirect, redirect);
+
+		
+		// int i = 0;
+			
+		// while (mod->redirect_out[i])
+		// {
+		// 	dprintf(2, "in check redirect redirect_out[%d]: %s\n", i, mod->redirect_out[i]);
+		// 	i++;
+		// }
 	}
 	return (redirect);
 }
@@ -145,5 +174,12 @@ int go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 			break;
 		redirect++;
 	}
+	
+	//int i = 0;
+	// while (mod->redirect_out[i])
+	// {
+	// 	dprintf(2, "in go_check_redirect mod->redirect_out[%d]: %s\n", i, mod->redirect_out[i]);
+	// 	i++;
+	// }
 	return (0);
 }

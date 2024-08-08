@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 09:23:36 by alli              #+#    #+#             */
-/*   Updated: 2024/07/25 11:01:12 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/08 14:29:46 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,7 @@ long	ft_atoi(const char *str)
 	while (str[i])
 	{
 		if (check_longint(total, str[i] - '0'))
-		{
-			printf("is a long int");
 			return (0);
-		}
 		total = total * 10 + (str[i++] - '0');
 	}
 	if (!sign)
