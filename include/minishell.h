@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 12:42:39 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:13:02 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,11 +172,10 @@ char	*find_value(t_shell *ms, char *key);
 char	*find_key_in_envp(t_shell *ms, char *key);
 
 /*error handling*/
-void	error_handle(t_shell *ms);
+void	error_handle(t_shell *ms, char *line);
 void	print_error_and_free(char *name, t_shell *ms);
 int		syntax_error(char *token, t_shell *ms);
 void	cmd_not_found(char *str, t_shell *ms);
-//void	error_msg_builtin(char *cmd, char *str, char *msg, int excode); //change this
 void	error_msg(char *cmd, char *str, char *msg, int excode);
 void	heredoc_input_msg(char *str);
 
@@ -256,4 +255,5 @@ int		count_quote(char *str);
 /*Utils*/
 char	*echo_exit_code(t_shell *ms);
 void	quit(t_shell *ms);
+char	*remove_dollar_sign(char *cmd, int dollar, int amount);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils_in.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:07:06 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 13:08:17 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:18:32 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 int	print_redir_err(t_shell *ms, char *redir, char *copy)
 {
 	if (*redir == '/')// /
-		printf("shell: %s: Is a directory\n", redir);//need change to erro message
-	else if (ft_strchr(copy, '\"'))
-		printf("shell: : No such file or directory\n");//need change to erro message
+		//printf("shell: %s: Is a directory\n", redir);//need change to erro message
+		error_msg(redir, 0, "Is a directory", ms->excode = 126);
+	else if (ft_strchr(copy, '\"'))// cat \"
+		//printf("shell: : No such file or directory\n");//need change to erro message
+		error_msg(redir, 0, "No such file or directory", ms->excode = 1);
 	else
-		printf( "shell: %s: ambiguous redirect\n", copy);//need change to erro message
+		//printf( "shell: %s: ambiguous redirect\n", copy);//need change to erro message
+		error_msg(redir, 0, "No such file or directory", ms->excode = 1);
 	ms->excode = 0;
 	return (-1);
 }

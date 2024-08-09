@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 13:54:27 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:17:24 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,11 @@ void	check_dollar(char **command, t_process_node *mod, t_shell *ms)
 		while (command[i][j])
 		{
 			if (command[i][j] == '$' )
-				command[i] = expand_it_out(tmp[i], mod, ms);
+			{
+				if (command[i][j + 1] == '\0')
+					break;
+				command[i] = expand_it_out(tmp[i], mod, ms);	
+			}	
 			j++;
 		}
 		command[i] = quote_remover(command[i]);

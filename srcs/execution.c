@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 10:33:29 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:21:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void do_dups(t_shell *ms)
 {
-    close(ms->read_end);
+    if (ms->read_end >= 0)
+		close(ms->read_end);
 	ms->read_end = -1;
     dup2(ms->fd[0], 0);// stdinput
     dup2(ms->fd[1], 1);//stdoutput
-    close(ms->fd[0]);
+    if (ms->fd[0] >= 0)
+		close(ms->fd[0]);
 	ms->fd[0] = -1;
-    close(ms->fd[1]);
+    if (ms->fd[1] >= 0)
+		close(ms->fd[1]);
 	ms->fd[1] = -1;
 }
 

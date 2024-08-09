@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 09:41:43 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:14:10 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int right_delimiter(char *redirect,  t_process_node *process)// too many lines c
 }
 
 
-int open__close_heredoc(char *heredoc_name, t_process_node *process,t_shell *ms)
+int open_close_heredoc(char *heredoc_name, t_process_node *process,t_shell *ms)
 {
 	int heredoc_fd;
 
@@ -145,8 +145,10 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
         perror("open .heredoc failed");
         return(set_exitcode(ms, 1)); 
     }   
-    close(ms->fd[0]);
-    open__close_heredoc(heredoc_name, process, ms);
+    if (ms->fd[0] >= 0)
+		close(ms->fd[0]);
+	ms->fd[0] = -1;
+    open_close_heredoc(heredoc_name, process, ms);
     unlink(heredoc_name);
     //free(heredoc_name);
     return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:57:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 10:34:45 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:14:04 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,6 @@ static char	**get_env_paths(char **envp, t_shell *ms)
 		print_error_and_free("minishell: malloc error", ms);
 	return (env_paths);
 }
-
-
-// static void	init_envp_path(char **envp, t_shell *ms)
-// {
-// 	char	**arr;
-
-// 	//dprintf(2, "envp[0]:%s\n", envp[0]);
-// 	//dprintf(2, "envp[1]:%s\n", envp[1]);
-// 	if (*envp == NULL)
-// 	{
-// 		arr = ft_split("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin", ':');
-// 		if (arr == NULL)
-// 			perror("error malloc");
-//             //print_error("error malloc", pipex, EXIT_FAILURE);
-// 		ms->envp_paths = arr;
-// 	}
-// 	else
-// 	{
-// 		ms->envp_paths = get_env_paths(envp, ms);
-// 	}
-// }
 
 int get_the_path(t_process_node *process, t_shell *ms, char	*command_path, int i)
 {

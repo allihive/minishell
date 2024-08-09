@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 08:58:52 by alli              #+#    #+#             */
-/*   Updated: 2024/02/20 13:21:03 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 12:16:48 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,21 +96,3 @@ void	*ft_zeromalloc(size_t count, size_t size)
 	return (str);
 }
 
-void	ft_free_strs(char **str, char **str2, char **str3)
-{
-	if (str && *str)
-	{
-		free(*str);
-		*str = NULL;
-	}
-	if (str2 && *str2)
-	{
-		free(*str2);
-		*str2 = NULL;
-	}
-	if (str3 && *str3)
-	{
-		free(*str3);
-		*str3 = NULL;
-	}
-}
