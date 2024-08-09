@@ -31,6 +31,8 @@ void	set_pwd(t_shell *ms, char *pwd, char *oldpwd, char *cwd)
 	}
 	envp_update(ms, pwd);
 	envp_update(ms, oldpwd);
+	// free(pwd);
+	// free(oldpwd);
 }
 
 void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 11:48:23 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:08:48 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ int	output_heredoc(char *line, char *delimiter, int	stdin_backup, int heredoc_fd
 	}
 	return (1);
 }
+
+// SIGINT = set back to its default behavior of ctrl+c
+// SIGQUIT quit signal ignored when ctrl+\ is pressed
+// ctrl+c is quitting the whole program on mac...not sure if this is the case on linux
 
 void get_heredoc_input(int heredoc_fd, t_process_node *process)
 {

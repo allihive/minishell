@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 13:09:08 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:06:31 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	cmd_is_digit(char *cmd)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!cmd)
 	{
@@ -28,12 +28,12 @@ static int	cmd_is_digit(char *cmd)
 	if (cmd[i] == '\0')
 		return (ft_atoi(cmd));
 	else
-			return (0);
-	
+		return (0);
 }
+
 void	exit_shell(t_shell *ms, char **cmd)
 {
-	if(!cmd_is_digit(cmd[1]) && cmd_counter(cmd) > 2)
+	if (!cmd_is_digit(cmd[1]) && cmd_counter(cmd) > 2)
 	{
 		error_msg(cmd[0], 0, "too many arguments", ms->excode = 2);
 		close_and_free(ms);
@@ -43,7 +43,8 @@ void	exit_shell(t_shell *ms, char **cmd)
 		error_msg(cmd[0], cmd[1], "numeric arguments required", ms->excode = 2);
 		close_and_free(ms);
 	}
-	else if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
+	else if (!ft_strncmp(cmd[0], "exit", 4)
+		&& cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
 	{
 		ft_putstr_fd("exit\n", 1);
 		ms->excode = ft_atoi(cmd[1]) % 256;
@@ -71,21 +72,8 @@ int	ft_exit(t_shell *ms, char **cmd)
 	}
 	else if (!cmd_is_digit(cmd[1]) && ft_atoi(cmd[1]) == 0)
 		exit_shell(ms, cmd);
-	else if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
+	else if (!ft_strncmp(cmd[0], "exit", 4)
+		&& cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
 		exit_shell(ms, cmd);
-	// { //yhsu checking
-	// 	ft_putstr_fd("exit\n", 1);
-	// 	ms->excode = ft_atoi(cmd[1]) % 256;
-		
-	// 	int j = 0;
-	// 	while (ms->list->command[j])
-	// 	{
-			
-	// 		dprintf(1, "command[%d]: %s\n", j, ms->list->command[j]);
-	// 		j++;
-	// 	}
-	// 	ft_putstr_fd("exit::before calling close_and_free(ms)\n", 1);		
-	// 	close_and_free(ms);
-	// }
 	return (0);
 }

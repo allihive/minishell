@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 13:14:47 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:07:23 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ char *env_exists(char *name, t_shell *ms)
 	while (ms->envp[i] && !ft_strnstr(ms->envp[i], tmp, len))//make sure the string is not there.
 		i++;
 	if (ms->envp[i] != NULL)
+	{
+		free(tmp);
 		return (ms->envp[i] + len);
+	}
+	free(tmp);
 	return (NULL);
 }
 
@@ -80,7 +84,6 @@ void envp_update(t_shell *ms, char *name)
 	if (ms->envp[i][len] == '=') //check if say here= (len = 5)
 	{
 		free(ms->envp[i]);
-		// ft_memset(ms->envp[i], 0, ft_strlen(name));//give it a null space in the string the length of the name
 		ms->envp[i] = name;//this should be nulled and replaced.
 		// evyerhting that is passed through the second parameter should be freed
 		if (!ms->envp[i]) //malloc check
@@ -103,7 +106,6 @@ static char	*latest_envp(char *name)
 	new_str = ft_strjoin(name, "=");
 	if (!new_str)
 		return (NULL); //error_message
-	// printf("name: %s\n", name);
 	free(name);
  	return (new_str);
 }
@@ -133,13 +135,11 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 {
 	char	**new;
 	int		i;
-	int		j;
 	
 	i = 0;
-	j = 0;
 	ms->envp_size += 1;
 	ms->flag = 0;
-	if (!name)
+	if (!name) //check if strdup has worked, then it will close and free
 		close_and_free(ms); //should be some type of error close and free?
 	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
@@ -153,10 +153,11 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 		new[i] = ms->envp[i];
 		i++;
 		// j++;
+		//printf("new[%d]: %p\n", i, new[i]);
 	}
-	new [i] = "\0";
 	if (name && !ms->flag)
 		new[i] = latest_envp(name);
+	new [i] = "\0";
 	free(ms->envp);
 	ms->envp = new;
 	// ft_free_strs(new, 0, 0);
@@ -221,12 +222,10 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 	flag = 0;
 
 	cmd_args = cmd_counter(cmd);
-	// printf("cmd_args %d\n", cmd_args);
 	if (cmd_args == 1)
 		envp_print(ms, fd);
 	while (j < cmd_args)
 	{
-		// printf("cmd[%d] %s\n", j, cmd[j]);
 		if(export_str_check(cmd[j]) && ms->envp[i])
 		{
 			error_msg(cmd[0], cmd[j], "not a valid identifier", ms->excode = 1);

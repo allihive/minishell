@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 13:56:48 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 14:09:05 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_envp(t_shell *ms, char **envp)
 		ms->envp_size++;
 	ms->envp = ft_calloc(ms->envp_size + 1, sizeof(char *));
 	if (!ms->envp)
-		error_handle(ms,0);
+		error_handle(ms, 0);
 	i = 0;
 	while (i < ms->envp_size)
 	{
@@ -34,7 +34,7 @@ void	init_envp(t_shell *ms, char **envp)
 	}
 }
 
-int add_shlvl(t_shell *ms)//create the export function
+int add_shlvl(t_shell *ms)
 {
 	int shlvl;
 	char *shlvl_str;
@@ -59,9 +59,6 @@ int add_shlvl(t_shell *ms)//create the export function
 	envp_update(ms, tmp);
 	return (shlvl);
 }
-
-
-
 
 void	initialize_shell(t_shell *ms, char **envp)
 {
