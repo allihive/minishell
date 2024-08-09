@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 14:28:46 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:54:27 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void append_process_node(t_process_node **list, t_process_node *new)
+void	append_process_node(t_process_node **list, t_process_node *new)
 {
-	t_process_node *last_node;
-	
+	t_process_node	*last_node;
+
 	if (!list || !new)
 		return ;
 	new->next = NULL;
@@ -24,34 +23,31 @@ void append_process_node(t_process_node **list, t_process_node *new)
 		*list = new;
 	else
 	{
-		
-		
 		last_node = *list;
-		
-		while(last_node->next)
+		while (last_node->next)
 			last_node = last_node->next;
 		last_node->next = new;
 	}
-	
 }
 
-char	*no_quote(char *cmd)//for test
+char	*no_quote(char *cmd)
 {
 	char	*result;
 	int		new_len;
-	int		i,j;
-	
+	int		i;
+	int		j;
+
 	j = 0;
 	while (ifisspace(cmd[j]))
 		j++;
-	new_len = ft_strlen(cmd + j) - 1;//7
+	new_len = ft_strlen(cmd + j) - 1;
 	result = malloc(sizeof(char) * new_len);
 	if (result == NULL)
-		ft_putstr_fd("malloc error", 2);// need change to print_error
+		ft_putstr_fd("malloc error", 2);
 	i = 0;
 	while (i < new_len - 1)
 	{
-		result[i] = cmd[j+1];
+		result[i] = cmd[j + 1];
 		i++;
 		j++;
 	}
@@ -60,26 +56,21 @@ char	*no_quote(char *cmd)//for test
 	return (result);
 }
 
-
-
-
-void check_dollar(char **command, t_process_node *mod, t_shell *ms)
+void	check_dollar(char **command, t_process_node *mod, t_shell *ms)
 {
-	int i, j;
-	i = 0;
-	char **tmp;
+	int		i;
+	int		j;
+	char	**tmp;
 
+	i = 0;
 	tmp = command;
-	while (command[i])//'hello $USER' "$'HOME'"
+	while (command[i])
 	{
 		j = 0;
 		while (command[i][j])
 		{
 			if (command[i][j] == '$' )
-			{
-				//dprintf(2,"after expand it out command[i]: %s\n", command[i]);
-				command[i] = expand_it_out(tmp[i], mod, ms);	
-			}	
+				command[i] = expand_it_out(tmp[i], mod, ms);
 			j++;
 		}
 		command[i] = quote_remover(command[i]);
@@ -87,50 +78,32 @@ void check_dollar(char **command, t_process_node *mod, t_shell *ms)
 	}
 }
 
-void parse_mod(char *input, t_process_node *mod, t_shell *ms)//echo "hello $USER" > infile.txt 
+void	parse_mod(char *input, t_process_node *mod, t_shell *ms)
 {
-	char *command;//input without redirection
-	char *start;// check the first redirect for cmd
-	
+	char	*command;
+	char	*start;
+
 	start = input;
-	while (*start && !ifisredirect(*start))//input  變成 echo "hello $USER"
+	while (*start && !ifisredirect(*start))
 		start++;
-		
-	command = ft_substr( input, 0 , (start - input));		
-	//get rid of ' '' save back to the string ; change mode
-	mod->command = get_cmd_arr(command, ms); //get (cmd[0]echo cmd[1]"hello $USER" or cmd[0]echo cmd[1]hello cmd[2]$USR)
+	command = ft_substr(input, 0, (start - input));
+	mod->command = get_cmd_arr(command, ms);
 	free(command);
-	
-	// int p = 0;
-	// while (mod->command[p])
-	// {
-	// 	dprintf(2, "mod->command[%d]:%s\n", p, mod->command[p]);
-	// 	p++;
-	// }
-	
 	if (is_builtin(mod->command[0]))
 		mod->builtin = 1;
 	check_dollar(mod->command, mod, ms);
 }
 
-
-//dive line by '|' and save them in linked list
-void parse_process_node(t_process_node **list, t_shell *ms)
+void	parse_process_node(t_process_node **list, t_shell *ms)
 {
-	t_process_node *mod;//command node
-	char *input;
+	t_process_node	*mod;
+	char			*input;
 
-	mod = *list;	
+	mod = *list;
 	while (mod)
 	{
-		// if (mod->next)
-		// 	input = mod->next->node_line;
-		// else
-		// 	input = mod->node_line;
 		input = mod->node_line;
-		parse_mod(input, mod, ms);//for parse test
+		parse_mod(input, mod, ms);
 		mod = mod->next;
-		//dprintf(2, "end of parse process\n");
 	}
-	
 }

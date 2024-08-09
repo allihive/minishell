@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:59:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 11:04:48 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:54:57 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,6 @@ int empty_prompt(char *input)
 	while (ifisspace(*input))
 		input++;
 	if (!*input)
-		return (1);//true
-	return (0);//false
+		return (1);
+	return (0);
 }

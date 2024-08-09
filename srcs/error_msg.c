@@ -6,13 +6,13 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 11:05:57 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 12:27:15 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	syntax_error(char *token, t_shell *ms)//error_occured need to revise only for parsing test
+int	syntax_error(char *token, t_shell *ms)
 {
 	char	c;
 

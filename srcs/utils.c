@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:52:02 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 17:52:24 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 12:41:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,17 @@
 
 char	*echo_exit_code(t_shell *ms)
 {
-	char *exit_code;
+	char	*exit_code;
 
-	//printf("in echo_exit %d\n", ms->excode);
 	exit_code = ft_itoa(ms->excode);
 	if (!exit_code)
 		return (NULL);
 	return (exit_code);
+}
+
+void	quit(t_shell *ms)
+{
+	ft_putstr_fd("exit\n", 2);
+	free_env(ms);
+	exit(0);
 }

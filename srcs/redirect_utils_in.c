@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect_utils_in.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/09 13:07:06 by alli              #+#    #+#             */
+/*   Updated: 2024/08/09 13:08:17 by alli             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -13,78 +24,47 @@ int	print_redir_err(t_shell *ms, char *redir, char *copy)
 	return (-1);
 }
 
-
-// int	expand_redir_in(t_shell *ms, char *redirect, int j)
-// {
-//     int i;
-//     char *tmp;
-//     char *copy;
-
-//     i = 0;
-//     copy = ft_strdup(redirect);
-// 	if (!copy)
-//     	return (set_exitcode(ms, -1));
-// 	redirect = expand_it_out(redirect, ms->list, ms);
-//     tmp = redirect;
-//     ms->list->redirect_in[j] = quote_remover(redirect);
-//     while (redirect[i] == '<' || redirect[i] == '>')
-//         i++;
-//     if (!redirect[i] || redirect[i] == '/')
-//     {
-//         print_redir_err(ms, redirect + 1, &copy[i]);
-//         free(copy);
-//         return (-1);
-//     }
-//     free (tmp);
-// 	free(copy);
-//     return (0);
-// }
-
 int	expand_redir_in(t_shell *ms, char *redirect, int j)
 {
-    int i;
-    char *tmp;
-    char *copy;
+	int		i;
+	char	*tmp;
+	char	*copy;
 
-    i = 0;
-    copy = ft_strdup(redirect);
+	i = 0;
+	copy = ft_strdup(redirect);
 	if (!copy)
-    	return (set_exitcode(ms, -1));
+		return (set_exitcode(ms, -1));
 	redirect = expand_it_out(redirect, ms->list, ms);
-    
-    ms->list->redirect_in[j] = quote_remover(redirect);
+	ms->list->redirect_in[j] = quote_remover(redirect);
 	tmp = ms->list->redirect_in[j];
-    while (tmp[i] == '<' || tmp[i] == '>')
-        i++;
-    if (!tmp[i] || tmp[i] == '/')
-    {
-        print_redir_err(ms, tmp + 1, &copy[i]);
-        free(copy);
-        return (-1);
-    }
-    ms->list->redirect_in[j] = tmp;;
-	//free (tmp);
+	while (tmp[i] == '<' || tmp[i] == '>')
+		i++;
+	if (!tmp[i] || tmp[i] == '/')
+	{
+		print_redir_err(ms, tmp + 1, &copy[i]);
+		free(copy);
+		return (-1);
+	}
+	ms->list->redirect_in[j] = tmp;
 	free(copy);
-    return (0);
+	return (0);
 }
 
-
-int validate_redir_in(t_shell *ms, char *redirect, int j)//$USER
+int	validate_redir_in(t_shell *ms, char *redirect, int j)
 {
-    char *tmp;
+	char	*tmp;
 
-    if (ft_strchr(redirect, '$'))
-    {
-        if (expand_redir_in(ms, redirect, j))
-            return (set_exitcode(ms, 1));
-    }
-    else
-    {
-        tmp = redirect;
-        ms->list->redirect_in[j] = quote_remover(redirect);
-        //free(tmp);
-        if (!redirect)
-            return (set_exitcode(ms, -1));
-    }
-    return (0);
+	if (ft_strchr(redirect, '$'))
+	{
+		if (expand_redir_in(ms, redirect, j))
+			return (set_exitcode(ms, 1));
+	}
+	else
+	{
+		tmp = redirect;
+		ms->list->redirect_in[j] = quote_remover(redirect);
+		if (!redirect)
+			return (set_exitcode(ms, -1));
+	}
+	return (0);
 }

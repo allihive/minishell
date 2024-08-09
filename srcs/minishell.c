@@ -6,40 +6,44 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 11:18:57 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 12:36:41 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t g_global_signal = 0;
+volatile sig_atomic_t	g_global_signal = 0;
 
-void	init_envp(t_shell *ms, char **envp)
+int	init_envp(t_shell *ms, char **envp)
 {
-	int i;
-	// char **new;
+	int	i;
+
 	ms->envp_size = 0;
 	while (envp[ms->envp_size])
 		ms->envp_size++;
 	ms->envp = ft_calloc(ms->envp_size + 1, sizeof(char *));
 	if (!ms->envp)
-		close_and_free(ms);
+		return (1);
 	i = 0;
 	while (i < ms->envp_size)
 	{
 		ms->envp[i] = ft_strdup(envp[i]);
 		if (!ms->envp[i])
-			return ;
+		{
+			free_env(ms);
+			return (1);
+		}
 		i++;
 	}
+	return (0);
 }
 
-int add_shlvl(t_shell *ms)
+int	add_shlvl(t_shell *ms)
 {
-	int shlvl;
-	char *shlvl_str;
-	char *tmp;
-	
+	int		shlvl;
+	char	*shlvl_str;
+	char	*tmp;
+
 	shlvl_str = getenv("SHLVL");
 	if (shlvl_str == NULL || shlvl_str[0] == '\0')
 		envp_add(ms, ft_strdup("SHLVL=1"));
@@ -52,7 +56,7 @@ int add_shlvl(t_shell *ms)
 	tmp = ft_strjoin("SHLVL=", shlvl_str);
 	free(shlvl_str);
 	if (!tmp)
-		close_and_free(ms);	
+		close_and_free(ms);
 	envp_update(ms, tmp);
 	return (shlvl);
 }
@@ -60,42 +64,25 @@ int add_shlvl(t_shell *ms)
 void	initialize_shell(t_shell *ms, char **envp)
 {
 	ft_memset(ms, 0, sizeof(*ms));
-	init_envp(ms, envp);
+	if (init_envp(ms, envp) == 1)
+		return ;
 	add_shlvl(ms);
 }
 
-void execute_shell(t_shell *ms)
+void	execute_shell(t_shell *ms)
 {
-	
-	parse_process_node(&ms->list, ms); //oritginal:parse_modules(&ms->mods, ms)
-	// printf("&ms->list == ms ? %d\n", &ms->list == ms->list);
+	parse_process_node(&ms->list, ms);
 	if (!ms->list)
-	{
-		// printf("!ms->list\n");
 		exit(free_env(ms));
-	}
 	else if (pipex(ms->list, ms) == -1)
-	{
-		printf("pipex(ms->list, ms) == -1\n");
 		exit(ms->excode);
-	}
-	//printf("execute_shell::END\n");
-}
-void	quit(t_shell *ms)
-{
-	ft_putstr_fd("exit\n", 2);
-	
-	free_env(ms);
-	//close_and_free(ms);
-	//free(ms->list->command);
-	exit(0);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell ms;
-	(void)argv;
+	t_shell	ms;
 
+	(void)argv;
 	if (argc == 1)
 	{
 		initialize_shell(&ms, envp);
@@ -104,35 +91,16 @@ int	main(int argc, char **argv, char **envp)
 			set_signal();
 			ms.line = readline("lobster-shell 🦞: ");
 			if (!ms.line)
-			{
-				dprintf(2,"in !ms.line\n");
-				//error_handle(&ms);
 				quit(&ms);
-			}
 			else if (ms.line[0] != 0)
 				add_history(ms.line);
 			if (init_process_node(ms.line, &ms) == 0)
 			{
 				execute_shell(&ms);
-								
-				// int j = 0;
-				// while (ms.list->command[j])
-				// {
-					
-				// 	dprintf(1, "command[%d]: %s\n", j, ms.list->command[j]);
-				// 	j++;
-				// }	
 				free_node(&ms.list);
 				free_shell(&ms);
-				
 			}
-			// if (ms.envp)
-			// 	free_env(&ms);
 		}
-		//close_and_free(&ms);
-		//rl_clear_history();
 		return (ms.excode);
 	}
 }
-
-

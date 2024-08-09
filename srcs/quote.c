@@ -3,65 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   quote.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:49:02 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 14:31:03 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:19:19 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void init_flag(t_flags *f)
+void	init_flag(t_flags *f)
 {
 	f->in_single = -1;
 	f->in_double = -1;
 }
 
-char *remove_quote(char *str, int len)
+char	*remove_quote(char *str, int len)
 {
-	char *new_str;
-	int i;
-	int j;
-	t_flags f;
+	char	*new_str;
+	int		i;
+	int		j;
+	t_flags	f;
 
 	i = 0;
 	j = 0;
 	if (str == NULL)
-		return NULL;
+		return (NULL);
 	init_flag(&f);
 	new_str = ft_calloc(len, sizeof(char));
 	if (!new_str)
 		return (NULL);
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == '\'' && f.in_double == -1)
-			f.in_single *= -1;	
+			f.in_single *= -1;
 		else if (str[i] == '"' && f.in_single == -1)
 			f.in_double *= -1;
 		else
-			new_str[j++] = str[i];	
+			new_str[j++] = str[i];
 		i++;
 	}
-	// printf("str: %s\n", str);
-	// if (str != NULL)
-	// 	free(str);
-	//dprintf(2, "str:%s address: %p\n",str, str);
 	free(str);
-	return (new_str);	
+	return (new_str);
 }
 
-
-int count_quote(char *str)
+int	count_quote(char *str)
 {
-	int i;
-	int quote_n;
-	t_flags f;
+	int		i;
+	int		quote_n;
+	t_flags	f;
 
 	init_flag(&f);
 	i = 0;
 	quote_n = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == '\'' && f.in_double == -1)
 		{
@@ -73,15 +68,15 @@ int count_quote(char *str)
 			quote_n++;
 			f.in_double *= -1;
 		}	
-		i++;	
+		i++;
 	}
 	return (quote_n);
 }
 
-char *quote_remover(char *str)
+char	*quote_remover(char *str)
 {
-	int remove_q;
-	int len;
+	int	remove_q;
+	int	len;
 
 	remove_q = count_quote(str);
 	len = ft_strlen(str) - remove_q + 1;
@@ -92,7 +87,7 @@ void	check_quote(t_process_node *mod, char c, int i)
 {
 	if (c == '\'' || c == '"')
 	{
-		if (mod->process_mode == 0 )
+		if (mod->process_mode == 0)
 		{
 			if (c == '\'')
 			{
@@ -105,7 +100,7 @@ void	check_quote(t_process_node *mod, char c, int i)
 				mod->doublequote = i;
 			}
 		}
-		else if (c == '\''  && mod->process_mode == SINGLEQUOTE)
+		else if (c == '\'' && mod->process_mode == SINGLEQUOTE)
 			mod->process_mode = 0;
 		else if (c == '"' && mod->process_mode == DOUBLEQUOTE)
 			mod->process_mode = 0;

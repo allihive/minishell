@@ -6,15 +6,13 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:02 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 09:42:05 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 12:31:06 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int g_signal = 0; //global variable
-
-void heredoc_handler(int signum)
+void	heredoc_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -24,18 +22,17 @@ void heredoc_handler(int signum)
 	}
 }
 
-void heredoc_init(void)
+void	heredoc_init(void)
 {
-    struct sigaction sa;
-    struct sigaction sq;
+	struct sigaction	sa;
+	struct sigaction	sq;
 
-    ft_bzero(&sa, sizeof(sa));
-    ft_bzero(&sq, sizeof(sq));
-
-    sa.sa_handler = heredoc_handler;
-    sigaction(SIGINT, &sa, NULL);
-    sq.sa_handler = SIG_IGN;
-    sigaction(SIGQUIT, &sq, NULL);
+	ft_bzero(&sa, sizeof(sa));
+	ft_bzero(&sq, sizeof(sq));
+	sa.sa_handler = heredoc_handler;
+	sigaction(SIGINT, &sa, NULL);
+	sq.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sq, NULL);
 }
 
 void	sig_ctrl_c(int sig)
@@ -50,11 +47,10 @@ void	sig_ctrl_c(int sig)
 	}
 }
 
-void	set_termios(int mode) // sets ^C
+void	set_termios(int mode)
 {
-	// (void)mode;
 	struct termios	term;
-	
+
 	tcgetattr(STDIN_FILENO, &term);
 	if (mode == 2)
 		term.c_lflag |= ECHOCTL;
@@ -63,19 +59,16 @@ void	set_termios(int mode) // sets ^C
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
-
 void	set_signal(void)
 {
-	struct sigaction sa;
-	struct sigaction sb;
-	
+	struct sigaction	sa;
+	struct sigaction	sb;
+
 	ft_memset(&sa, 0, sizeof(sa));
 	set_termios(2);
 	sa.sa_handler = sig_ctrl_c;
 	sigaction(SIGINT, &sa, NULL);
-	ft_memset(&sb, 0, sizeof(sb)); /*ctrl-\*/
+	ft_memset(&sb, 0, sizeof(sb));
 	sb.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &sb, NULL); 
-
-	// have a different heredoc signal checker? 
+	sigaction(SIGQUIT, &sb, NULL);
 }
