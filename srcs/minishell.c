@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 09:41:52 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 11:18:57 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ void	init_envp(t_shell *ms, char **envp)
 	i = 0;
 	while (i < ms->envp_size)
 	{
-		// printf("initialized shell1\n");
 		ms->envp[i] = ft_strdup(envp[i]);
-		// printf("ms->envp = %s\n", ms->envp[i]);
 		if (!ms->envp[i])
-			error_handle(ms);
+			return ;
 		i++;
 	}
 }
@@ -50,16 +48,12 @@ int add_shlvl(t_shell *ms)
 		envp_update(ms, ft_strdup("SHLVL=0"));
 	shlvl_str = ft_itoa(shlvl + 1);
 	if (!shlvl_str)
-		return (1);// should be an error here
+		return (1);
 	tmp = ft_strjoin("SHLVL=", shlvl_str);
 	free(shlvl_str);
 	if (!tmp)
-	{
-		free(shlvl_str);
-		error_handle(ms);	
-	}
+		close_and_free(ms);	
 	envp_update(ms, tmp);
-	// free(tmp);
 	return (shlvl);
 }
 
@@ -68,12 +62,7 @@ void	initialize_shell(t_shell *ms, char **envp)
 	ft_memset(ms, 0, sizeof(*ms));
 	init_envp(ms, envp);
 	add_shlvl(ms);
-	// free_env(ms);
-	// return;
-	//know the pwd somehow
 }
-
-
 
 void execute_shell(t_shell *ms)
 {
@@ -110,7 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc == 1)
 	{
 		initialize_shell(&ms, envp);
-		while (true)
+		while (TRUE)
 		{
 			set_signal();
 			ms.line = readline("lobster-shell 🦞: ");

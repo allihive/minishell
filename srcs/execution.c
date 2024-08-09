@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 12:56:55 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 10:33:29 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int do_command(t_shell *ms, t_process_node *process)
     execve(process->cmd_path, process->command, ms->envp);
 	if (access(process->command[0], F_OK) == 0)
 	{
-		error_msg(process->command[0] ,0, "is a directory",126, ms);//need to fix error code
+		error_msg(process->command[0], 0, "is a directory", ms->excode = 126);//need to fix error code
 		return (-1);
 	}
 	ft_putstr_fd(process->command[0], 2);

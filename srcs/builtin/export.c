@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 09:26:42 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 11:15:40 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	envp_add(t_shell *ms, char *name)
 		close_and_free(ms);
 	new = ft_calloc((ms->envp_size + 1), sizeof(char *));
 	if (!new)
-		error_handle(ms);
+		close_and_free(ms);
 	while (i < ms->envp_size - 1 && ms->envp[i])
 	{
 		new[i] = ms->envp[i];
@@ -115,7 +115,7 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 	{
 		if (export_str_check(cmd[j]) && ms->envp[i])
 		{
-			error_msg(cmd[0], cmd[j], "not a valid identifier", 1, ms);
+			error_msg(cmd[0], cmd[j], "not a valid identifier", ms->excode = 1);
 			flag = 1;
 		}
 		if (!export_str_check(cmd[j]) && ms->envp[i])

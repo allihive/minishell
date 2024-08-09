@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 14:02:52 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 10:35:38 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ int redir_in(char *redirectin, t_shell *ms, int j)
 	if (ms->fd[0] < 0)
 	{
 		if (access(ms->list->redirect_in[j], F_OK) != 0)
-			error_msg(ms->list->redirect_in[j], 0, "No such infile or directory", 1, ms);
+			error_msg(ms->list->redirect_in[j], 0,"No such infile or directory", ms->excode = 1);
 		else
-			error_msg(ms->list->redirect_in[j], 0, "Permission denied", 1, ms);
+			error_msg(ms->list->redirect_in[j], 0, "Permission denied", ms->excode = 1);
 		ms->execute = 0;
 		return (set_exitcode(ms, -1));// need to check
 	}

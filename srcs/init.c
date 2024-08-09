@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:46:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 12:57:53 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 11:05:08 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int init_process_node(char *line, t_shell *ms)
         temp = point_end(line); 
         new = ft_calloc(1, sizeof(t_process_node));
 		if (!new)
-        	error_handle(ms);
+        	close_and_free(ms);
 		init_node(new, line, temp);
 		append_process_node(&ms->list, new);// save every command in a node and append them to a list	
 		check_syntax(new->node_line, ms);

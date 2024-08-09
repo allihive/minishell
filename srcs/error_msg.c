@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 09:41:29 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 11:05:57 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,25 @@ int	syntax_error(char *token, t_shell *ms)//error_occured need to revise only fo
 	return (1);
 }
 
-void	error_handle(t_shell *ms)
-{
-	if (!ms->envp)//hsu added for <infile
-		return ;
-	if (ms->envp)
-	{
-		ft_free_strs(ms->envp, 0, 0);
-		// free(ms);
-		if (ms->line)
-			free(ms->line);
-		exit(ms->excode);
-	}
-	// ft_printf("Readline unable to read");
-	exit(ms->excode);
-}
+// void	error_handle(t_shell *ms)
+// {
+// 	if (!ms->envp)//hsu added for <infile
+// 		return ;
+// 	if (ms->envp)
+// 	{
+// 		ft_free_strs(ms->envp, 0, 0);
+// 		// free(ms);
+// 		if (ms->line)
+// 			free(ms->line);
+// 		exit(ms->excode);
+// 	}
+// 	// ft_printf("Readline unable to read");
+// 	exit(ms->excode);
+// }
 
-void	error_msg(char *cmd, char *str, char *msg, int excode, t_shell *ms)
+void	error_msg(char *cmd, char *str, char *msg, int excode)
 {
+	(void)excode;
 	if (!ft_strncmp(cmd, "export", 6))
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -66,7 +67,6 @@ void	error_msg(char *cmd, char *str, char *msg, int excode, t_shell *ms)
 		ft_putstr_fd(msg, 2);
 		ft_putchar_fd('\n', 2);
 	}
-	ms->excode = excode; //changed the args to add exit code
 }
 
 void	heredoc_input_msg(char *str)

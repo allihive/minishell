@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:57:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/01 19:03:11 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 10:34:45 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ static char	*verify_path(char *cmd, t_shell *ms)
 		if (access(cmd, F_OK) != 0)
 		{
 			//print_error_badcmd(cmd, pipex, EXIT_CMD_NOT_FOUND);
-            error_msg(cmd, 0, "No such file or directory", 127, ms);
+            error_msg(cmd, 0, "No such file or directory", ms->excode = 127);
 			close_and_free(ms);
 		}
 		if (access(cmd, X_OK) != 0)//./infile  when no permisssion to access 0000
  		{
-            error_msg(cmd, 0, "Permission denied", 126, ms);
+            error_msg(cmd, 0, "Permission denied", ms->excode = 126);
 			close_and_free(ms);
 		}
 		return (ft_strdup(cmd));

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:55:13 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 09:28:25 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 11:16:22 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*env_exists(char *name, t_shell *ms)
 	i = 0;
 	tmp = ft_strjoin(name, "=");
 	if (!tmp)
-		error_handle(ms);
+		close_and_free(ms);
 	len = ft_strlen(tmp);
 	while (ms->envp[i] && !ft_strnstr(ms->envp[i], tmp, len))
 		i++;

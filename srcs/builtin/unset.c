@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:18:43 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 16:32:15 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 10:54:37 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ static char	*name_exists_unset(t_shell *ms, char *name)
 void	copy_new_array(char **new, char **old_envp, int i, int j)
 {
 	new[i] = old_envp[j];
-	i++;
-	j++;
+	return ;
 }
 
 void	envp_delete(t_shell *ms, char *name)
@@ -70,7 +69,7 @@ void	envp_delete(t_shell *ms, char *name)
 			j++;
 		}
 		else
-			copy_new_array(new, ms->envp, i, j);
+			copy_new_array(new, ms->envp, i++, j++);
 	}
 	free(ms->envp);
 	ms->envp = new;

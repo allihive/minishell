@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:54:59 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/07 17:13:01 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 11:06:17 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	key_exists(t_shell *ms, char *name)
 		i++;
 	key = ft_substr(name, 0, i + 1);
 	if (!key)
-		return (0); //should be error_handle
+		return (0);
 	len = ft_strlen(key);
 	i = 0;
 	while (i < ms->envp_size && ms->envp[i])

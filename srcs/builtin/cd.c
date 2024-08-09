@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:15:21 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 09:32:17 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 11:13:55 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,47 @@ void	set_pwd(t_shell *ms, char *pwd, char *oldpwd, char *cwd)
 	envp_update(ms, oldpwd);
 }
 
+void	to_home(t_shell *ms, char *cwd, char *pwd, char *oldpwd)
+{
+	char	*home;
+	char	*value;
+
+	home = env_exists("HOME", ms);
+	if (!home)
+	{
+		error_msg("cd", 0, "HOME not set", ms->excode = 1);
+		return ;
+	}
+	value = find_value(ms, "HOME");
+	if (chdir(value) == 0)
+		set_pwd(ms, pwd, oldpwd, cwd);
+	else if (chdir(value) != 0)
+	{
+		error_msg("cd", value, "No such file or directory", ms->excode = 1);
+		return ;
+	}
+}
+
 void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 {
 	char	cwd[1000];
-	char	*home;
-	char	*home_value;
+	int		cmds;
 
+	cmds = cmd_counter(cmd);
+	if (cmds > 2)
+	{
+		error_msg(cmd[0], 0, "too many arguments", ms->excode = 1);
+		return ;
+	}
 	if (getcwd(cwd, 1000) == NULL)
 		return ;
 	if (cmd[1] == NULL)
-	{
-		home = env_exists("HOME", ms);
-		if (!home)
-		{
-			error_msg(cmd[0], 0, "HOME not set", 1, ms);
-			return ;
-		}
-		home_value = find_value(ms, "HOME");
-		if (chdir(home_value) == 0)
-			set_pwd(ms, pwd, oldpwd, cwd);
-		else if (chdir(home_value) != 0)
-		{
-			error_msg(cmd[0], home_value, "No such file or directory", 1, ms);
-			return ;
-		}
-	}
+		to_home(ms, cwd, pwd, oldpwd);
 	else if (cmd[1] && chdir(cmd[1]) == 0)
 		set_pwd(ms, pwd, oldpwd, cwd);
+	else if (cmd[1] && chdir(cmd[1]) != 0)
+	{
+		error_msg(cmd[0], cmd[1], "No such file or directory", ms->excode = 1);
+		return ;
+	}
 }
