@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:58:46 by alli              #+#    #+#             */
-/*   Updated: 2024/08/06 10:21:33 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:09:08 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ void	exit_shell(t_shell *ms, char **cmd)
 {
 	if(!cmd_is_digit(cmd[1]) && cmd_counter(cmd) > 2)
 	{
-		error_msg(cmd[0], 0, "too many arguments", 2, ms);
+		error_msg(cmd[0], 0, "too many arguments", ms->excode = 2);
 		close_and_free(ms);
 	}
 	else if (!cmd_is_digit(cmd[1]) && ft_atoi(cmd[1]) == 0)
 	{
-		error_msg(cmd[0], cmd[1], "numeric arguments required", 2, ms);
+		error_msg(cmd[0], cmd[1], "numeric arguments required", ms->excode = 2);
 		close_and_free(ms);
 	}
 	else if (!ft_strncmp(cmd[0], "exit", 4) && cmd_counter(cmd) == 2 && cmd_is_digit((cmd[1])))
@@ -63,7 +63,7 @@ int	ft_exit(t_shell *ms, char **cmd)
 	{
 		if (cmd_is_digit(cmd[1]))
 		{
-			error_msg(cmd[0], 0, "too many arguments", 1, ms);
+			error_msg(cmd[0], 0, "too many arguments", ms->excode = 1);
 			return (ms->excode = 1);
 		}
 		else

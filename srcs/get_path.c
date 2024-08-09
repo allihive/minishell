@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:57:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/01 19:03:11 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:57:01 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ static char	*verify_path(char *cmd, t_shell *ms)
 		if (access(cmd, F_OK) != 0)
 		{
 			//print_error_badcmd(cmd, pipex, EXIT_CMD_NOT_FOUND);
-            error_msg(cmd, 0, "No such file or directory", 127, ms);
+            error_msg(cmd, 0, "No such file or directory", ms->excode = 127);
 			close_and_free(ms);
 		}
 		if (access(cmd, X_OK) != 0)//./infile  when no permisssion to access 0000
  		{
-            error_msg(cmd, 0, "Permission denied", 126, ms);
+            error_msg(cmd, 0, "Permission denied", ms->excode = 126);
 			close_and_free(ms);
 		}
 		return (ft_strdup(cmd));
@@ -58,27 +58,6 @@ static char	**get_env_paths(char **envp, t_shell *ms)
 		print_error_and_free("minishell: malloc error", ms);
 	return (env_paths);
 }
-
-
-// static void	init_envp_path(char **envp, t_shell *ms)
-// {
-// 	char	**arr;
-
-// 	//dprintf(2, "envp[0]:%s\n", envp[0]);
-// 	//dprintf(2, "envp[1]:%s\n", envp[1]);
-// 	if (*envp == NULL)
-// 	{
-// 		arr = ft_split("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin", ':');
-// 		if (arr == NULL)
-// 			perror("error malloc");
-//             //print_error("error malloc", pipex, EXIT_FAILURE);
-// 		ms->envp_paths = arr;
-// 	}
-// 	else
-// 	{
-// 		ms->envp_paths = get_env_paths(envp, ms);
-// 	}
-// }
 
 int get_the_path(t_process_node *process, t_shell *ms, char	*command_path, int i)
 {

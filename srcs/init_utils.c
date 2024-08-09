@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:59:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 11:04:48 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:56:22 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int count_cmd(t_process_node *list)
 	n = 0;
 	while (list)
 	{
-		//dprintf(2,"list->node_line;%s\n", list->node_line );
 		list = list->next;
 		n++;
 	}

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 16:44:26 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:56:48 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,19 @@ volatile sig_atomic_t global_signal = 0;
 void	init_envp(t_shell *ms, char **envp)
 {
 	int i;
-	// char **new;
+
 	ms->envp_size = 0;
 	while (envp[ms->envp_size])
 		ms->envp_size++;
 	ms->envp = ft_calloc(ms->envp_size + 1, sizeof(char *));
 	if (!ms->envp)
-		error_handle(ms);
+		error_handle(ms,0);
 	i = 0;
 	while (i < ms->envp_size)
 	{
-		// printf("initialized shell1\n");
 		ms->envp[i] = ft_strdup(envp[i]);
-		// printf("ms->envp = %s\n", ms->envp[i]);
 		if (!ms->envp[i])
-			error_handle(ms);
+			error_handle(ms,0);
 		i++;
 	}
 }
@@ -56,10 +54,9 @@ int add_shlvl(t_shell *ms)//create the export function
 	if (!tmp)
 	{
 		free(shlvl_str);
-		error_handle(ms);	
+		error_handle(ms,0);	
 	}
 	envp_update(ms, tmp);
-	// free(tmp);
 	return (shlvl);
 }
 
@@ -71,9 +68,6 @@ void	initialize_shell(t_shell *ms, char **envp)
 	ft_memset(ms, 0, sizeof(*ms));
 	init_envp(ms, envp);
 	add_shlvl(ms);
-	// free_env(ms);
-	// return;
-	//know the pwd somehow
 }
 
 void execute_shell(t_shell *ms)

@@ -46,7 +46,7 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 		home = env_exists("HOME", ms);
 		if (!home)
 		{
-			error_msg(cmd[0], 0, "HOME not set", 1, ms);
+			error_msg(cmd[0], 0, "HOME not set", ms->excode = 1);
 			return ;//don't exit remain in shell
 		}
 		home_value = find_value(ms, "HOME");
@@ -54,7 +54,7 @@ void	cd(t_shell *ms, char **cmd, char *pwd, char *oldpwd)
 			set_pwd(ms, pwd, oldpwd, cwd);
 		else if(chdir(home_value) != 0) //home has something that is not correct
 		{
-			error_msg(cmd[0], home_value, "No such file or directory", 1, ms);
+			error_msg(cmd[0], home_value, "No such file or directory", ms->excode = 1);
 			return ;
 		}
 	}

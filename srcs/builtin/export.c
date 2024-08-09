@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:56:47 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 17:32:30 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:14:47 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char *env_exists(char *name, t_shell *ms)
 	i = 0;
 	tmp = ft_strjoin(name, "=");
 	if (!tmp)
-		error_handle(ms);
+		error_handle(ms,0);
 	len = ft_strlen(tmp);
 	while (ms->envp[i] && !ft_strnstr(ms->envp[i], tmp, len))//make sure the string is not there.
 		i++;
@@ -143,12 +143,11 @@ void envp_add(t_shell *ms, char *name) //working but leaking
 		close_and_free(ms); //should be some type of error close and free?
 	new = ft_calloc((ms->envp_size + 1), sizeof(char *));//check how big this should be
 	if (!new)
-		error_handle(ms);
+		error_handle(ms,0);
 	// new = ms->envp;// ft_free_strs(ms->envp, 0, 0);
 	// free_env(ms);
 	// 	ft_free_strs(ms->envp, 0, 0);
-	 while (i < ms->envp_size - 1 && ms->envp[i])
-	//while (i < ms->envp_size - 1) //&& ms->envp[i]
+	while (i < ms->envp_size - 1 && ms->envp[i])
 	{
 		// new[i] = add_to_end_of_list(ms, new[i], name, i, j);
 		new[i] = ms->envp[i];
@@ -230,7 +229,7 @@ int	ft_export(t_shell *ms, char **cmd, int fd)
 		// printf("cmd[%d] %s\n", j, cmd[j]);
 		if(export_str_check(cmd[j]) && ms->envp[i])
 		{
-			error_msg(cmd[0], cmd[j], "not a valid identifier", 1, ms);
+			error_msg(cmd[0], cmd[j], "not a valid identifier", ms->excode = 1);
 			flag = 1;
 		}
 		if (!export_str_check(cmd[j]) && ms->envp[i])

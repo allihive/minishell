@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 18:03:18 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:56:10 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,7 @@ static char	*expand_str(int start, char *cmd, t_shell *ms, int i)
 	while (cmd[i] == '_' || ft_isalnum(cmd[i]))
 		i++;
 	result = get_value(start, i - start, cmd, ms);
-
 	return (result);
-
 }
 
 char	*if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod )
@@ -87,9 +85,9 @@ char	*if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod )
 	{
 		result = expand_str(start, cmd, ms, i);
 		
-		// while (cmd[i] == '_' || ft_isalnum(cmd[i]))
-		// 	i++;
-		// result = get_value(start, i - start, cmd, ms);
+	// 	while (cmd[i] == '_' || ft_isalnum(cmd[i]))
+	// 		i++;
+	// 	result = get_value(start, i - start, cmd, ms);
 	}
 	else if (cmd[i] == '"' || (cmd[i] == '\''
 			&& mod->process_mode != DOUBLEQUOTE))

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 12:56:55 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 12:22:50 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void do_dups(t_shell *ms)
 {
-    close(ms->read_end);
+    if (ms->read_end >= 0)
+		close(ms->read_end);
 	ms->read_end = -1;
     dup2(ms->fd[0], 0);// stdinput
     dup2(ms->fd[1], 1);//stdoutput
-    close(ms->fd[0]);
+    if (ms->fd[0] >= 0)
+		close(ms->fd[0]);
 	ms->fd[0] = -1;
-    close(ms->fd[1]);
+    if (ms->fd[1] >= 0)
+		close(ms->fd[1]);
 	ms->fd[1] = -1;
 }
 
@@ -36,7 +39,7 @@ int do_command(t_shell *ms, t_process_node *process)
     execve(process->cmd_path, process->command, ms->envp);
 	if (access(process->command[0], F_OK) == 0)
 	{
-		error_msg(process->command[0] ,0, "is a directory",126, ms);//need to fix error code
+		error_msg(process->command[0], 0, "is a directory", ms->excode = 126);//need to fix error code
 		return (-1);
 	}
 	ft_putstr_fd(process->command[0], 2);

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:46:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 12:57:53 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 13:43:47 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int init_process_node(char *line, t_shell *ms)
 	char *temp;
     
 	if (!line || !*line || check_syntax(ms->line, ms) || empty_prompt(line))
-        return (set_exitcode(ms, -1));
+        return (1);
 	while (*line)
     {
 		while (ifisspace(*line))
@@ -102,7 +102,7 @@ int init_process_node(char *line, t_shell *ms)
         temp = point_end(line); 
         new = ft_calloc(1, sizeof(t_process_node));
 		if (!new)
-        	error_handle(ms);
+        	error_handle(ms, line);
 		init_node(new, line, temp);
 		append_process_node(&ms->list, new);// save every command in a node and append them to a list	
 		check_syntax(new->node_line, ms);
