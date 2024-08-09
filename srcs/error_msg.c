@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 14:30:06 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 09:41:29 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	heredoc_input_msg(char *str)
 	ft_putstr_fd("(wanted '", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("')\n", 2);
-	global_signal = 0;
+	g_global_signal = 0;
 }
 
 void	cmd_not_found(char *str, t_shell *ms)

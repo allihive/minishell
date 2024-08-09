@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:50:02 by alli              #+#    #+#             */
-/*   Updated: 2024/07/31 13:56:12 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 09:42:05 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void heredoc_handler(int signum)
 	{
 		write (1, "\n", 1);
 		close (STDIN_FILENO);
-		global_signal = 2;
+		g_global_signal = 2;
 	}
 }
 
@@ -42,7 +42,7 @@ void	sig_ctrl_c(int sig)
 {
 	if (sig == SIGINT)
 	{
-		global_signal = sig;
+		g_global_signal = sig;
 		write (1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);

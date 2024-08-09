@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 16:35:35 by alli              #+#    #+#             */
-/*   Updated: 2024/05/20 16:37:16 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:16:49 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	ft_skipws(char *str)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\t'|| str[i] == '\r' || str[i] == '\n'
+		if (str[i] == '\t' || str[i] == '\r' || str[i] == '\n'
 			|| str[i] == ' ' || str[i] == '\v' || str[i] == '\f')
 			i++;
 		else

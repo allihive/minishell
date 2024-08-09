@@ -6,16 +6,16 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 15:23:17 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 08:07:31 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 09:28:10 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	void write_env(char *str,  int fd)
+static	void	write_env(char *str, int fd)
 {
-	int j;
-	
+	int	j;
+
 	j = 0;
 	ft_putstr_fd("declare -x ", fd);
 	while (str[j] != '=' && str[j] != '\0')
@@ -32,14 +32,14 @@ static	void write_env(char *str,  int fd)
 			ft_putchar_fd(str[j], fd);
 			j++;
 		}
-	ft_putstr_fd("\"\n", fd);
+		ft_putstr_fd("\"\n", fd);
 	}
 }
 
 static void	print_ascii_order(t_shell *ms, char letter, int fd)
 {
 	int		i;
-	char **tmp;
+	char	**tmp;
 
 	i = 0;
 	tmp = ms->envp;
@@ -53,12 +53,11 @@ static void	print_ascii_order(t_shell *ms, char letter, int fd)
 	}
 }
 
-
 void	envp_print(t_shell *ms, int fd)
 {
-	int		i;
-	int		j;
-	int 	letter;
+	int	i;
+	int	j;
+	int	letter;
 
 	i = 0;
 	j = 0;

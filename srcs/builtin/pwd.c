@@ -6,19 +6,18 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 09:25:55 by alli              #+#    #+#             */
-/*   Updated: 2024/08/06 10:22:42 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:20:49 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	pwd(t_shell *ms, char **cmd, int fd) // which one?
+void	pwd(t_shell *ms, char **cmd, int fd)
 {
 	char	*str;
 	char	buf[1000];
-	
-	(void)cmd;
 
+	(void)cmd;
 	str = getcwd(buf, 1000);
 	if (str)
 	{

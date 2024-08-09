@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 13:35:43 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 08:05:28 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 09:30:30 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	echo(t_shell *ms, char **output, int fd)
 		while (ft_charncmp(output[i]))
 		{
 			if (output[i + 1] == NULL)
-				return;
+				return ;
 			j = 1;
 			i++;
 		}
@@ -52,9 +52,9 @@ void	echo(t_shell *ms, char **output, int fd)
 		ft_putstr_fd(output[i], fd);
 		if (output[i + 1] == NULL && j == 0)
 			ft_putchar_fd('\n', fd);
-		else if(output[i + 1] != NULL)
+		else if (output[i + 1] != NULL)
 			ft_putchar_fd(' ', fd);
 		i++;
 	}
-	ms->excode  = 0;
+	ms->excode = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 15:41:14 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 09:41:43 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	output_heredoc(char *line, char *delimiter, int	stdin_backup, int heredoc_fd
 {
 	if (line == NULL)
 	{
-		if (global_signal == 2)
+		if (g_global_signal == 2)
 		{
 			dup2(stdin_backup, STDIN_FILENO);
-			global_signal = 0;
+			g_global_signal = 0;
 			return (0);
 		}
 		heredoc_input_msg(delimiter);
@@ -67,7 +67,7 @@ void get_heredoc_input(int heredoc_fd, t_process_node *process)
 		write (heredoc_fd, "\n", 1);
     }
 	dup2(stdin_backup, STDIN_FILENO);
-	global_signal = 0;
+	g_global_signal = 0;
 	return;
 }
 

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/08 16:05:10 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/08 16:11:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,6 @@ char *remove_dollar_sign(char *cmd, int dollar, int amount)//(cmd, key - 1, 1);
 	}
 	cmd[dollar + i] = '\0';
 	return (cmd);
-}
-char	*echo_exit_code(t_shell *ms)
-{
-	char *exit_code;
-
-	exit_code = ft_itoa(ms->excode);
-	if (!exit_code)
-		return (NULL);
-	// ft_putstr_fd(exit_code, 1);
-	return (exit_code);
 }
 
 char *echo_digit(char *cmd, t_shell *ms, int i)

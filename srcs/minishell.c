@@ -6,13 +6,13 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/08 16:05:39 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/09 09:41:52 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t global_signal = 0;
+volatile sig_atomic_t g_global_signal = 0;
 
 void	init_envp(t_shell *ms, char **envp)
 {
