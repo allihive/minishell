@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 14:16:57 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 16:02:18 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	main(int argc, char **argv, char **envp)
 				free_node(&ms.list);
 				free_shell(&ms);
 			}
+			
 		}
 		return (ms.excode);
 	}

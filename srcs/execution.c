@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:21:42 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 10:30:25 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,20 @@
 
 void do_dups(t_shell *ms)
 {
-    if (ms->read_end >= 0)
+	// printf("do_dups executed\n");
+	// printf("ms->fd[0] == STDIN ? %d\n", STDIN_FILENO == ms->fd[0]);
+	// printf("ms->fd[1] == STDOUT ? %d\n", STDOUT_FILENO == ms->fd[1]);
+    //if (ms->read_end >= 0)
 		close(ms->read_end);
-	ms->read_end = -1;
+	//ms->read_end = -1;
     dup2(ms->fd[0], 0);// stdinput
     dup2(ms->fd[1], 1);//stdoutput
-    if (ms->fd[0] >= 0)
+   // if (ms->fd[0] >= 0)
 		close(ms->fd[0]);
-	ms->fd[0] = -1;
-    if (ms->fd[1] >= 0)
+	//ms->fd[0] = -1;
+    //if (ms->fd[1] >= 0)
 		close(ms->fd[1]);
-	ms->fd[1] = -1;
+	//ms->fd[1] = -1;
 }
 
 
@@ -57,7 +60,8 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
     }
     else //create child process
     {
-        ms->pids[ms->count] = fork();
+       
+		ms->pids[ms->count] = fork();
         if (ms->pids[ms->count] < 0)
         {
             ft_putstr_fd("shell: error: fork failed\n", 2);
@@ -66,8 +70,12 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
         if (ms->pids[ms->count] == 0)
         {
             if (do_command(ms, process))
+			{
+				
             	return (-1);
+			}
         }
+		
     }
    return (ms->excode); 
 }

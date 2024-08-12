@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:28 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 11:46:53 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 10:30:35 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ int first_child(char *input, t_process_node *process, t_shell *ms)
 		return (set_exitcode(ms, -1));
     }
     ms->read_end = dup(ms->fd[0]);    
-    if (ms->fd[0] >= 0)
+    //if (ms->fd[0] >= 0)
 		close(ms->fd[0]);
-	ms->fd[0] = -1;
+	//ms->fd[0] = -1;
+
+	
     return (go_check_redirect(input, process, ms));    
 }
 
@@ -45,16 +47,20 @@ int middle_child(char *input, t_process_node *process, t_shell *ms)
     dup2(ms->fd[0], ms->read_end);
     dup2( tmp_fd, ms->fd[0]);// use fd[0] to open the file which opened by tmp_fd 
     close(tmp_fd);
+
     return (go_check_redirect(input, process, ms));
 }
 
 int last_child(char *input,t_process_node *process, t_shell *ms)
 {
-    dup2(ms->read_end, ms->fd[0]);
-    if (ms->read_end >= 0)
+    
+	dup2(ms->read_end, ms->fd[0]);
+    //if (ms->read_end >= 0)
 		close(ms->read_end);
-	ms->read_end = -1;
+	//ms->read_end = -1;
     ms->fd[1] = dup(1);
+
+
     return (go_check_redirect(input, process, ms));
 }
 

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:13:58 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/09 19:13:12 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,21 +94,26 @@ void free_shell(t_shell *ms)//free ms
 
 int close_and_free(t_shell *ms)
 {
-	if (ms->fd[0] >= 0)
-	{
-		close(ms->fd[0]);
-		ms->fd[0] = -1;
-	}
-	if (ms->fd[1] >= 0)
-	{
-		close(ms->fd[1]);
-		ms->fd[1] = -1;
-	}
-	if (ms->read_end >= 0)
-	{
-		close(ms->read_end);
-		ms->read_end = -1;
-	}
+	// if (ms->fd[0] >= 0)
+	// {
+	// 	close(ms->fd[0]);
+	// 	ms->fd[0] = -1;
+	// }
+	// if (ms->fd[1] >= 0)
+	// {
+	// 	close(ms->fd[1]);
+	// 	ms->fd[1] = -1;
+	// }
+	// if (ms->read_end >= 0)
+	// {
+	// 	close(ms->read_end);
+	// 	ms->read_end = -1;
+	// }
+	close(ms->fd[0]);
+	close(ms->fd[1]);
+	close(ms->read_end);
+
+	
 	free_node(&ms->list);
 	if (ms->envp)
 			free_env(ms);
