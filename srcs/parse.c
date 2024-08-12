@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:17:24 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 13:22:02 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	check_dollar(char **command, t_process_node *mod, t_shell *ms)
 	tmp = command;
 	while (command[i])
 	{
+		
 		j = 0;
 		while (command[i][j])
 		{
@@ -86,13 +87,16 @@ void	parse_mod(char *input, t_process_node *mod, t_shell *ms)
 {
 	char	*command;
 	char	*start;
+	// int		i = 0;
 
 	start = input;
+	//check_quote(mod, start[i], i); check if string in quotes
 	while (*start && !ifisredirect(*start))
 		start++;
 	command = ft_substr(input, 0, (start - input));
 	mod->command = get_cmd_arr(command, ms);
 	free(command);
+	// printf("command in parse mod: %s\n", command);
 	if (is_builtin(mod->command[0]))
 		mod->builtin = 1;
 	check_dollar(mod->command, mod, ms);

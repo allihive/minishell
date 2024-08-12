@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:46:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:14:52 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 15:48:58 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	check_syntax(char *line, t_shell *ms)
 		return (syntax_error("`\''", ms));
 	else if (quote == DOUBLEQUOTE)
 		return (syntax_error("`\"'", ms));
+	//after we find that there are quotes and they are closed skip the rest of this
 	if (invalid_redirect(line, '>'))
 		return (syntax_error("`>'", ms));
 	else if (invalid_redirect(line, '<'))
@@ -88,6 +89,7 @@ int	init_process_node(char *line, t_shell *ms)
 	t_process_node	*new;
 	char			*temp;
 
+	// printf("line in init_process_node: %s\n", line);
 	if (!line || !*line || check_syntax(ms->line, ms) || empty_prompt(line))
         return (1);
 	while (*line)

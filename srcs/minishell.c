@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 16:02:18 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 11:06:41 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	add_shlvl(t_shell *ms)
 	tmp = ft_strjoin("SHLVL=", shlvl_str);
 	free(shlvl_str);
 	if (!tmp)
-		close_and_free(ms);
+		free_env(ms);
 	envp_update(ms, tmp);
 	return (shlvl);
 }

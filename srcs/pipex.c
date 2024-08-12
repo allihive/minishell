@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/12 10:29:41 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 15:48:55 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	check_cmd(char *str)
 
 int	pipex(t_process_node *process, t_shell *ms)
 {
+	// printf("process->node-line in pipex: %s\n", process->node_line);
 	while(ms->count < ms->fork_n)   
     {
         while (ifisspace(*process->node_line))

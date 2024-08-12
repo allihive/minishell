@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils_in.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:07:06 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 14:18:32 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 16:09:50 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	expand_redir_in(t_shell *ms, char *redirect, int j)
 	return (0);
 }
 
-int	validate_redir_in(t_shell *ms, char *redirect, int j)
+int	validate_redir_in(t_process_node *mod, t_shell *ms, char *redirect, int j)
 {
 	char	*tmp;
 
@@ -65,7 +65,7 @@ int	validate_redir_in(t_shell *ms, char *redirect, int j)
 	else
 	{
 		tmp = redirect;
-		ms->list->redirect_in[j] = quote_remover(redirect);
+		mod->redirect_in[j] = quote_remover(redirect);
 		if (!redirect)
 			return (set_exitcode(ms, -1));
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/12 10:30:25 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 13:25:30 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,13 @@ int do_command(t_shell *ms, t_process_node *process)
 
 int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流程，包括處理內建命令和創建子進程
 {
-    if (ms->fork_n == 1 && process->builtin )
+    if (ms->fork_n == 1 && process->builtin)
     {
         if (do_command(ms, process) == -1)
             return (-1);
     }
     else //create child process
     {
-       
 		ms->pids[ms->count] = fork();
         if (ms->pids[ms->count] < 0)
         {
@@ -72,11 +71,11 @@ int do_process(t_process_node *process, t_shell *ms)//處理命令的執行流�
             if (do_command(ms, process))
 			{
 				
-            	return (-1);
+				return (-1);
 			}
-        }
+		}
 		
-    }
-   return (ms->excode); 
+	}
+	return (ms->excode);
 }
 

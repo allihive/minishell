@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:11:15 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 13:11:57 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/12 16:06:52 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	expand_redir_append(t_shell *ms, char *redirect, int j)
 	return (0);
 }
 
-int	validate_redir_append(t_shell *ms, char *redirect, int j)
+int	validate_redir_append(t_process_node *mod, t_shell *ms, char *redirect, int j)
 {
 	char	*tmp;
 
@@ -49,10 +49,10 @@ int	validate_redir_append(t_shell *ms, char *redirect, int j)
 	}
 	else
 	{
-		tmp = redirect;
-		ms->list->append_s[j] = quote_remover(redirect);
+		tmp = quote_remover(redirect);
 		if (!redirect)
 			return (set_exitcode(ms, -1));
+		mod->append_s[j] = tmp;
 	}
 	return (0);
 }

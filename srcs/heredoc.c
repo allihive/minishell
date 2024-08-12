@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:14:10 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 10:37:29 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,9 @@ int handle_heredocs(char *redirect, t_process_node *process,t_shell *ms)
         perror("open .heredoc failed");
         return(set_exitcode(ms, 1)); 
     }   
-    if (ms->fd[0] >= 0)
+    // if (ms->fd[0] >= 0)
 		close(ms->fd[0]);
-	ms->fd[0] = -1;
+	// ms->fd[0] = -1;
     open_close_heredoc(heredoc_name, process, ms);
     unlink(heredoc_name);
     //free(heredoc_name);

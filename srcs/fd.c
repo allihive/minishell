@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:28 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/12 10:30:35 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 14:37:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int middle_child(char *input, t_process_node *process, t_shell *ms)
     }
     tmp_fd = dup(ms->read_end);
     dup2(ms->fd[0], ms->read_end);
-    dup2( tmp_fd, ms->fd[0]);// use fd[0] to open the file which opened by tmp_fd 
+    dup2(tmp_fd, ms->fd[0]);// use fd[0] to open the file which opened by tmp_fd 
     close(tmp_fd);
 
     return (go_check_redirect(input, process, ms));
@@ -68,6 +68,7 @@ int get_fd(char *input, t_process_node *process, t_shell *ms)
 {
     if (ms->fork_n == 1)//command == 1
     { 
+		
 		return (go_check_redirect(input, process, ms));
     }
 	if (ms->count == 0)

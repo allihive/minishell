@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 13:03:02 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/12 15:54:55 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*check_redirect_append(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	mod->append_s[i] = ft_substr(redirect, 0, end - redirect);
 	mod->append_s[i] = check_if_quote(mod->append_s[i]);
-	redir_append(mod->append_s[i], ms, i);
+	redir_append(mod->append_s[i], mod, ms, i);
 	while (mod->append_s[i])
 		i++;
 	return (redirect);
@@ -64,7 +64,7 @@ char	*check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
 	mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
-	redir_in(mod->redirect_in[j], ms, j);
+	redir_in(mod->redirect_in[j], mod, ms, j);
 	while (mod->redirect_in[j])
 		j++;
 	return (redirect);
@@ -76,16 +76,20 @@ char	*check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 		int		i;
 
 	i = 0;
+	// printf("1 check_redirect_out redirect: %s\n", redirect);
 	while (ifisredirect(*redirect) || ifisspace(*redirect))
 		redirect++;
 	end = redirect;
 	while (*end && !ifisredirect(*end) && *end != ' ')
 		end++;
+	
 	if (mod->redirect_out == NULL)
 	{
+		// printf("entered null in check_redirect_out\n");
 		mod->redirect_out = malloc(sizeof(char *) * 100);
 		if (mod->redirect_out == NULL)
 		{
+			// printf("malloc failed in check_redir\n");
 			perror("redirect out malloc"); //yunchia use adifferent function
 			return (NULL);
 		}
@@ -93,9 +97,12 @@ char	*check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
 	mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
-	redir_out(mod->redirect_out[i], ms, i);
+	//printf("check_redir %p\n", ms->list->redirect_out);
+	//redir_out(mod->redirect_out[i], ms, i);
+	redir_out(mod->redirect_out[i], mod, ms, i);
 	while (mod->redirect_out[i])
 		i++;
+	// printf("2 check_redirect_out redirect: %s\n", redirect);
 	return (redirect);
 }
 

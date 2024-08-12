@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:40:11 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 13:55:50 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 11:18:33 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ _Bool	is_builtin(char *cmd)
 		return (1);
 	if (ft_strncmp(cmd, "cd\0", 3) == 0)
 		return (1);
-	if (cmd[0] == 'p' || cmd[0] == 'P')
-		return (check_case(cmd, "pwd\0"));//check both small or capitalized letters
-	if (cmd[0] == 'e' || cmd[0] == 'E')
-	{
-		if (check_case(cmd, "env\0")
-			|| check_case(cmd, "echo\0"))
-			return (1);
-	}
+	// if (cmd[0] == 'p' || cmd[0] == 'P')
+	// 	return (check_case(cmd, "pwd\0"));//check both small or capitalized letters
+	// if (cmd[0] == 'e' || cmd[0] == 'E')
+	// {
+	// 	if (check_case(cmd, "env\0")
+	// 		|| check_case(cmd, "echo\0"))
+	// 		return (1);
+	// }
 	return (0);
 }
 

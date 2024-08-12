@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:40:24 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 13:11:56 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 13:14:48 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,9 @@ char	**get_cmd_arr(char *command, t_shell *ms)
 	cmd_arr = ft_split_pipex(command, " ");
 	if (cmd_arr == NULL)
 	{
-		perror("maloc error");
+		perror("malloc error");
 		close_and_free(ms);
 	}
-	
 	// ms->list->command = cmd_arr;
 	// free(cmd_arr);
 	// return (ms->list->command);
