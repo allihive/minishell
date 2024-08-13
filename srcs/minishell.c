@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/12 11:06:41 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:13:38 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ int	main(int argc, char **argv, char **envp)
 				free_node(&ms.list);
 				free_shell(&ms);
 			}
-			
 		}
 		return (ms.excode);
 	}

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:40:24 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/12 13:14:48 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:42:16 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,7 @@ static char	**write_arr(char **arr, char *str, char *charset)
 				len++;
 			arr[word] = malloc(sizeof(char) * (len + 1));
 			if (arr[word] == NULL)
-			{
-				// while (--word)
-				// 	free(arr[word]);
 				return (NULL);
-			}
 			arr[word] = write_word(arr[word], str + i, charset);
 			i += len;
 			len = 0;
@@ -91,53 +87,23 @@ static char	**ft_split_pipex(char *str, char *charset)
 	int		word;
 
 	word = count_word(str, charset);
-	
 	arr = (char **)malloc((word + 1) * sizeof(char *));
 	if (arr == NULL)
 		return (NULL);
 	arr = write_arr(arr, str, charset);
-	// if (arr == NULL)
-	// 	return (NULL);
 	arr[word] = NULL;
 	return (arr);
 }
 
-//char	**get_cmd_arr(char *command, t_process_node *mod)
 char	**get_cmd_arr(char *command, t_shell *ms)
 {
 	char	**cmd_arr;
 
-	
 	cmd_arr = ft_split_pipex(command, " ");
 	if (cmd_arr == NULL)
 	{
 		perror("malloc error");
 		close_and_free(ms);
 	}
-	// ms->list->command = cmd_arr;
-	// free(cmd_arr);
-	// return (ms->list->command);
-
-
 	return (cmd_arr);
 }
-
-// void get_cmd_arr(char *command, t_shell *ms)
-// {
-// 	char	**cmd_arr;
-
-	
-// 	cmd_arr = ft_split_pipex(command, " ");
-// 	if (cmd_arr == NULL)
-// 	{
-// 		perror("maloc error");
-// 		close_and_free(ms);
-// 	}
-	
-// 	ms->list->command = cmd_arr;
-// 	free(cmd_arr);
-// 	// return (ms->list->command);
-
-
-// 	//return (cmd_arr);
-// }

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 14:58:20 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/12 15:48:55 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:13:03 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,22 @@ int	check_cmd(char *str)
 
 int	pipex(t_process_node *process, t_shell *ms)
 {
-	// printf("process->node-line in pipex: %s\n", process->node_line);
-	while(ms->count < ms->fork_n)   
-    {
-        while (ifisspace(*process->node_line))
+	while (ms->count < ms->fork_n)
+	{
+		while (ifisspace(*process->node_line))
 			(process->node_line)++;
 		if (get_fd(process->node_line, process, ms) == -1)
-            return (close_and_free(ms));//redirection  
-        if (do_process(process, ms) == -1 || ms->pids[ms->count] == 0)
-            return (close_and_free(ms));
-		//if (ms->fd[0] >= 0)
-        	close(ms->fd[0]);
-		//ms->fd[0] = -1;
-        //if (ms->fd[1] >= 0)
-			close(ms->fd[1]);
-		//ms->fd[1] = -1;
-        ms->count++;
-        if (process->next)
-        {
-            process = process->next;//to next node
-        }
-    }
-    wait_children(ms, ms->pids, (ms->fork_n + 1));
-    return (ms->excode);
+			return (close_and_free(ms));
+		if (do_process(process, ms) == -1)
+			return (close_and_free(ms));
+		if (ms->pids[ms->count] == 0)
+			return (close_and_free(ms));
+		close(ms->fd[0]);
+		close(ms->fd[1]);
+		ms->count++;
+		if (process->next)
+			process = process->next;
+	}
+	wait_children(ms, ms->pids, (ms->fork_n + 1));
+	return (ms->excode);
 }

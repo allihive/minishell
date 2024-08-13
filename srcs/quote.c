@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:49:02 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/12 15:48:51 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:12:00 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ char	*remove_quote(char *str, int len)
 			new_str[j++] = str[i];
 		i++;
 	}
-	// printf("str in remove_quote: %s\n", str);
 	free(str);
-	// printf("str in remove_quote: %s\n", new_str);
 	return (new_str);
 }
 
@@ -80,7 +78,6 @@ char	*quote_remover(char *str)
 	int	remove_q;
 	int	len;
 
-	// printf("str in quote remover: %s\n", str);
 	remove_q = count_quote(str);
 	len = ft_strlen(str) - remove_q + 1;
 	return (remove_quote(str, len));

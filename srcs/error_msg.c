@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 14:13:33 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 14:11:11 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,48 +23,36 @@ int	syntax_error(char *token, t_shell *ms)
 	{
 		ft_putstr_fd("syntax error near unexpected token\n", 2);
 		ms->excode = 2;
-	}		
-	//ms->excode = 258;
+	}
 	return (1);
 }
 
-void	error_handle(t_shell *ms, char *line)
+void	error_msg(char *cmd, char *str, char *msg, int excode)
 {
-	if (line)
-		free (line);
-	free_node(&ms->list);
-	if (ms->envp)
-		free_env(ms);
-	exit(ms->excode);
-}
-
-
-void    error_msg(char *cmd, char *str, char *msg, int excode)
-{
-    (void)excode;
-    if (!ft_strncmp(cmd, "export", 6))
-    {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(cmd, 2);
-        ft_putstr_fd(": ", 2);
-        ft_putchar_fd('\'', 2);
-        ft_putstr_fd(str, 2);
-        ft_putchar_fd('\'', 2);
-        ft_putstr_fd(": ", 2);
-        ft_putstr_fd(msg, 2);
-        ft_putchar_fd('\n', 2);
-    }
-    else
-    {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(cmd, 2);
-        ft_putstr_fd(": ", 2);
-        ft_putstr_fd(str, 2);
-        if (str)
-            ft_putstr_fd(": ", 2);
-        ft_putstr_fd(msg, 2);
-        ft_putchar_fd('\n', 2);
-    }
+	(void)excode;
+	if (!ft_strncmp(cmd, "export", 6))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putchar_fd('\'', 2);
+		ft_putstr_fd(str, 2);
+		ft_putchar_fd('\'', 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(msg, 2);
+		ft_putchar_fd('\n', 2);
+	}
+	else
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(str, 2);
+		if (str)
+			ft_putstr_fd(": ", 2);
+		ft_putstr_fd(msg, 2);
+		ft_putchar_fd('\n', 2);
+	}
 }
 
 void	heredoc_input_msg(char *str)

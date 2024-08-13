@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/12 16:07:49 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:51:42 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ void	heredoc_input_msg(char *str);
 void	free_single(char **str);
 void	free_double(char **arr);
 void	free_node(t_process_node **lst);
+void	free_lst_cmd(t_process_node **list);
 void	free_shell(t_shell *ms);
 int		close_and_free(t_shell *ms);
 int		free_env(t_shell *ms);

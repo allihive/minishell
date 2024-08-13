@@ -22,7 +22,7 @@ else ifeq ($(UNAME_S), Linux)
 endif
 
 SRCS = ${addprefix srcs/, error_msg.c minishell.c signals.c\
-	 		parse.c expand.c free.c builtin_utils.c pipex.c execution.c redirects.c\
+	 		parse.c expand.c free.c free_utils.c builtin_utils.c pipex.c execution.c redirects.c\
 	 		redirects_utils.c fd.c heredoc.c redirect_utils_in.c redirect_utils_out.c check_utils.c\
 	 		get_cmd.c init.c init_utils.c get_path.c redirect_utils_append.c quote.c expand_utils.c\
 			utils.c\
