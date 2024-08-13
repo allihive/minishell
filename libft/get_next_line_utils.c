@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 08:58:52 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 12:16:48 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 09:05:05 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,3 @@ void	*ft_zeromalloc(size_t count, size_t size)
 	}
 	return (str);
 }
-

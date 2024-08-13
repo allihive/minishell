@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:40:24 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 13:17:41 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 15:08:13 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,7 @@ static char	**write_arr(char **arr, char *str, char *charset)
 				len++;
 			arr[word] = malloc(sizeof(char) * (len + 1));
 			if (arr[word] == NULL)
-			{
-				// while (--word)
-				// 	free(arr[word]);
 				return (NULL);
-			}
 			arr[word] = write_word(arr[word], str + i, charset);
 
 			//dprintf(2,"arr[%d]:%s\n", word,  arr[word]);
@@ -97,39 +93,23 @@ static char	**ft_split_pipex(char *str, char *charset)
 	int		word;
 
 	word = count_word(str, charset);
-	
 	arr = (char **)malloc((word + 1) * sizeof(char *));
 	if (arr == NULL)
 		return (NULL);
 	arr = write_arr(arr, str, charset);
-	
 	arr[word] = NULL;
-	
-	// int i = 0;
-	// while (arr[i])
-	// {
-	// 	dprintf(2, "arr[i]: %s\n", arr[i]);
-	// 	i++;
-	// }
-
-
-
-	
 	return (arr);
 }
 
-//char	**get_cmd_arr(char *command, t_process_node *mod)
 char	**get_cmd_arr(char *command, t_shell *ms)
 {
 	char	**cmd_arr;
 
-	
 	cmd_arr = ft_split_pipex(command, " ");
 	if (cmd_arr == NULL)
 	{
-		perror("maloc error");
+		perror("malloc error");
 		close_and_free(ms);
 	}
-	
 	return (cmd_arr);
 }

@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 14:56:59 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 15:11:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*check_redirect_append(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	mod->append_s[i] = ft_substr(redirect, 0, end - redirect);
 	mod->append_s[i] = check_if_quote(mod->append_s[i]);
-	redir_append(mod->append_s[i], ms, i);
+	redir_append(mod->append_s[i], mod, ms, i);
 	while (mod->append_s[i])
 		i++;
 	return (redirect);
@@ -64,7 +64,7 @@ char	*check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
 	mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
-	redir_in(mod->redirect_in[j], ms, j);
+	redir_in(mod->redirect_in[j], mod, ms, j);
 	while (mod->redirect_in[j])
 		j++;
 	return (redirect);
@@ -73,7 +73,7 @@ char	*check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 char	*check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 {
 	char	*end;
-		int		i;
+	int		i;
 
 	i = 0;
 	while (ifisredirect(*redirect) || ifisspace(*redirect))
@@ -93,7 +93,7 @@ char	*check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
 	mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
-	redir_out(mod->redirect_out[i], ms, i);
+	redir_out(mod->redirect_out[i], mod, ms, i);
 	while (mod->redirect_out[i])
 		i++;
 	return (redirect);

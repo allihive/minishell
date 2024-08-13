@@ -6,30 +6,29 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:29:42 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/12 13:25:02 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 15:04:23 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ifisredirect(char c)
+int	ifisredirect(char c)
 {
-    if ((c == '<' || c == '>'))
+	if ((c == '<' || c == '>'))
 	{
 		return (1);
 	}
 	return (0);
 }
 
-/* return 1 if char c is a spaces */
-int ifisspace(char c)
+int	ifisspace(char c)
 {
 	if (c == 32 || (c >= 9 && c <= 13))
-		return (1);				
+		return (1);
 	return (0);
 }
 
-int ifismeta (char c)
+int	ifismeta(char c)
 {
 	if (c == ';' || c == '$' || c == '\'' || c == '"')
 		return (c);
@@ -66,19 +65,20 @@ int	is_sep(char *str, int i, char *charset)
 	}
 	return (str[i] == '\0');
 }
-char *check_if_quote(char *str)
+
+char	*check_if_quote(char *str)
 {
-	int k;
+	int	k;
 
 	k = 0;
-	while (str[k])  //if quote
+	while (str[k])
 	{
 		if (ft_strlen(str) > 1)
 		{
 			if ((str[k] == '\''
-				&& str[ft_strlen(str) - 1]  == '\'') ||
-				(str[k] == '"'
-				&& str[ft_strlen(str) - 1] == '"'))
+					&& str[ft_strlen(str) - 1] == '\'')
+				|| (str[k] == '"'
+					&& str[ft_strlen(str) - 1] == '"'))
 				str = no_quote(str);
 		}
 		k++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 15:21:59 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 14:00:46 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ char	*get_value(int start, int len, char *cmd, t_shell *ms)
 	return (cmd);
 }
 
-
-
 char	*echo_digit(char *cmd, t_shell *ms, int i)
 {	
 	char	*replace;
@@ -66,8 +64,8 @@ char	*echo_digit(char *cmd, t_shell *ms, int i)
 
 static char	*expand_str(int start, char *cmd, t_shell *ms, int i)
 {		
-	char *result;
-	
+	char	*result;
+
 	while (cmd[i] == '_' || ft_isalnum(cmd[i]))
 		i++;
 	result = get_value(start, i - start, cmd, ms);
@@ -82,13 +80,7 @@ char	*if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod )
 	result = NULL;
 	start = i;
 	if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
-	{
 		result = expand_str(start, cmd, ms, i);
-		
-	// 	while (cmd[i] == '_' || ft_isalnum(cmd[i]))
-	// 		i++;
-	// 	result = get_value(start, i - start, cmd, ms);
-	}
 	else if (cmd[i] == '"' || (cmd[i] == '\''
 			&& mod->process_mode != DOUBLEQUOTE))
 	{
@@ -97,7 +89,6 @@ char	*if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod )
 	}
 	else if (cmd[i] == '?' )
 	{
-		// dprintf(2, "3 in expandable\n");
 		result = echo_exit_code(ms);
 		free(cmd);
 	}

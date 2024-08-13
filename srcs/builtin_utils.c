@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:40:11 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 13:55:50 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 14:54:53 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 _Bool	check_case(char *cmd, char *builtin)
 {
@@ -29,7 +28,6 @@ _Bool	check_case(char *cmd, char *builtin)
 	return (1);
 }
 
-
 _Bool	is_builtin(char *cmd)
 {
 	if (cmd == NULL)
@@ -42,33 +40,24 @@ _Bool	is_builtin(char *cmd)
 		return (1);
 	if (ft_strncmp(cmd, "cd\0", 3) == 0)
 		return (1);
-	if (cmd[0] == 'p' || cmd[0] == 'P')
-		return (check_case(cmd, "pwd\0"));//check both small or capitalized letters
-	if (cmd[0] == 'e' || cmd[0] == 'E')
-	{
-		if (check_case(cmd, "env\0")
-			|| check_case(cmd, "echo\0"))
-			return (1);
-	}
 	return (0);
 }
-
 
 int	call_builtin(t_shell *ms, t_process_node *node)
 {
 	if (ft_strncmp(node->command[0], "export", 6) == 0)
-		ft_export(ms, node->command, 1); 
+		ft_export(ms, node->command, 1);
 	else if (ft_strncmp(node->command[0], "unset", 5) == 0)
 		unset(ms, node->command);
-	else if(ft_strncmp(node->command[0], "exit", 4) == 0)
+	else if (ft_strncmp(node->command[0], "exit", 4) == 0)
 		ft_exit(ms, node->command);
 	else if (ft_strncmp(node->command[0], "pwd", 3) == 0)
-		pwd(ms, 0,  ms->fd[1]);
+		pwd(ms, 0, ms->fd[1]);
 	else if (ft_strncmp(node->command[0], "env", 3) == 0)
 		env(ms, ms->fd[1]);
 	else if (ft_strncmp(node->command[0], "echo", 4) == 0)
 		echo(ms, node->command, ms->fd[1]);
-    else if (ft_strncmp(node->command[0], "cd", 2) == 0)
+	else if (ft_strncmp(node->command[0], "cd", 2) == 0)
 		cd(ms, node->command, 0, 0);
 	return (ms->excode);
 }

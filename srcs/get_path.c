@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:57:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:14:04 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:40:46 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@ static char	*verify_path(char *cmd, t_shell *ms)
 	{
 		if (access(cmd, F_OK) != 0)
 		{
-			//print_error_badcmd(cmd, pipex, EXIT_CMD_NOT_FOUND);
-            error_msg(cmd, 0, "No such file or directory", ms->excode = 127);
+			error_msg(cmd, 0, "No such file or directory", ms->excode = 127);
 			close_and_free(ms);
 		}
-		if (access(cmd, X_OK) != 0)//./infile  when no permisssion to access 0000
- 		{
-            error_msg(cmd, 0, "Permission denied", ms->excode = 126);
+		if (access(cmd, X_OK) != 0)
+		{
+			error_msg(cmd, 0, "Permission denied", ms->excode = 126);
 			close_and_free(ms);
 		}
 		return (ft_strdup(cmd));
@@ -59,15 +58,16 @@ static char	**get_env_paths(char **envp, t_shell *ms)
 	return (env_paths);
 }
 
-int get_the_path(t_process_node *process, t_shell *ms, char	*command_path, int i)
+int	get_the_path(t_process_node *process,
+	t_shell *ms, char	*command_path, int i)
 {
 	char	*str;
-	
+
 	if (ms->envp_paths)
 	{
 		while (ms->envp_paths != NULL && ms->envp_paths[++i] != NULL)
 		{
-			str = ft_strjoin(ms->envp_paths[i], "/");//may need to delete "envp:"
+			str = ft_strjoin(ms->envp_paths[i], "/");
 			command_path = ft_strjoin(str, process->command[0]);
 			if (str)
 				free(str);
@@ -87,19 +87,18 @@ int get_the_path(t_process_node *process, t_shell *ms, char	*command_path, int i
 	}
 	return (0);
 }
-	
 
-int get_path(t_process_node *process, t_shell *ms)// get_path_cmd
+int	get_path(t_process_node *process, t_shell *ms)
 {
-    int		i;
+	int		i;
 	char	*command_path;
 
-    if (!process->command[0])
+	if (!process->command[0])
 		return (-1);
 	ms->envp_paths = get_env_paths(ms->envp, ms);
-   	command_path = verify_path(process->command[0], ms);
+	command_path = verify_path(process->command[0], ms);
 	if (command_path != NULL)
-    	return (process->cmd_path = command_path, 0);
+		return (process->cmd_path = command_path, 0);
 	i = -1;
 	if (get_the_path(process, ms, command_path, i) == -1)
 		return (-1);

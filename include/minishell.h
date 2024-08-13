@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 14:08:26 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 15:04:15 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void	heredoc_input_msg(char *str);
 void	free_single(char **str);
 void	free_double(char **arr);
 void	free_node(t_process_node **lst);
+void	free_lst_cmd(t_process_node **list);
 void	free_shell(t_shell *ms);
 int		close_and_free(t_shell *ms);
 int		free_env(t_shell *ms);
@@ -216,19 +217,22 @@ void	get_redirect_arr(char *input, t_process_node *mod, t_shell *ms);
 /*Redirects*/
 //int handle_redirects(t_process_node *process,t_shell *ms);
 char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
-int		redir_out(char *redirectout, t_shell *ms, int i);
+//int		redir_out(char *redirectout, t_shell *ms, int i);
+int	redir_out(char *redirectout, t_process_node *mod,t_shell *ms, int j);
+
 
 //int redir_out(char *redirectout, t_shell *ms);
-int		redir_append(char *redirectappend, t_shell *ms, int j);
+int		redir_append(char *redirectappend, t_process_node *mod, t_shell *ms, int j);
 int		go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
 /*Redirects utils*/
-int		validate_redir_in(t_shell *ms, char *redirect, int j);
+int		validate_redir_in(t_process_node *mod, t_shell *ms, char *redirect, int j);
 //int redir_in(char *redirectin,t_shell *ms);
-int		redir_in(char *redirectin, t_shell *ms, int j);
+int		redir_in(char *redirectin, t_process_node *mod, t_shell *ms, int j);
 int		print_redir_err(t_shell *ms, char *redir, char *copy);
-int		validate_redir_out(t_shell *ms, char *redirect, int i);
-int		validate_redir_append(t_shell *ms, char *redirect, int j);
+//int		validate_redir_out(t_shell *ms, char *redirect, int i);
+int		validate_redir_out(t_process_node *mod, t_shell *ms, char *redirect, int i);
+int		validate_redir_append(t_process_node *mod, t_shell *ms, char *redirect, int j);
 
 /*Handle exitcode*/
 int		set_exitcode(t_shell *ms, int exitcode);

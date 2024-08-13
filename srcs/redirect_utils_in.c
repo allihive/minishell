@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils_in.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:07:06 by alli              #+#    #+#             */
-/*   Updated: 2024/08/09 14:18:32 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:10:51 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 int	print_redir_err(t_shell *ms, char *redir, char *copy)
 {
-	if (*redir == '/')// /
-		//printf("shell: %s: Is a directory\n", redir);//need change to erro message
+	if (*redir == '/')
 		error_msg(redir, 0, "Is a directory", ms->excode = 126);
-	else if (ft_strchr(copy, '\"'))// cat \"
-		//printf("shell: : No such file or directory\n");//need change to erro message
+	else if (ft_strchr(copy, '\"'))
 		error_msg(redir, 0, "No such file or directory", ms->excode = 1);
 	else
-		//printf( "shell: %s: ambiguous redirect\n", copy);//need change to erro message
 		error_msg(redir, 0, "No such file or directory", ms->excode = 1);
 	ms->excode = 0;
 	return (-1);
@@ -53,7 +50,7 @@ int	expand_redir_in(t_shell *ms, char *redirect, int j)
 	return (0);
 }
 
-int	validate_redir_in(t_shell *ms, char *redirect, int j)
+int	validate_redir_in(t_process_node *mod, t_shell *ms, char *redirect, int j)
 {
 	char	*tmp;
 
@@ -65,7 +62,7 @@ int	validate_redir_in(t_shell *ms, char *redirect, int j)
 	else
 	{
 		tmp = redirect;
-		ms->list->redirect_in[j] = quote_remover(redirect);
+		mod->redirect_in[j] = quote_remover(redirect);
 		if (!redirect)
 			return (set_exitcode(ms, -1));
 	}

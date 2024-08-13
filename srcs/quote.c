@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 16:49:02 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 13:19:19 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:12:00 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,11 @@ char	*quote_remover(char *str)
 
 void	check_quote(t_process_node *mod, char c, int i)
 {
-	if (c == '\'' || c == '"')
+	if (c == SINGLEQUOTE || c == DOUBLEQUOTE)
 	{
 		if (mod->process_mode == 0)
 		{
-			if (c == '\'')
+			if (c == SINGLEQUOTE)
 			{
 				mod->process_mode = SINGLEQUOTE;
 				mod->sinquote = i;
@@ -100,9 +100,9 @@ void	check_quote(t_process_node *mod, char c, int i)
 				mod->doublequote = i;
 			}
 		}
-		else if (c == '\'' && mod->process_mode == SINGLEQUOTE)
+		else if (c == SINGLEQUOTE && mod->process_mode == SINGLEQUOTE)
 			mod->process_mode = 0;
-		else if (c == '"' && mod->process_mode == DOUBLEQUOTE)
+		else if (c == DOUBLEQUOTE && mod->process_mode == DOUBLEQUOTE)
 			mod->process_mode = 0;
 	}
 }
