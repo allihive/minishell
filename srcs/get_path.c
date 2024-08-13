@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:57:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 13:40:46 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 17:49:48 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*verify_path(char *cmd, t_shell *ms)
 	{
 		if (access(cmd, F_OK) != 0)
 		{
-			error_msg(cmd, 0, "No such file or directory", ms->excode = 127);
+			error_msg(cmd, 0, "No such file or directory", ms->excode = 126);
 			close_and_free(ms);
 		}
 		if (access(cmd, X_OK) != 0)

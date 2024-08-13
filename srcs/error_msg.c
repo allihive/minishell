@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/08/13 14:11:11 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 17:01:46 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,14 @@ void	cmd_not_found(char *str, t_shell *ms)
 
 void	print_error_and_free(char *name, t_shell *ms)
 {
-	if (ft_putstr_fd("minishel: in only print error", 2) == -1)
+	if (ft_putstr_fd("minishell: in only print error", 2) == -1)
 	{
 		perror("pipex: write error");
+		printf("1 print error and free\n");
 		exit(1);
 	}
 	perror(name);
+	printf("2 print error_and free\n");
 	exit(1);
 	close_and_free(ms);
 }

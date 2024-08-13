@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 15:11:42 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 17:28:07 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ char	*check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
 	mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
-	redir_out(mod->redirect_out[i], mod, ms, i);
+	if (redir_out(mod->redirect_out[i], mod, ms, i) == -1)
+		return (NULL);
 	while (mod->redirect_out[i])
 		i++;
 	return (redirect);
@@ -121,7 +122,8 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 	else if (*redirect == '>')
 	{
 		mod->redirectout = 1;
-		check_redirect_out(redirect, mod, ms);
+		if (!check_redirect_out(redirect, mod, ms))
+			return (NULL);
 	}
 	return (redirect);
 }
@@ -131,25 +133,20 @@ int	go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 	char	*redirect;
 
 	redirect = input;
-	dprintf(2, "in go check redirect:%s\n", redirect);
 	while (*redirect)
 	{
 		if (!*redirect)
 			break ;
-		// while (*redirect && !ifisredirect(*redirect))
-		// 	redirect++;
-
-
-
 		while (*redirect && redirect_not_in_quote(*redirect, input, redirect - input, ms) == 0)
 		{
 			redirect++;
-		
 		}
-	
-		dprintf(2, "2 in go check redirect:%s\n", redirect);
 		if (*redirect)
+		{
 			redirect = check_redirect(redirect, mod, ms);
+			if (!redirect)
+				return (-1);
+		}
 		else
 			break ;
 		redirect++;

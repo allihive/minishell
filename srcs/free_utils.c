@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 13:48:11 by alli              #+#    #+#             */
-/*   Updated: 2024/08/13 15:00:05 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 16:25:56 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ void	error_handle(t_shell *ms, char *line)
 	free_node(&ms->list);
 	if (ms->envp)
 		free_env(ms);
+	printf("error_handle\n");
 	exit(ms->excode);
 }

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 17:52:02 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 12:59:47 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 17:43:20 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	quit(t_shell *ms)
 {
 	ft_putstr_fd("exit\n", 2);
 	free_env(ms);
+	// printf("quit\n");
 	exit(0);
 }
 

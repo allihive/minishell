@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:40:11 by alli              #+#    #+#             */
-/*   Updated: 2024/08/13 14:54:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 19:22:54 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,25 @@ _Bool	check_case(char *cmd, char *builtin)
 		return (0);
 	return (1);
 }
-
-_Bool	is_builtin(char *cmd)
+_Bool    is_builtin(char *cmd)
 {
-	if (cmd == NULL)
-		return (0);
-	if (ft_strncmp(cmd, "export\0", 7) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "unset\0", 6) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "exit\0", 5) == 0)
-		return (1);
-	if (ft_strncmp(cmd, "cd\0", 3) == 0)
-		return (1);
-	return (0);
+    if (cmd == NULL)
+        return (0);
+    if (ft_strncmp(cmd, "export\0", 7) == 0)
+        return (1);
+    if (ft_strncmp(cmd, "unset\0", 6) == 0)
+        return (1);
+    if (ft_strncmp(cmd, "exit\0", 5) == 0)
+        return (1);
+    if (ft_strncmp(cmd, "cd\0", 3) == 0)
+        return (1);
+    if (ft_strncmp(cmd, "echo\0", 5) == 0)
+        return (1);
+    if (ft_strncmp(cmd, "pwd\0", 4) == 0)
+        return (1);
+    if (ft_strncmp(cmd, "env\0", 4) == 0)
+        return (1);
+    return (0);
 }
 
 int	call_builtin(t_shell *ms, t_process_node *node)
