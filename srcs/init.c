@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:46:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:14:52 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:55:44 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,12 @@ int	unclosed_quote(char *line)
 int	check_syntax(char *line, t_shell *ms)
 {
 	char	quote;
-
+	//t_flags	f;
+	
+	
+	//j = 0;
+	//init_flag(&f);
+	
 	if (!line || !*line || *line == '|' || *(line + ft_strlen(line) - 1) == '|')
 		return (syntax_error("`|'", ms));
 	quote = unclosed_quote(line);
@@ -40,10 +45,19 @@ int	check_syntax(char *line, t_shell *ms)
 		return (syntax_error("`\''", ms));
 	else if (quote == DOUBLEQUOTE)
 		return (syntax_error("`\"'", ms));
+	//dprintf(2, "line in check syntax:%s\n", line);
+	
+	
+	
+	//after we find that there are quotes and they are closed skip the rest of this
+	
+	
 	if (invalid_redirect(line, '>'))
 		return (syntax_error("`>'", ms));
 	else if (invalid_redirect(line, '<'))
 		return (syntax_error("`<'", ms));
+
+		
 	return (0);
 }
 
@@ -80,6 +94,11 @@ int	init_shell(t_shell *ms)
 	if (!ms->pids)
 		return (close_and_free(ms));
 	ms->pids[0] = -1;
+
+	
+	ms->execute = 0;
+	
+	
 	return (0);
 }
 

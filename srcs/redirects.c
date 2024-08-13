@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 13:03:02 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 14:56:59 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,23 @@ int	go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 	char	*redirect;
 
 	redirect = input;
+	dprintf(2, "in go check redirect:%s\n", redirect);
 	while (*redirect)
 	{
 		if (!*redirect)
 			break ;
-		while (*redirect && !ifisredirect(*redirect))
+		// while (*redirect && !ifisredirect(*redirect))
+		// 	redirect++;
+
+
+
+		while (*redirect && redirect_not_in_quote(*redirect, input, redirect - input, ms) == 0)
+		{
 			redirect++;
+		
+		}
+	
+		dprintf(2, "2 in go check redirect:%s\n", redirect);
 		if (*redirect)
 			redirect = check_redirect(redirect, mod, ms);
 		else

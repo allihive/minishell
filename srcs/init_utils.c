@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:59:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:14:14 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:40:16 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ char check_delimiter(char *line)
 		return ('\'');
 }
 	
+
+
+
+	
 int invalid_redirect( char *line, char redirect)
 {
 	while(*line)
@@ -41,7 +45,7 @@ int invalid_redirect( char *line, char redirect)
 		{
 			line++;
 			while (*line && *line != '\'' && *line != '\"')//echo "Hello World"
-				line++;
+				line++;	
 			line++;//skip ' or "
 		}
 		else

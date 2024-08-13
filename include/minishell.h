@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/09 14:13:02 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 14:08:26 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,12 @@ typedef struct s_shell
 	int		read_end;
 	char	*cwd;
 	int		excode;
-	int		execute;
 	pid_t	*pids;
 	int		count;//node index  在pipex 會update
+
+
+	int					execute;
+	
 	t_process_node	*list;
 }	t_shell;
 
@@ -233,6 +236,7 @@ int		set_exitcode(t_shell *ms, int exitcode);
 /*parsing*/
 char	*no_quote(char *cmd);
 void	append_process_node(t_process_node **list, t_process_node *new);
+int redirect_not_in_quote(char c, char *input, int k, t_shell *ms);
 
 /*Check Utils*/
 int		ifisspace(char c);

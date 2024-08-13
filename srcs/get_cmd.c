@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:40:24 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/06 13:11:56 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 13:17:41 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static char	*write_word(char *dest, char *str, char *charset)
 	j = 0;
 	while (str[i])
 	{
-		while (is_sep(str, i, charset))
+		//dprintf(2,"str[%d]:%c\n", i,str[i]);
+		while (is_sep(str, i, charset) )
 			i++;
 		while (!is_sep(str, i, charset))
 		{
@@ -49,6 +50,7 @@ static char	*write_word(char *dest, char *str, char *charset)
 		break ;
 	}
 	dest[j] = '\0';
+	//dprintf(2,"dest:%s\n", dest);
 	return (dest);
 }
 
@@ -77,6 +79,10 @@ static char	**write_arr(char **arr, char *str, char *charset)
 				return (NULL);
 			}
 			arr[word] = write_word(arr[word], str + i, charset);
+
+			//dprintf(2,"arr[%d]:%s\n", word,  arr[word]);
+
+			
 			i += len;
 			len = 0;
 			word++;
@@ -96,9 +102,19 @@ static char	**ft_split_pipex(char *str, char *charset)
 	if (arr == NULL)
 		return (NULL);
 	arr = write_arr(arr, str, charset);
-	// if (arr == NULL)
-	// 	return (NULL);
+	
 	arr[word] = NULL;
+	
+	// int i = 0;
+	// while (arr[i])
+	// {
+	// 	dprintf(2, "arr[i]: %s\n", arr[i]);
+	// 	i++;
+	// }
+
+
+
+	
 	return (arr);
 }
 
@@ -115,30 +131,5 @@ char	**get_cmd_arr(char *command, t_shell *ms)
 		close_and_free(ms);
 	}
 	
-	// ms->list->command = cmd_arr;
-	// free(cmd_arr);
-	// return (ms->list->command);
-
-
 	return (cmd_arr);
 }
-
-// void get_cmd_arr(char *command, t_shell *ms)
-// {
-// 	char	**cmd_arr;
-
-	
-// 	cmd_arr = ft_split_pipex(command, " ");
-// 	if (cmd_arr == NULL)
-// 	{
-// 		perror("maloc error");
-// 		close_and_free(ms);
-// 	}
-	
-// 	ms->list->command = cmd_arr;
-// 	free(cmd_arr);
-// 	// return (ms->list->command);
-
-
-// 	//return (cmd_arr);
-// }

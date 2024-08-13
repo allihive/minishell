@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:29:42 by yhsu              #+#    #+#             */
-/*   Updated: 2024/07/31 11:05:46 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/12 13:25:02 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@ int ifisspace(char c)
 
 int ifismeta (char c)
 {
-	if (c == ';' || c == '$' || c == '\'' || c == '\'')
+	if (c == ';' || c == '$' || c == '\'' || c == '"')
 		return (c);
 	else
 		return (0);
 }
+
+
 
 int	is_sep(char *str, int i, char *charset)
 {
