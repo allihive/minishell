@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/14 10:02:17 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 11:17:18 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ char	*check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 			ft_putstr_fd("redirect in malloc", 2);
 			return (NULL);
 		}
-		//ft_memset(mod->redirect_in, 0, sizeof(char *) * 100);
 	}
 	mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
 	mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
@@ -109,21 +108,18 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	else if (*(redirect + 1) == '>')
 	{
-		// mod->append = 1;
 		redirect = redirect + 2;
 		if (!check_redirect_append(redirect, mod, ms))
 			return (NULL);
 	}
 	else if (*redirect == '<')
 	{
-		// mod->redirectin = 1;
 		redirect++;
 		if (!check_redirect_in(redirect, mod, ms))
 			return (NULL);
 	}	
 	else if (*redirect == '>')
 	{
-		//mod->redirectout = 1;
 		if (!check_redirect_out(redirect, mod, ms))
 			return (NULL);
 	}

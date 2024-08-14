@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/14 09:17:34 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 10:14:35 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ int	do_command(t_shell *ms, t_process_node *process)
 	}
 	error_msg(process->command[0], 0,
 		"No such file or directory", ms->excode = 1);
-	// ft_putstr_fd(process->command[0], 2);
-	// ft_putstr_fd("No such file or directory\n", 2);
-	// return (set_exitcode(ms, 1));
 	return (-1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:07:06 by alli              #+#    #+#             */
-/*   Updated: 2024/08/13 13:10:51 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 10:12:44 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ int	expand_redir_in(t_shell *ms, char *redirect, int j)
 
 int	validate_redir_in(t_process_node *mod, t_shell *ms, char *redirect, int j)
 {
-	//char	*tmp;
-
 	if (ft_strchr(redirect, '$'))
 	{
 		if (expand_redir_in(ms, redirect, j))
@@ -61,7 +59,6 @@ int	validate_redir_in(t_process_node *mod, t_shell *ms, char *redirect, int j)
 	}
 	else
 	{
-		//tmp = redirect;
 		mod->redirect_in[j] = quote_remover(redirect);
 		if (!redirect)
 			return (set_exitcode(ms, -1));

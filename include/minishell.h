@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 18:20:46 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 11:20:24 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ void	execute_shell(t_shell *ms);
 int		count_cmd(t_process_node *list);
 int		ifisredirect(char c);
 void	parse_process_node(t_process_node **list, t_shell *ms);
+void	check_redir_quote(char *tmp, int *quote_status);
+int		redirect_not_in_quote(char c, char *input, int k, t_shell *ms);
 
 /*Get cmd*/
 char	**get_cmd_arr(char *command, t_shell *ms);

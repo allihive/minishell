@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:00 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 13:38:21 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 11:22:58 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int	open_close_heredoc(char *heredoc_name, t_process_node *process, t_shell *ms)
 		return (set_exitcode(ms, 1));
 	}
 	get_heredoc_input(heredoc_fd, process);
-	printf("open and close heredoc\n");
 	if (close(heredoc_fd) == -1)
 	{
 		perror("open .heredoc failed");
