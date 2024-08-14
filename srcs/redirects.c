@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 15:11:42 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/14 10:00:19 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ char	*check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 	mod->redirect_out[i] = ft_substr(redirect, 0, end - redirect);
 	mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
 	redir_out(mod->redirect_out[i], mod, ms, i);
+	
 	while (mod->redirect_out[i])
 		i++;
 	return (redirect);
@@ -108,19 +109,19 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	else if (*(redirect + 1) == '>')
 	{
-		mod->append = 1;
+		//mod->append = 1;
 		redirect = redirect + 2;
 		check_redirect_append(redirect, mod, ms);
 	}
 	else if (*redirect == '<')
 	{
-		mod->redirectin = 1;
+		//mod->redirectin = 1;
 		redirect++;
 		check_redirect_in(redirect, mod, ms);
 	}	
 	else if (*redirect == '>')
 	{
-		mod->redirectout = 1;
+		//mod->redirectout = 1;
 		check_redirect_out(redirect, mod, ms);
 	}
 	return (redirect);
@@ -131,7 +132,7 @@ int	go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 	char	*redirect;
 
 	redirect = input;
-	dprintf(2, "in go check redirect:%s\n", redirect);
+	//dprintf(2, "in go check redirect:%s\n", redirect);
 	while (*redirect)
 	{
 		if (!*redirect)
@@ -147,7 +148,7 @@ int	go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 		
 		}
 	
-		dprintf(2, "2 in go check redirect:%s\n", redirect);
+		//dprintf(2, "2 in go check redirect:%s\n", redirect);
 		if (*redirect)
 			redirect = check_redirect(redirect, mod, ms);
 		else

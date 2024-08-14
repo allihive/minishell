@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/13 13:13:38 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 17:09:32 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	execute_shell(t_shell *ms)
 	if (!ms->list)
 		exit(free_env(ms));
 	else if (pipex(ms->list, ms) == -1)
-		exit(ms->excode);
+		//exit(ms->excode);
+		return ;
 }
 
 int	main(int argc, char **argv, char **envp)

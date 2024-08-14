@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 13:08:34 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 17:04:23 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	redir_append(char *redirectappend, t_process_node *mod, t_shell *ms, int j)
 		else
 			ft_printf("shell: %s: Permission denied\n", redirectappend);//need to fix fd 2
 		close_and_free(ms);
-		return (set_exitcode(ms, -1));
+		return (set_exitcode(ms, 1));
 	}
 	return (0);
 }
@@ -56,11 +56,16 @@ int	redir_out(char *redirectout, t_process_node *mod,t_shell *ms, int j)
 	{
 		if (access(mod->redirect_out[j], F_OK) != 0)
 			ft_printf("shell: %s: No such file or directory\n",
-				redirectout);//need to fix fd 2
+				mod->redirect_out[j]);//need to fix fd 2
 		else
+		{
 			ft_printf("shell: %s: Permission denied\n",
-				redirectout);//need to fix fd 2
-		return (set_exitcode(ms, -1));
+				mod->redirect_out[j]);//need to fix fd 2
+			//ms->excode = 1;
+			
+		}
+		//return (close_and_free(ms));	
+		return (set_exitcode(ms, 1));
 	}
 	return (0);
 }
@@ -80,7 +85,7 @@ int	redir_in(char *redirectin, t_process_node *mod, t_shell *ms, int j)
 			error_msg(mod->redirect_in[j], 0,
 				"Permission denied", ms->excode = 1);
 		ms->execute = 0;
-		return (set_exitcode(ms, -1));
+		return (set_exitcode(ms, 1));
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 14:00:46 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 18:27:48 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,21 @@ char	*if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod )
 
 	result = NULL;
 	start = i;
+	dprintf(2, "1 cmd in expandable:%s\n", cmd);
 	if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
 		result = expand_str(start, cmd, ms, i);
 	else if (cmd[i] == '"' || (cmd[i] == '\''
 			&& mod->process_mode != DOUBLEQUOTE))
 	{
+		dprintf(2, "here\n");
+		dprintf(2, "2 cmd in expandable:%s\n", cmd);
 		result = ft_strdup(cmd + i);
+		dprintf(2, "result after here :%s\n", result);
 		free (cmd);
 	}
 	else if (cmd[i] == '?' )
 	{
+		dprintf(2, "here 1\n");
 		result = echo_exit_code(ms);
 		free(cmd);
 	}
@@ -96,7 +101,13 @@ char	*if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod )
 		result = echo_digit(cmd, ms, i);
 	else if (cmd[i] == '"' || (cmd[i] == '\''
 			&& mod->process_mode == DOUBLEQUOTE))
+	{
+		dprintf(2, "here 2\n");
 		result = cmd;
+	}
+	else
+		result = cmd;
+	dprintf(2, "result in expandable:%s\n", result);
 	return (result);
 }
 
@@ -117,14 +128,18 @@ char	*expand_it_out(char *cmd, t_process_node *mod, t_shell *ms)
 			if (cmd[i + 1] == '$')
 			{
 				result = remove_dollar_sign(cmd, i, 1);
+				dprintf(2, "1 result:%s\n", result);
 				continue ;
 			}
+			dprintf(2, "1.5 result:%s\n", result);
 			result = if_expandable(cmd, ms, i + 1, mod);
+			dprintf(2, "2 result:%s\n", result);
 			break ;
 		}
 		else
 			result = cmd;
 		i++;
 	}
+	dprintf(2, "3 result:%s\n", result);
 	return (result);
 }

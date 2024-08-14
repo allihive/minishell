@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:40:11 by alli              #+#    #+#             */
-/*   Updated: 2024/08/13 14:54:53 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 19:18:41 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ _Bool	is_builtin(char *cmd)
 	if (ft_strncmp(cmd, "exit\0", 5) == 0)
 		return (1);
 	if (ft_strncmp(cmd, "cd\0", 3) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "echo\0", 5) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "pwd\0", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "env\0", 4) == 0)
 		return (1);
 	return (0);
 }

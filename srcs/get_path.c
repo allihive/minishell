@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
+/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 18:57:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 13:40:46 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/13 19:09:28 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static char	**get_env_paths(char **envp, t_shell *ms)
 	int		i;
 
 	path_line = NULL;
+	// if (!(key_exists(ms, "PATH")))
+	// 	return (NULL);
 	while (*envp != NULL)
 	{
 		if (ft_strnstr(*envp, "PATH=", 5) != NULL)
