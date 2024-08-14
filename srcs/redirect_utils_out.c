@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 13:33:41 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 13:10:09 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 12:45:06 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static int	expand_redir_out(t_shell *ms, char *redirect, int j)
 	return (0);
 }
 
-int	validate_redir_out(t_process_node *mod, t_shell *ms, char *redirect, int j)
+int	validate_redir_out(t_process_node *mod,
+	t_shell *ms, char *redirect, int j)
 {
 	char	*tmp;
 

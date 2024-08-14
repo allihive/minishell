@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 18:37:09 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 14:00:46 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 12:41:41 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,7 @@ char	*if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod )
 	start = i;
 	if (ft_isalpha(cmd[i]) || cmd[i] == '_' )
 		result = expand_str(start, cmd, ms, i);
-	else if (cmd[i] == '"' || (cmd[i] == '\''
-			&& mod->process_mode != DOUBLEQUOTE))
+	else if (cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode != 34))
 	{
 		result = ft_strdup(cmd + i);
 		free (cmd);
@@ -94,8 +93,9 @@ char	*if_expandable(char *cmd, t_shell *ms, int i, t_process_node *mod )
 	}
 	else if (ft_isdigit(cmd[i]))
 		result = echo_digit(cmd, ms, i);
-	else if (cmd[i] == '"' || (cmd[i] == '\''
-			&& mod->process_mode == DOUBLEQUOTE))
+	else if (cmd[i] == '"' || (cmd[i] == '\'' && mod->process_mode == 34))
+		result = cmd;
+	else
 		result = cmd;
 	return (result);
 }

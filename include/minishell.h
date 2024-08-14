@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/14 11:20:24 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 12:38:06 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,8 +211,14 @@ int		get_the_path(t_process_node *process,
 void	get_redirect_arr(char *input, t_process_node *mod, t_shell *ms);
 
 /*Redirects*/
-char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
-int		redir_out(char *redirectout, t_process_node *mod, t_shell *ms, int j);
+char	*check_redirect_out(char *redirect,
+			t_process_node *mod, t_shell *ms, int i);
+char	*check_redirect( char *redirect,
+			t_process_node *mod, t_shell *ms, int i);
+char	*check_redirect_append(char *redirect,
+			t_process_node *mod, t_shell *ms, int i);
+int		redir_out(char *redirectout,
+			t_process_node *mod, t_shell *ms, int j);
 int		redir_append(char *redirectappend,
 			t_process_node *mod, t_shell *ms, int j);
 int		go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
