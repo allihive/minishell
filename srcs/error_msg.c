@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:45:25 by alli              #+#    #+#             */
-/*   Updated: 2024/08/14 11:22:49 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 12:04:03 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ void	print_error_and_free(char *name, t_shell *ms)
 {
 	if (ft_putstr_fd("minishell: in only print error", 2) == -1)
 	{
-		ft_putstr_fd(pipex: write error);
+		ft_putstr_fd("pipex: write error", 2);
 		exit(1);
 	}
-	ft_putstr_fd(name);
+	ft_putstr_fd(name, 2);
 	exit(1);
 	close_and_free(ms);
 }

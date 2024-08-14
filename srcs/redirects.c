@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/14 11:17:18 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 12:25:28 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	else if (*(redirect + 1) == '>')
 	{
+		mod->append = 1;
 		redirect = redirect + 2;
 		if (!check_redirect_append(redirect, mod, ms))
 			return (NULL);
