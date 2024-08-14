@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 21:41:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 16:58:17 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 10:04:51 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	redir_append(char *redirectappend, t_process_node *mod, t_shell *ms, int j)
 		redirectappend++;
 	if (validate_redir_append(mod, ms, redirectappend + i, j) == -1)
 		return (-1);
-	printf("redir_append\n");
 	close(ms->fd[1]);
 	if (mod->append == 1)
 		ms->fd[1] = open(mod->append_s[j],
@@ -29,19 +28,19 @@ int	redir_append(char *redirectappend, t_process_node *mod, t_shell *ms, int j)
 	if (ms->fd[1] < 0)
 	{
 		if (access(mod->append_s[j], F_OK) != 0)
-			ft_printf("shell: %s: No such file or directory\n", redirectappend);//need to fix fd 2
+			error_msg(mod->append_s[j], 0,
+				"No such file or directory", ms->excode = 1);
 		else
-			ft_printf("shell: %s: Permission denied\n", redirectappend);//need to fix fd 2
-		close_and_free(ms);
-		return (set_exitcode(ms, -1));
+			error_msg(mod->append_s[j], 0,
+				"No such file or directory", ms->excode = 1);
+		return (-1);
 	}
 	return (0);
 }
 
-int	redir_out(char *redirectout, t_process_node *mod,t_shell *ms, int j)
+int	redir_out(char *redirectout, t_process_node *mod, t_shell *ms, int j)
 {
 	int	i;
-	// char *tmp;
 
 	i = 0;
 	while (ifisspace(redirectout[i]) == 1)
@@ -55,9 +54,11 @@ int	redir_out(char *redirectout, t_process_node *mod,t_shell *ms, int j)
 	if (ms->fd[1] < 0)
 	{
 		if (access(mod->redirect_out[j], F_OK) != 0)
-			error_msg(mod->redirect_out[j], 0, "Permission denied", ms->excode = 1);
+			error_msg(mod->redirect_out[j], 0,
+				"Permission denied", ms->excode = 1);
 		else
-			error_msg(mod->redirect_out[j], 0, "Permission denied", ms->excode = 1);
+			error_msg(mod->redirect_out[j], 0,
+				"Permission denied", ms->excode = 1);
 		return (-1);
 	}
 	return (0);
@@ -78,8 +79,7 @@ int	redir_in(char *redirectin, t_process_node *mod, t_shell *ms, int j)
 			error_msg(mod->redirect_in[j], 0,
 				"Permission denied", ms->excode = 1);
 		ms->execute = 0;
-		return (set_exitcode(ms, -1));
-		// return (-1);
+		return (set_exitcode(ms, 1));
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 09:50:23 by alli              #+#    #+#             */
-/*   Updated: 2024/08/13 17:43:12 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 08:59:10 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,11 @@ void	initialize_shell(t_shell *ms, char **envp)
 
 void	execute_shell(t_shell *ms)
 {
-	// int	p;
 	parse_process_node(&ms->list, ms);
 	if (!ms->list)
-	{
-		printf("1 execute shell\n");
 		exit(free_env(ms));
-	}
 	else if (pipex(ms->list, ms) == -1)
-	{
 		exit(ms->excode);
-		// return ;
-	}
 }
 
 int	main(int argc, char **argv, char **envp)

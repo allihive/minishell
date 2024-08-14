@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:34 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 18:16:49 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 09:01:10 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ int	close_and_free(t_shell *ms)
 	if (ms->envp)
 		free_env(ms);
 	free_shell(ms);
-	// printf("close and free\n");
-	// return (ms->excode);
 	exit(ms->excode);
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 19:25:21 by alli             ###   ########.fr       */
+/*   Updated: 2024/08/14 09:17:34 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ void	do_dups(t_shell *ms)
 	close(ms->fd[1]);
 }
 
-int if_is_builtin(char *cmd)
-{
-	if (!(ft_strncmp(cmd, "pwd", 3)))
-		return (0);
-	else 
-		return (1);
-	
-}
-
 int	do_command(t_shell *ms, t_process_node *process)
 {
 	if (!process->builtin)
@@ -56,16 +47,19 @@ int	do_command(t_shell *ms, t_process_node *process)
 		return (ms->excode = call_builtin (ms, process));
 	if (get_path(process, ms))
 		return (-1);
-	if (process->cmd_path != NULL)    
+	if (process->cmd_path != NULL)
 		execve(process->cmd_path, process->command, ms->envp);
 	if (access(process->command[0], F_OK) == 0)
 	{
 		error_msg(process->command[0], 0, "is a directory", ms->excode = 126);
 		return (-1);
 	}
-	ft_putstr_fd(process->command[0], 2);
-	ft_putstr_fd(" No such file or directoryn\n", 2);
-	return (set_exitcode(ms, 1));
+	error_msg(process->command[0], 0,
+		"No such file or directory", ms->excode = 1);
+	// ft_putstr_fd(process->command[0], 2);
+	// ft_putstr_fd("No such file or directory\n", 2);
+	// return (set_exitcode(ms, 1));
+	return (-1);
 }
 
 int	do_process(t_process_node *process, t_shell *ms)
