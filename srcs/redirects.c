@@ -6,18 +6,17 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 10:48:49 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/14 10:12:25 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/14 12:31:16 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*check_redirect_append(char *redirect, t_process_node *mod, t_shell *ms)
+char	*check_redirect_append(char *redirect, t_process_node *mod,
+	t_shell *ms, int i)
 {
 	char	*end;
-	int		i;
 
-	i = 0;
 	while (ifisredirect(*redirect) || ifisspace(*redirect))
 		redirect++;
 	end = redirect;
@@ -36,17 +35,14 @@ char	*check_redirect_append(char *redirect, t_process_node *mod, t_shell *ms)
 	mod->append_s[i] = check_if_quote(mod->append_s[i]);
 	if (redir_append(mod->append_s[i], mod, ms, i) == -1)
 		return (NULL);
-	while (mod->append_s[i])
-		i++;
 	return (redirect);
 }
 
-char	*check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
+char	*check_redirect_in(char *redirect, t_process_node *mod,
+	t_shell *ms, int j)
 {
 	char	*end;
-	int		j;
 
-	j = 0;
 	if (ifisspace(*redirect))
 		redirect++;
 	end = redirect;
@@ -60,7 +56,6 @@ char	*check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 			ft_putstr_fd("redirect in malloc", 2);
 			return (NULL);
 		}
-		//ft_memset(mod->redirect_in, 0, sizeof(char *) * 100);
 	}
 	mod->redirect_in[j] = ft_substr(redirect, 0, end - redirect);
 	mod->redirect_in[j] = check_if_quote(mod->redirect_in[j]);
@@ -71,12 +66,11 @@ char	*check_redirect_in(char *redirect, t_process_node *mod, t_shell *ms)
 	return (redirect);
 }
 
-char	*check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
+char	*check_redirect_out(char *redirect, t_process_node *mod,
+	t_shell *ms, int i)
 {
 	char	*end;
-	int		i;
 
-	i = 0;
 	while (ifisredirect(*redirect) || ifisspace(*redirect))
 		redirect++;
 	end = redirect;
@@ -95,12 +89,10 @@ char	*check_redirect_out(char *redirect, t_process_node *mod, t_shell *ms)
 	mod->redirect_out[i] = check_if_quote(mod->redirect_out[i]);
 	if (redir_out(mod->redirect_out[i], mod, ms, i) == -1)
 		return (NULL);
-	while (mod->redirect_out[i])
-		i++;
 	return (redirect);
 }
 
-char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
+char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms, int i)
 {
 	if (*(redirect + 1) == '<')
 	{
@@ -109,22 +101,20 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 	}
 	else if (*(redirect + 1) == '>')
 	{
-		// mod->append = 1;
+		mod->append = 1;
 		redirect = redirect + 2;
-		if (!check_redirect_append(redirect, mod, ms))
+		if (!check_redirect_append(redirect, mod, ms, i))
 			return (NULL);
 	}
 	else if (*redirect == '<')
 	{
-		// mod->redirectin = 1;
 		redirect++;
-		if (!check_redirect_in(redirect, mod, ms))
+		if (!check_redirect_in(redirect, mod, ms, i))
 			return (NULL);
 	}	
 	else if (*redirect == '>')
 	{
-		//mod->redirectout = 1;
-		if (!check_redirect_out(redirect, mod, ms))
+		if (!check_redirect_out(redirect, mod, ms, i))
 			return (NULL);
 	}
 	return (redirect);
@@ -133,7 +123,9 @@ char	*check_redirect(char *redirect, t_process_node *mod, t_shell *ms)
 int	go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 {
 	char	*redirect;
+	int		i;
 
+	i = 0;
 	redirect = input;
 	while (*redirect)
 	{
@@ -141,18 +133,17 @@ int	go_check_redirect(char *input, t_process_node *mod, t_shell *ms)
 			break ;
 		while (*redirect && redirect_not_in_quote(*redirect,
 				input, redirect - input, ms) == 0)
-		{
 			redirect++;
-		}
 		if (*redirect)
 		{
-			redirect = check_redirect(redirect, mod, ms);
+			redirect = check_redirect(redirect, mod, ms, i);
 			if (!redirect)
 				return (-1);
 		}
 		else
 			break ;
 		redirect++;
+		i++;
 	}
 	return (0);
 }

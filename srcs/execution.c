@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:27:47 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/14 10:10:36 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/14 12:12:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	do_command(t_shell *ms, t_process_node *process)
 {
 	if (!process->builtin)
 		do_dups(ms);
-	dprintf(2, "in do cmd process->builtin:%d\n", process->builtin);
 	if (process->builtin)
 		return (ms->excode = call_builtin (ms, process));
 	if (get_path(process, ms))
@@ -57,9 +56,6 @@ int	do_command(t_shell *ms, t_process_node *process)
 	}
 	error_msg(process->command[0], 0,
 		"No such file or directory", ms->excode = 1);
-	// ft_putstr_fd(process->command[0], 2);
-	// ft_putstr_fd("No such file or directory\n", 2);
-	// return (set_exitcode(ms, 1));
 	return (-1);
 }
 
