@@ -6,7 +6,7 @@
 /*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 18:17:18 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 18:07:38 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/14 10:11:42 by yhsu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,12 @@ void	check_dollar(char **command, t_process_node *mod, t_shell *ms)
 
 	i = 0;
 	tmp = command;
-	dprintf(2, "in check dollar\n");
 	while (command[i])
 	{
 		j = 0;
 		while (command[i][j])
 		{
-			dprintf(2, "command[i][j]:%c\n", command[i][j]);
-			if (command[i][j] == '$' )
+			if (command[i][j] == '$')
 			{
 				if (command[i][j + 1] == '\0')
 					break ;
@@ -85,65 +83,87 @@ void	check_dollar(char **command, t_process_node *mod, t_shell *ms)
 	}
 }
 
-int    redirect_not_in_quote(char c, char *input, int k, t_shell *ms)
+void check_redir_quote(char *tmp, int *quote_status)
 {
-    int        quote;
-    int        l;
-    char    *tmp;
+	int l;
+	int quote;
 
-    quote = -1;
-    l = 0;
-    if (c == '<' || c == '>')
-    {
-        tmp = ft_substr(input, 0, k);
-        while (tmp[l])
-        {
-            if (tmp[l] == DOUBLEQUOTE && quote == -1)
-                quote = DOUBLEQUOTE;
-            else if (tmp[l] == DOUBLEQUOTE && quote == DOUBLEQUOTE)
-                quote = -1;
-            else if (tmp[l] == SINGLEQUOTE && quote == -1)
-                quote = SINGLEQUOTE;
-            else if (tmp[l] == SINGLEQUOTE && quote == SINGLEQUOTE)
-                quote = -1;
-            l++;
-        }
-        free (tmp);
-        if (quote != -1)
-            return (0);
-        else
-        {
-            ms->execute = -1;
-            return (1);
-        }
-    }
-    else
-        return (0);
+	quote = -1;
+	l = 0;
+	while (tmp[l])
+	{
+		if (tmp[l] == DOUBLEQUOTE && quote == -1)
+			quote = DOUBLEQUOTE;
+		else if (tmp[l] == DOUBLEQUOTE && quote == DOUBLEQUOTE)
+			quote = -1;
+		else if (tmp[l] == SINGLEQUOTE && quote == -1)
+			quote = SINGLEQUOTE;
+		else if (tmp[l] == SINGLEQUOTE && quote == SINGLEQUOTE)
+			quote = -1;
+		l++;
+	}
+	*quote_status = quote;
+}
+
+int	redirect_not_in_quote(char c, char *input, int k, t_shell *ms)
+{
+	int		quote_status;
+	//int		l;
+	char	*tmp;
+
+	//quote = -1;
+	//l = 0;
+	if (c == '<' || c == '>')
+	{
+		tmp = ft_substr(input, 0, k);
+		check_redir_quote(tmp, &quote_status);
+		
+		// while (tmp[l])
+		// {
+		// 	if (tmp[l] == DOUBLEQUOTE && quote == -1)
+		// 		quote = DOUBLEQUOTE;
+		// 	else if (tmp[l] == DOUBLEQUOTE && quote == DOUBLEQUOTE)
+		// 		quote = -1;
+		// 	else if (tmp[l] == SINGLEQUOTE && quote == -1)
+		// 		quote = SINGLEQUOTE;
+		// 	else if (tmp[l] == SINGLEQUOTE && quote == SINGLEQUOTE)
+		// 		quote = -1;
+		// 	l++;
+		// }
+		free (tmp);
+		if (quote_status != -1)
+			return (0);
+		else
+		{
+			ms->execute = -1;
+			return (1);
+		}
+	}
+	else
+		return (0);
 }
 
 void	parse_mod(char *input, t_process_node *mod, t_shell *ms)
 {
 	char	*command;
 	char	*start;
-	
+	int		a;
+
 	start = input;
-	while (*start && redirect_not_in_quote(*start, input, start - input, ms) == 0)
+	while (*start && redirect_not_in_quote(*start,
+			input, start - input, ms) == 0)
 		start++;
-	
 	command = ft_substr(input, 0, (start - input));
 	mod->command = get_cmd_arr(command, ms);
 	free(command);
 	if (is_builtin(mod->command[0]))
 		mod->builtin = 1;
+	a = 0;
+	while (mod->command[a])
+		a++;
 	check_dollar(mod->command, mod, ms);
-
-
-	int i =0;
-	while(mod->command[i])
-	{
-		dprintf(2, "mod->command[%d]:%s\n", i, mod->command[i]);
-		i++;
-	}
+	while (mod->command[a])
+		a++;
 }
 
 void	parse_process_node(t_process_node **list, t_shell *ms)

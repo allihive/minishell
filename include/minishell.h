@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:29:14 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 15:04:15 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 18:20:46 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,8 @@ extern volatile sig_atomic_t	g_global_signal;
 typedef enum e_syntax
 {
 	PIPE = 124,
-	//DOLLAR = 36,
-	//INDIRECT = 60,
-	//OUTDIRECT = 62,
 	SINGLEQUOTE = 39,
 	DOUBLEQUOTE = 34,
-	//QUESTIONMARK = 63,
 }	t_syntax;
 
 typedef struct s_heredoc
@@ -60,15 +56,14 @@ typedef struct s_flags
 typedef struct s_process_node//
 {
 	char					**command;
-	char					*node_line;// = input
-//	char	**redirs;
-	char					**redirect_in;//< input
-	char					**redirect_out;//> output
-	char					*here_doc;//<<
-	char					**append_s;//>>
+	char					*node_line;
+	char					**redirect_in;
+	char					**redirect_out;
+	char					*here_doc;
+	char					**append_s;
 	char					*cmd_path;
 	int						pipe;
-	int						sinquote;//when ==1 dont exapmd unless expand == 1;
+	int						sinquote;
 	int						doublequote;
 	int						append;
 	int						heredoc;
@@ -83,31 +78,30 @@ typedef struct s_process_node//
 
 typedef struct s_shell
 {
-	char	**envp;
-	int		envp_size;
-	char	**envp_paths;
-	int		shlvl;
-	char	*line;// read from realine function
-	int		fork_n;//fork number
-	int		flag;
-	int		fd[2];
-	int		read_end;
-	char	*cwd;
-	int		excode;
-	pid_t	*pids;
-	int		count;//node index  在pipex 會update
-
-
-	int					execute;
-	
+	char			**envp;
+	int				envp_size;
+	char			**envp_paths;
+	int				shlvl;
+	char			*line;
+	int				fork_n;
+	int				flag;
+	int				fd[2];
+	int				read_end;
+	char			*cwd;
+	int				excode;
+	pid_t			*pids;
+	int				count;
+	int				execute;
 	t_process_node	*list;
 }	t_shell;
 
 /*signals*/
+void	child_signal(void);
 void	set_termios(int mode);
 void	set_signal(void);
 void	sig_ctrl_c(int sig);
 void	ctrl_c_heredoc(int sig);
+void	heredoc_handler(int signum);
 void	heredoc_init(void);
 
 /*Initialization*/
@@ -161,7 +155,6 @@ void	parse_process_node(t_process_node **list, t_shell *ms);
 
 /*Get cmd*/
 char	**get_cmd_arr(char *command, t_shell *ms);
-//void get_cmd_arr(char *command, t_shell *ms);
 
 /*Expand*/
 char	*expand_it_out(char *cmd, t_process_node *mod, t_shell *ms);
@@ -209,30 +202,28 @@ int		call_builtin(t_shell *ms, t_process_node *node);
 
 /*Get path*/
 int		get_path(t_process_node *process, t_shell *ms);
-int		get_the_path(t_process_node *process, t_shell *ms, char	*cmd_path, int i); // line is too long
+int		get_the_path(t_process_node *process,
+			t_shell *ms, char	*cmd_path, int i);
 
 /*get redirect*/
 void	get_redirect_arr(char *input, t_process_node *mod, t_shell *ms);
 
 /*Redirects*/
-//int handle_redirects(t_process_node *process,t_shell *ms);
 char	*check_redirect( char *redirect, t_process_node *mod, t_shell *ms);
-//int		redir_out(char *redirectout, t_shell *ms, int i);
-int	redir_out(char *redirectout, t_process_node *mod,t_shell *ms, int j);
-
-
-//int redir_out(char *redirectout, t_shell *ms);
-int		redir_append(char *redirectappend, t_process_node *mod, t_shell *ms, int j);
+int		redir_out(char *redirectout, t_process_node *mod, t_shell *ms, int j);
+int		redir_append(char *redirectappend,
+			t_process_node *mod, t_shell *ms, int j);
 int		go_check_redirect(char *input, t_process_node *mod, t_shell *ms);
 
 /*Redirects utils*/
-int		validate_redir_in(t_process_node *mod, t_shell *ms, char *redirect, int j);
-//int redir_in(char *redirectin,t_shell *ms);
+int		validate_redir_in(t_process_node *mod,
+			t_shell *ms, char *redirect, int j);
 int		redir_in(char *redirectin, t_process_node *mod, t_shell *ms, int j);
 int		print_redir_err(t_shell *ms, char *redir, char *copy);
-//int		validate_redir_out(t_shell *ms, char *redirect, int i);
-int		validate_redir_out(t_process_node *mod, t_shell *ms, char *redirect, int i);
-int		validate_redir_append(t_process_node *mod, t_shell *ms, char *redirect, int j);
+int		validate_redir_out(t_process_node *mod,
+			t_shell *ms, char *redirect, int i);
+int		validate_redir_append(t_process_node *mod,
+			t_shell *ms, char *redirect, int j);
 
 /*Handle exitcode*/
 int		set_exitcode(t_shell *ms, int exitcode);
@@ -240,7 +231,7 @@ int		set_exitcode(t_shell *ms, int exitcode);
 /*parsing*/
 char	*no_quote(char *cmd);
 void	append_process_node(t_process_node **list, t_process_node *new);
-int redirect_not_in_quote(char c, char *input, int k, t_shell *ms);
+int		redirect_not_in_quote(char c, char *input, int k, t_shell *ms);
 
 /*Check Utils*/
 int		ifisspace(char c);
@@ -251,7 +242,6 @@ char	*check_if_quote(char *str);
 
 /*Heredoc*/
 int		handle_heredocs(char *redirect, t_process_node *process, t_shell *ms);
-//int handle_heredocs(char *redirect, t_process_node *process);
 
 /*Quote*/
 void	init_flag(t_flags *f);

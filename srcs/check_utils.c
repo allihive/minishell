@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:29:42 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 15:04:23 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 15:30:59 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ int	ifismeta(char c)
 	else
 		return (0);
 }
-
-
 
 int	is_sep(char *str, int i, char *charset)
 {

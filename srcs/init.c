@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhsu <student.hive.fi>                     +#+  +:+       +#+        */
+/*   By: alli <alli@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 10:46:29 by yhsu              #+#    #+#             */
-/*   Updated: 2024/08/13 15:09:43 by yhsu             ###   ########.fr       */
+/*   Updated: 2024/08/13 15:28:32 by alli             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ int	check_syntax(char *line, t_shell *ms)
 		return (syntax_error("`>'", ms));
 	else if (invalid_redirect(line, '<'))
 		return (syntax_error("`<'", ms));
-
-		
 	return (0);
 }
 
@@ -76,7 +74,6 @@ int	init_shell(t_shell *ms)
 	ms->read_end = -1;
 	ms->fd[0] = dup(0);
 	ms->fd[1] = dup(1);
-	ms->execute = 0;
 	ms->fork_n = count_cmd(ms->list);
 	ms->pids = ft_calloc((ms->fork_n + 1), sizeof(int));
 	if (!ms->pids)
