@@ -1,4 +1,4 @@
-# Custom Bash Shell
+# Minishell
 
 ## 📌 Project Overview
 This project involves building a **mini Bash shell** from scratch in C.  
