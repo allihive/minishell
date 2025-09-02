@@ -1,7 +1,7 @@
 # Minishell
 
 ## 📌 Project Overview
-This project involves building a **mini Bash shell** from scratch in C.  
+This project involves building a **mini Bash shell** from scratch in C with my partner [Yun-Chia](https://github.com/Yunchia-Hsu)
 The shell mimics the behavior of a traditional Unix shell by parsing user input, executing commands, and managing processes.
 
 The goal was to deepen understanding of:
